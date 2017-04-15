@@ -1,0 +1,31 @@
+{
+  "name": "powerofmind",
+  "version": "1.0.0",
+  "description": "Brahmakumari",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suryanshsoni/powerofmind.git"
+  },
+  "author": "Suryansh Soni, Rishabh Panwar, Ishita Bhandari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suryanshsoni/powerofmind/issues"
+  },
+  "homepage": "https://github.com/suryanshsoni/powerofmind#readme",
+  "dependencies": {
+    "bunyan-winston-adapter": "^0.2.0",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.9.2",
+    "mongoose-api-query": "^0.1.1-pre",
+    "mongoose-createdmodified": "0.0.2",
+    "restify": "^4.3.0",
+    "restify-errors": "^4.3.0",
+    "update-mongo": "0.0.4",
+    "winston": "^2.3.1"
+  }
+}
