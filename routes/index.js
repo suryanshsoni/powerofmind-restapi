@@ -10,20 +10,20 @@ const _      = require('lodash'),
 /**
  * Model Schema
  */
-const ThoughtOfDay = require('../models/thoughtofday')
+const MessageOfDay = require('../models/messageofday')
+const Video = require('../models/video')
+const Audio = require('../models/audio')
 
-
-server.post('/writethought', function(req, res, next) {
+server.post('/writemessage', function(req, res, next) {
 	
     let data = req.body || {}
 	console.log(data)
-    let thought = new ThoughtOfDay(data)
-	console.log(thought)
+    let message = new MessageOfDay(data)
+	console.log(message)
     
-	console.log(thought)
-    thought.save(function(err) {
+	 message.save(function(err) {
 
-        if (err) {
+        if (err!=null) {
             log.error(err)
             return next(new errors.InternalError(err.message))
             next()
@@ -36,10 +36,10 @@ server.post('/writethought', function(req, res, next) {
 
 })
 
-
+	
 server.post('/message1', function(req, res, next) {
 	console.log("Sending message");
-	ThoughtOfDay.find(
+	MessageOfDay.find(
 	{},
 	[],
 	{
@@ -55,7 +55,7 @@ server.post('/message1', function(req, res, next) {
             log.error(err)
             return next(new errors.InvalidContentError(err.errors.name.message))
         }
-
+	
         res.send(doc)
         next()
 
@@ -65,8 +65,8 @@ server.post('/message1', function(req, res, next) {
 
 server.post('/message', function(req, res, next) {
 	console.log("Sending message");
-	ThoughtOfDay.findOne(
-	{_id:"58f0d2238090513f58d6305c"},
+	MessageOfDay.findOne(
+	{date:"2017-03-03T18:30:00.000Z"},
 	[],
 	{
 		skip:0, // Starting Row
@@ -77,13 +77,16 @@ server.post('/message', function(req, res, next) {
 	},
 	function(err, doc) {
 
-        if (err) {
+        if (err!=null) {
             log.error(err)
             return next(new errors.InvalidContentError(err.errors.name.message))
         }
-
-        res.send(doc)
-        next()
+		console.log("doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
 
     })
 

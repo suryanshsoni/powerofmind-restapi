@@ -4,12 +4,12 @@ const mongoose = require('mongoose'),
 	  mongooseApiQuery = require('mongoose-api-query'),
       createdModified = require('mongoose-createdmodified').createdModifiedPlugin
 
-const ThoughtOfDaySchema = new mongoose.Schema({
+const MessageOfDaySchema = new mongoose.Schema({
 	date: {
 		type: Date,
 		required: true
 	},
-	thought: {
+	message: {
 		type: String,
 		required: true
 	},
@@ -18,8 +18,8 @@ const ThoughtOfDaySchema = new mongoose.Schema({
 	}
 });
 
-ThoughtOfDaySchema.plugin(mongooseApiQuery)
-ThoughtOfDaySchema.plugin(createdModified, { index: true })
+MessageOfDaySchema.plugin(mongooseApiQuery)
+MessageOfDaySchema.plugin(createdModified, { index: true })
 
-const ThoughtOfDay = mongoose.model('ThoughtOfDay', ThoughtOfDaySchema)
-module.exports = ThoughtOfDay
+const MessageOfDay = mongoose.model('MessageOfDay', MessageOfDaySchema)
+module.exports = MessageOfDay

@@ -9,6 +9,8 @@ const config        = require('./config'),
       winston       = require('winston'),
       bunyanWinston = require('bunyan-winston-adapter'),
       mongoose      = require('mongoose')
+	  
+mongoose.Promise=require('bluebird')  
 
 /**
  * Logging
