@@ -91,3 +91,144 @@ server.post('/message', function(req, res, next) {
     })
 
 })
+
+/*----------------------------------------------------------------------------------------------------*/
+
+server.post('/addVideo', function(req, res, next) {
+	
+    let data = req.body || {}
+	console.log(data)
+    let video = new Video(data)
+	console.log(video)
+    
+	 video.save(function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InternalError(err.message))
+            next()
+        }
+
+        res.send(201)
+        next()
+
+    })
+
+})
+
+
+server.post('/videos', function(req, res, next) {
+	console.log("Sending message");
+	let data = req.body || {}
+	let index = 0
+	if(data!=null)
+		index=data.index
+	Video.find(
+	{},
+	[],
+	{
+		skip:index, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
+})
+
+
+/*-------------------------------------------------------------------------------------------------------------------*/
+server.post('/addAudio', function(req, res, next) {
+	
+    let data = req.body || {}
+	console.log(data)
+    let audio = new audio(data)
+	console.log(audio)
+    
+	 audio.save(function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InternalError(err.message))
+            next()
+        }
+
+        res.send(201)
+        next()
+
+    })
+
+})
+
+
+server.post('/audios', function(req, res, next) {
+	console.log("Sending message");
+	let data = req.body || {}
+	let index = 0
+	if(data!=null)
+		index=data.index
+	Audio.find(
+	{},
+	[],
+	{
+		skip:index, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
+})
+
+
+server.post('/audio', function(req, res, next) {
+	console.log("Sending message");
+	let data = req.body || {}
+	
+	if(data!=null)
+		index=data.index
+	Audio.find(
+	{},
+	[],
+	{
+		skip:index, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
+})
