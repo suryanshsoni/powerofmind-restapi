@@ -13,11 +13,15 @@ var storage	=	multer.diskStorage({
     callback(null, './uploads');
   },
   filename: function (req, file, callback) {
-	console.log(file);  
-    callback(null, file.fieldname + '-' + Date.now()+'.png');
+    var filename=file.originalname.split(".");
+   var extension=filename[filename.length-1];
+	filename.pop();
+	var name=filename.join();
+	console.log("storing with "+name);
+    callback(null, name + '-' + Date.now()+'.'+extension);
   }
 })
-var upload = multer({ storage : storage}).single('userPhoto')
+var upload = multer({ storage : storage}).single('file')
 
 /**
  * Model Schema
