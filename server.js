@@ -59,6 +59,13 @@ server.on('uncaughtException', (req, res, route, err) => {
 /**
  * Lift Server, Connect to DB & Bind Routes
  */
+ server.get('/proxy', restify.serveStatic({
+    directory: __dirname,
+	file : 'proxy.html'
+}));
+server.get('/admin', restify.serveStatic({
+    directory: './admin'
+}));
 server.listen(config.port, function() {
 
     mongoose.connection.on('error', function(err) {
@@ -88,3 +95,5 @@ server.listen(config.port, function() {
     global.db = mongoose.connect(config.db.uri)
 
 })
+console.log("directory is:"+__dirname)
+
