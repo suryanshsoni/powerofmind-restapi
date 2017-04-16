@@ -5,7 +5,18 @@
  */
 const _      = require('lodash'),
       errors = require('restify-errors'),
-	  dateTime = require('node-datetime');
+	  dateTime = require('node-datetime'),
+	  multer = require('multer')
+
+var storage	=	multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './uploads');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname + '-' + Date.now());
+  }
+})
+var upload = multer({ storage : storage})
 
 /**
  * Model Schema
@@ -151,7 +162,7 @@ server.post('/videos', function(req, res, next) {
 /*-------------------------------------------------------------------------------------------------------------------*/
 server.post('/addAudio', function(req, res, next) {
 	
-    let data = req.body || {}
+    /*let data = req.body || {}
 	console.log(data)
     let audio = new audio(data)
 	console.log(audio)
@@ -167,7 +178,21 @@ server.post('/addAudio', function(req, res, next) {
         res.send(201)
         next()
 
-    })
+    })*/
+	
+ upload(req,res,function(err) {
+		if(err) {
+			return res.end("Error uploading file.");
+		}
+		else {
+           console.log(req.body);
+           req.files.forEach( function(f) {
+             console.log(f);
+             // and move file to final destination...
+           });
+		res.end("File is uploaded");
+		}	
+	});
 
 })
 

@@ -43,6 +43,10 @@ server.use(restify.jsonBodyParser({ mapParams: true }))
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser({ mapParams: true }))
 server.use(restify.fullResponse())
+server.use(restify.CORS({
+    origins: ['*'],
+    headers: ['application/json','application/x-www-form-urlencoded','multipart/form-data','text/html']                 // sets expose-headers
+}));
 
 /**
  * Error Handling
