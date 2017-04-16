@@ -64,7 +64,8 @@ server.on('uncaughtException', (req, res, route, err) => {
 	file : 'proxy.html'
 }));
 server.get('/admin', restify.serveStatic({
-    directory: './admin'
+    directory: './admin',
+  file: 'index.html'
 }));
 server.listen(config.port, function() {
 

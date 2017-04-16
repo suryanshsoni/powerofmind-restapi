@@ -16,7 +16,7 @@ var storage	=	multer.diskStorage({
     callback(null, file.fieldname + '-' + Date.now());
   }
 })
-var upload = multer({ storage : storage})
+var upload = multer({ storage : storage}).single('userPhoto')
 
 /**
  * Model Schema
@@ -186,10 +186,7 @@ server.post('/addAudio', function(req, res, next) {
 		}
 		else {
            console.log(req.body);
-           req.files.forEach( function(f) {
-             console.log(f);
-             // and move file to final destination...
-           });
+           
 		res.end("File is uploaded");
 		}	
 	});
