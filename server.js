@@ -43,6 +43,7 @@ server.use(restify.jsonBodyParser({ mapParams: true }))
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser({ mapParams: true }))
 server.use(restify.fullResponse())
+server.use(restify.bodyParser());
 server.use(restify.CORS({
     origins: ['*'],
     headers: ['application/json','application/x-www-form-urlencoded','multipart/form-data','text/html']                 // sets expose-headers
@@ -63,10 +64,14 @@ server.on('uncaughtException', (req, res, route, err) => {
     directory: __dirname,
 	file : 'proxy.html'
 }));
-server.get('/admin', restify.serveStatic({
-    directory: './admin',
-  file: 'index.html'
-}));
+server.get(/\/admin\/?.*/, restify.serveStatic({
+     directory: __dirname,
+	 default:'index.html'
+ }));
+server.get(/\/uploads\/?.*/, restify.serveStatic({
+     directory: __dirname
+ }));
+ 
 server.listen(config.port, function() {
 
     mongoose.connection.on('error', function(err) {
