@@ -13,6 +13,7 @@ var storage	=	multer.diskStorage({
     callback(null, './uploads');
   },
   filename: function (req, file, callback) {
+	console.log(file);  
     callback(null, file.fieldname + '-' + Date.now()+'.png');
   }
 })
@@ -182,7 +183,7 @@ server.post('/addAudio', function(req, res, next) {
 	
  upload(req,res,function(err) {
 		if(err) {
-			return res.end("Error uploading file.");
+			return res.end(err+" Error uploading file.");
 		}
 		else {
            console.log(req.body);

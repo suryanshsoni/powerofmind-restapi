@@ -43,7 +43,6 @@ server.use(restify.jsonBodyParser({ mapParams: true }))
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser({ mapParams: true }))
 server.use(restify.fullResponse())
-server.use(restify.bodyParser());
 server.use(restify.CORS({
     origins: ['*'],
     headers: ['application/json','application/x-www-form-urlencoded','multipart/form-data','text/html']                 // sets expose-headers
@@ -71,7 +70,6 @@ server.get(/\/admin\/?.*/, restify.serveStatic({
 server.get(/\/uploads\/?.*/, restify.serveStatic({
      directory: __dirname
  }));
- 
 server.listen(config.port, function() {
 
     mongoose.connection.on('error', function(err) {
