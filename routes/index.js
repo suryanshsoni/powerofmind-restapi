@@ -30,6 +30,8 @@ const MessageOfDay = require('../models/messageofday')
 const Video = require('../models/video')
 const Audio = require('../models/audio')
 const LiveDarshan = require('../models/livedarshan')
+const News = require('../models/news')
+//const Event = require('../models/events')
 
 server.post('/writemessage', function(req, res, next) {
 	
@@ -187,7 +189,25 @@ server.post('/videos', function(req, res, next) {
 
 })
 
+server.post('/getVideoDetails', function(req, res, next) {
+	console.log("Sending video details");
+	MessageOfDay.findById((req.body.id),
+	function(err, doc) {
 
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+		console.log("doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
+
+    })
+
+})
 /*-------------------------------------------------------------------------------------------------------------------*/
 server.post('/addAudio', function(req, res, next) {
 	
@@ -294,7 +314,7 @@ server.post('/addLiveDarshan', function(req, res, next) {
     let data = req.body || {}
 	console.log(data)
     let livedarshan = new LiveDarshan(data)
-	console.log(video)
+	console.log(livedarshan)
     
 	 livedarshan.save(function(err) {
 
@@ -318,6 +338,113 @@ server.post('/liveDarshan', function(req, res, next) {
 	if(data!=null)
 		index=data.index
 	LiveDarshan.find(
+	{},
+	[],
+	{
+		skip:index, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
+})
+
+/*--------------------------------------------------------------------------------------------*/
+/*
+server.post('/addEvent', function(req, res, next) {
+	
+    let data = req.body || {}
+	console.log(data)
+    let event = new Event(data)
+	console.log(event)
+    
+	 event.save(function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InternalError(err.message))
+            next()
+        }
+
+        res.send(201)
+        next()
+
+    })
+
+})
+
+server.post('/event', function(req, res, next) {
+	console.log("Sending event list");
+	let data = req.body || {}
+	let index = 0
+	if(data!=null)
+		index=data.index
+	Event.find(
+	{},
+	[],
+	{
+		skip:index, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
+})
+*/
+/*-------------------------------------------------------------------------------------------------*/
+server.post('/addNews', function(req, res, next) {
+	
+    let data = req.body || {}
+	console.log(data)
+    let news = new News(data)
+	console.log(news)
+    
+	 news.save(function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InternalError(err.message))
+            next()
+        }
+
+        res.send(201,"ADDED NEWS")
+        next()
+
+    })
+
+})
+
+server.post('/news', function(req, res, next) {
+	console.log("Sending news");
+	let data = req.body || {}
+	let index = 0
+	if(data!=null)
+		index=data.index
+	News.find(
 	{},
 	[],
 	{
