@@ -29,6 +29,7 @@ var upload = multer({ storage : storage}).single('file')
 const MessageOfDay = require('../models/messageofday')
 const Video = require('../models/video')
 const Audio = require('../models/audio')
+const LiveDarshan = require('../models/livedarshan')
 
 server.post('/writemessage', function(req, res, next) {
 	
@@ -83,7 +84,7 @@ server.post('/message1', function(req, res, next) {
 	[],
 	{
 		skip:0, // Starting Row
-		limit:10, // Ending Row
+		//limit:10, // Ending Row
 		sort:{
 			date: -1 //Sort by Date Added DESC
 		}
@@ -287,4 +288,25 @@ server.post('/audio', function(req, res, next) {
 
 })
 
+/*-------------------------------------------------------------------------------------------------*/
+server.post('/liveDarshan', function(req, res, next) {
+	
+    let data = req.body || {}
+	console.log(data)
+    let livedarshan = new LiveDarshan(data)
+	console.log(video)
+    
+	 livedarshan.save(function(err) {
 
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InternalError(err.message))
+            next()
+        }
+
+        res.send(201)
+        next()
+
+    })
+
+})
