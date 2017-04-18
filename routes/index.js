@@ -32,23 +32,46 @@ const Audio = require('../models/audio')
 
 server.post('/writemessage', function(req, res, next) {
 	
-    let data = req.body || {}
-	console.log(data)
-    let message = new MessageOfDay(data)
-	console.log(message)
-    
-	 message.save(function(err) {
+	upload(req,res,function(err) {
+		if(err) {
+			return res.end(err+" Error uploading file.");
+		}
+		else {
+			console.log(req.file);	
+			console.log(req.body);
+			let data={}
+			if(req.file!=null){ 
+				data={
+					'date':req.body.date,
+					'message':req.body.message,
+					'imagePath':req.file.path || {}
+				}
+			}
+			else{
+				data={
+					'date':req.body.date,
+					'message':req.body.message,
+					'imagePath':''
+				}
+			}
+			
+			let message = new MessageOfDay(data)
+			console.log(message)
+			
+			message.save(function(err) {
 
-        if (err!=null) {
-            log.error(err)
-            return next(new errors.InternalError(err.message))
-            next()
-        }
+				if (err!=null) {
+					log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()
+				}
 
-        res.send(201)
-        next()
+				res.send(201,"ADDED")
+				next()
 
-    })
+			})
+		}	
+	});
 
 })
 
@@ -167,32 +190,36 @@ server.post('/videos', function(req, res, next) {
 /*-------------------------------------------------------------------------------------------------------------------*/
 server.post('/addAudio', function(req, res, next) {
 	
-    /*let data = req.body || {}
-	console.log(data)
-    let audio = new audio(data)
-	console.log(audio)
     
-	 audio.save(function(err) {
-
-        if (err!=null) {
-            log.error(err)
-            return next(new errors.InternalError(err.message))
-            next()
-        }
-
-        res.send(201)
-        next()
-
-    })*/
 	
- upload(req,res,function(err) {
+	upload(req,res,function(err) {
 		if(err) {
 			return res.end(err+" Error uploading file.");
 		}
 		else {
-           console.log(req.body);
-           
-		res.end("File is uploaded");
+			console.log(req.file);	
+			console.log(req.body);
+            let data={
+				'title':req.body.title,
+				'desc':req.body.desc,
+				'audioPath':req.file.path
+			}
+			
+			let audio = new Audio(data)
+			console.log(audio)
+    
+			audio.save(function(err) {
+
+				if (err!=null) {
+					log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()
+				}
+
+				res.send(201,"File Uploaded")
+				next()
+
+			})
 		}	
 	});
 

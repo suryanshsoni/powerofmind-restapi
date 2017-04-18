@@ -5,10 +5,11 @@
   <body>
       <form id="uploadForm"
           enctype="multipart/form-data"
-          action="/addAudio"
+          action="/writemessage"
           method="post">
-		 <input type="text" name="text"> 
-      <input type="file" name="userPhoto" />
+		 <input type="text" name="date"> 
+		 <input type="text" name="message"> 
+      <input type="file" name="file" />
       <input type="submit" value="Upload Image" name="submit">
       <span id = "status"></span>
     </form>
