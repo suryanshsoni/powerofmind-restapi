@@ -289,7 +289,7 @@ server.post('/audio', function(req, res, next) {
 })
 
 /*-------------------------------------------------------------------------------------------------*/
-server.post('/liveDarshan', function(req, res, next) {
+server.post('/addLiveDarshan', function(req, res, next) {
 	
     let data = req.body || {}
 	console.log(data)
@@ -305,6 +305,36 @@ server.post('/liveDarshan', function(req, res, next) {
         }
 
         res.send(201)
+        next()
+
+    })
+
+})
+
+server.post('/liveDarshan', function(req, res, next) {
+	console.log("Sending live darshan");
+	let data = req.body || {}
+	let index = 0
+	if(data!=null)
+		index=data.index
+	LiveDarshan.find(
+	{},
+	[],
+	{
+		skip:index, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
         next()
 
     })
