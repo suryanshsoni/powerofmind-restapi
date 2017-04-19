@@ -4,7 +4,7 @@ const mongoose = require('mongoose'),
 	  mongooseApiQuery = require('mongoose-api-query'),
       createdModified = require('mongoose-createdmodified').createdModifiedPlugin
 
-const EventSchema = new mongoose.Schema({
+const EventsSchema = new mongoose.Schema({
 	name: {
 		type: String
 	},
@@ -30,8 +30,8 @@ const EventSchema = new mongoose.Schema({
 	}
 });
 
-EventSchema.plugin(mongooseApiQuery)
-EventSchema.plugin(createdModified, { index: true })
+EventsSchema.plugin(mongooseApiQuery)
+EventsSchema.plugin(createdModified, { index: true })
 
-const Events = mongoose.model('Event', EventSchema)
-module.exports = Event
+const Events = mongoose.model('Events', EventsSchema)
+module.exports = Events

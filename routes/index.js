@@ -6,7 +6,8 @@
 const _      = require('lodash'),
       errors = require('restify-errors'),
 	  dateTime = require('node-datetime'),
-	  multer = require('multer')
+	  multer = require('multer'),
+	  mongoose = require('mongoose')
 
 var storage	=	multer.diskStorage({
   destination: function (req, file, callback) {
@@ -31,7 +32,7 @@ const Video = require('../models/video')
 const Audio = require('../models/audio')
 const LiveDarshan = require('../models/livedarshan')
 const News = require('../models/news')
-//const Event = require('../models/events')
+const Events = require('../models/events')
 
 server.post('/writemessage', function(req, res, next) {
 	
@@ -133,13 +134,53 @@ server.post('/message', function(req, res, next) {
     })
 
 })
+server.post('/getMessageDetails', function(req, res, next) {
+	console.log("Sending message details");
+	MessageOfDay.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err, doc) {
 
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+		console.log("doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
+
+    })
+
+})
+
+server.post('/removeMessage', function(req, res, next) {
+	console.log("removing message");
+	MessageOfDay.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else
+			res.send(200,"DELETED")
+		next()
+
+    })
+
+})
 /*----------------------------------------------------------------------------------------------------*/
 
 server.post('/addVideo', function(req, res, next) {
 	
     let data = req.body || {}
 	console.log(data)
+	data={
+		"title":req.body.title,
+		"desc":req.body.desc,
+		"videoPath":req.body.videoPath
+	}
     let video = new Video(data)
 	console.log(video)
     
@@ -151,7 +192,7 @@ server.post('/addVideo', function(req, res, next) {
             next()
         }
 
-        res.send(201)
+        res.send(201,"ADDED")
         next()
 
     })
@@ -191,7 +232,7 @@ server.post('/videos', function(req, res, next) {
 
 server.post('/getVideoDetails', function(req, res, next) {
 	console.log("Sending video details");
-	MessageOfDay.findById((req.body.id),
+	Video.findById(mongoose.mongo.ObjectId(req.body.id),
 	function(err, doc) {
 
         if (err!=null) {
@@ -308,11 +349,35 @@ server.post('/audio', function(req, res, next) {
 
 })
 
+server.post('/getAudioDetails', function(req, res, next) {
+	console.log("Sending audio details");
+	Audio.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err, doc) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+		console.log("doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
+
+    })
+
+})
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addLiveDarshan', function(req, res, next) {
 	
     let data = req.body || {}
 	console.log(data)
+	data={
+		"title":req.body.title,
+		"desc":req.body.desc,
+		"videoPath":req.body.videoPath
+	}
     let livedarshan = new LiveDarshan(data)
 	console.log(livedarshan)
     
@@ -324,7 +389,7 @@ server.post('/addLiveDarshan', function(req, res, next) {
             next()
         }
 
-        res.send(201)
+        res.send(201,"ADDED")
         next()
 
     })
@@ -360,38 +425,74 @@ server.post('/liveDarshan', function(req, res, next) {
     })
 
 })
-
-/*--------------------------------------------------------------------------------------------*/
-/*
-server.post('/addEvent', function(req, res, next) {
-	
-    let data = req.body || {}
-	console.log(data)
-    let event = new Event(data)
-	console.log(event)
-    
-	 event.save(function(err) {
+server.post('/getLiveDarshanDetails', function(req, res, next) {
+	console.log("Sending live darshan details");
+	LiveDarshan.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err, doc) {
 
         if (err!=null) {
             log.error(err)
-            return next(new errors.InternalError(err.message))
-            next()
+            return next(new errors.InvalidContentError(err.errors.name.message))
         }
-
-        res.send(201)
-        next()
+		console.log("doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
 
     })
 
 })
+/*--------------------------------------------------------------------------------------------*/
 
-server.post('/event', function(req, res, next) {
+server.post('/addEvent', function(req, res, next) {
+	
+	upload(req,res,function(err) {
+		if(err) {
+			return res.end(err+" Error uploading file.");
+		}
+		else {
+			console.log(req.file);	
+			console.log(req.body);
+            let data={
+					"name": req.body.name,
+					"title": req.body.title,
+					"venue": req.body.venue,
+					"date": req.body.date,
+					"desc": req.body.desc,
+					"imagePath": req.file.path
+				}
+			
+			let events = new Events(data)
+			console.log(events)
+			
+			 events.save(function(err) {
+
+				if (err!=null) {
+					log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()
+				}
+
+				res.send(201,"ADDED")
+				next()
+
+			})
+		}	
+	});
+    
+
+})
+
+server.post('/events', function(req, res, next) {
 	console.log("Sending event list");
 	let data = req.body || {}
+	
 	let index = 0
 	if(data!=null)
 		index=data.index
-	Event.find(
+	Events.find(
 	{},
 	[],
 	{
@@ -414,7 +515,25 @@ server.post('/event', function(req, res, next) {
     })
 
 })
-*/
+server.post('/getEventDetails', function(req, res, next) {
+	console.log("Sending event details");
+	Event.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err, doc) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+		console.log("doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
+
+    })
+
+})
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addNews', function(req, res, next) {
 	
@@ -463,6 +582,25 @@ server.post('/news', function(req, res, next) {
 	
         res.send(doc)
         next()
+
+    })
+
+})
+server.post('/getNewsDetails', function(req, res, next) {
+	console.log("Sending news details");
+	News.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err, doc) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+		console.log("doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
 
     })
 
