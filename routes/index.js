@@ -268,7 +268,7 @@ server.post('/removeVideo', function(req, res, next) {
 })
 server.post('/updateVideo',function(req, res, next){
 	console.log("updating video" + req.body.id)
-	Video.findByIdAndUpdate(mongoose.mongo.ObjectId(req.body.id),
+	Video.findById(mongoose.mongo.ObjectId(req.body.id),
 	function(err,video){
 		if(err!=null){
 			log.error(err)
@@ -428,6 +428,83 @@ server.post('/removeAudio', function(req, res, next) {
     })
 
 })
+/*
+server.post('/updateAudio',function(req, res, next){
+	console.log("updating audio" + req.body.id)
+	Audio.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err,audio){
+		if(err!=null){
+			log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+		}
+		else{
+			console.log("updating")
+			
+			upload(req,res,function(err) {
+		if(err) {
+			return res.end(err+" Error uploading file.");
+		}
+		else {
+			console.log(req.file);	
+			console.log(req.body);
+            let data={
+				'title':req.body.title,
+				'desc':req.body.desc,
+				'audioPath':req.file.path
+			}
+			
+			let audio = new Audio(data)
+			console.log(audio)
+    
+			audio.save(function(err) {
+
+				if (err!=null) {
+					log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()
+				}
+
+				res.send(201,"File Uploaded")
+				next()
+
+			})
+		}	
+	});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			video.title=req.body.title
+			video.desc=req.body.desc
+			video.videoPath=req.body.videoPath
+			
+			video.save(function(err){
+				if(err!=null){
+				log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()	
+				}
+				res.send(200,"UPDATED")
+				next()
+			})
+		}
+			
+	})
+})
+*/
+
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addLiveDarshan', function(req, res, next) {
 	
@@ -519,6 +596,33 @@ server.post('/removeLiveDarshan', function(req, res, next) {
 
     })
 
+})
+server.post('/updateLiveDarshan',function(req, res, next){
+	console.log("updating live darshan" + req.body.id)
+	LiveDarshan.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err,live){
+		if(err!=null){
+			log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+		}
+		else{
+			console.log("updating")
+			live.title=req.body.title
+			live.desc=req.body.desc
+			live.videoPath=req.body.videoPath
+			
+			live.save(function(err){
+				if(err!=null){
+				log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()	
+				}
+				res.send(200,"UPDATED")
+				next()
+			})
+		}
+			
+	})
 })
 /*--------------------------------------------------------------------------------------------*/
 
