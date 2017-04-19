@@ -201,7 +201,7 @@ server.post('/addVideo', function(req, res, next) {
 
 
 server.post('/videos', function(req, res, next) {
-	console.log("Sending message");
+	console.log("Sending video");
 	let data = req.body || {}
 	let index = 0
 	if(data!=null)
@@ -249,6 +249,50 @@ server.post('/getVideoDetails', function(req, res, next) {
     })
 
 })
+
+server.post('/removeVideo', function(req, res, next) {
+	console.log("removing video");
+	Video.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else
+			res.send(200,"DELETED")
+		next()
+
+    })
+
+})
+server.post('/updateVideo',function(req, res, next){
+	console.log("updating video" + req.body.id)
+	Video.findByIdAndUpdate(mongoose.mongo.ObjectId(req.body.id),
+	function(err,video){
+		if(err!=null){
+			log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+		}
+		else{
+			console.log("updating")
+			video.title=req.body.title
+			video.desc=req.body.desc
+			video.videoPath=req.body.videoPath
+			
+			video.save(function(err){
+				if(err!=null){
+				log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()	
+				}
+				res.send(200,"UPDATED")
+				next()
+			})
+		}
+			
+	})
+})
 /*-------------------------------------------------------------------------------------------------------------------*/
 server.post('/addAudio', function(req, res, next) {
 	
@@ -289,7 +333,7 @@ server.post('/addAudio', function(req, res, next) {
 
 
 server.post('/audios', function(req, res, next) {
-	console.log("Sending message");
+	console.log("Sending audios");
 	let data = req.body || {}
 	let index = 0
 	if(data!=null)
@@ -320,7 +364,7 @@ server.post('/audios', function(req, res, next) {
 
 
 server.post('/audio', function(req, res, next) {
-	console.log("Sending message");
+	console.log("Sending audio");
 	let data = req.body || {}
 	
 	if(data!=null)
@@ -363,6 +407,22 @@ server.post('/getAudioDetails', function(req, res, next) {
 			res.send(doc)
         else
 			res.send(200,"Not found")
+		next()
+
+    })
+
+})
+server.post('/removeAudio', function(req, res, next) {
+	console.log("removing audio");
+	Audio.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else
+			res.send(200,"DELETED")
 		next()
 
     })
@@ -439,6 +499,22 @@ server.post('/getLiveDarshanDetails', function(req, res, next) {
 			res.send(doc)
         else
 			res.send(200,"Not found")
+		next()
+
+    })
+
+})
+server.post('/removeLiveDarshan', function(req, res, next) {
+	console.log("removing Live Darshan");
+	LiveDarshan.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else
+			res.send(200,"DELETED")
 		next()
 
     })
@@ -534,6 +610,22 @@ server.post('/getEventDetails', function(req, res, next) {
     })
 
 })
+server.post('/removeEvent', function(req, res, next) {
+	console.log("removing event");
+	Event.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else
+			res.send(200,"DELETED")
+		next()
+
+    })
+
+})
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addNews', function(req, res, next) {
 	
@@ -600,6 +692,22 @@ server.post('/getNewsDetails', function(req, res, next) {
 			res.send(doc)
         else
 			res.send(200,"Not found")
+		next()
+
+    })
+
+})
+server.post('/removeNews', function(req, res, next) {
+	console.log("removing news");
+	News.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else
+			res.send(200,"DELETED")
 		next()
 
     })
