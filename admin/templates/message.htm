@@ -1,0 +1,61 @@
+<script id="message-img-template" type="text/html">
+
+ <!--sample message box starts-->
+<div class="box box-danger">
+    <div class="box-header with-border">
+      <h3 class="box-title">{{date}}</h3> 
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            
+        </button>
+        
+    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteMessage(this.id)'>Delete</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='delteMessage(this.id)'>Update</button>
+
+      </div>
+      <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <blockquote>
+          <p>{{thought}}</p>
+          
+        </blockquote>
+        <img class="img-responsive pad" src={{url}} alt="Message of the day">
+    </div>
+    <!-- /.box-body -->
+  </div>
+<!--sample box ends-->
+
+</script>
+
+<script id="message-template" type="text/html">
+
+ <!--sample message box starts-->
+<div class="box box-danger">
+    <div class="box-header with-border">
+      <h3 class="box-title">{{date}}</h3> 
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                 
+    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteMessage(this.id)'>Delete</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='delteMessage(this.id)'>Update</button>
+        </button>
+      </div>
+      <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <blockquote>
+          <p>{{thought}}</p>
+          
+        </blockquote>
+       
+     </div>
+    <!-- /.box-body -->
+  </div>
+<!--sample box ends-->
+
+</script>

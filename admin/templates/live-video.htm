@@ -1,0 +1,15 @@
+<script id="live-video-template" type="text/html">
+	
+ <div class="info-box">
+  <span class="info-box-icon bg-red"><i class="fa  fa-video-camera"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text"><b>{{title}}</b></span>
+            <span class="info-box-text">Uploaded On {{date}}</span>
+          <span class="info-box-text"><a target="_blank" href={{url}}>Watch Now</a></span>
+            <div style="text-align:right">
+                <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteLiveVideo(this.id)'>Delete</button>
+                <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateLiveVideo(this.id)'>Update</button>
+        </div>
+        </div>
+</div>
+</script>

@@ -1,0 +1,46 @@
+<script id="latest-news-template" type="text/html">
+<div class="col-sm-12 col-md-4">
+    
+
+<div class="box box-widget card">
+            <div class="box-header with-border">
+              <div class="user-block">
+                
+                <h1 class="username">{{title}}</h1>
+                
+              </div>
+              <!-- /.user-block -->
+              <div class="box-tools">
+              
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteNews(this.id)'>Delete</button>
+                <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateNews(this.id)'>Update</button>
+                </button>
+                
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <!-- post text -->
+              <div>{{{content}}} </div>
+
+        
+
+              <!-- Attachment -->
+              
+              <!-- /.attachment-block -->
+
+              <!-- Social sharing buttons -->
+              
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer box-comments">
+              
+              
+            </div>
+          
+          </div>
+    </div>
+ 
+</script>

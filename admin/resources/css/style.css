@@ -1,0 +1,269 @@
+/* My StyleSheet*/
+
+/*nav bar color to dark blue*/
+
+/*
+.navbar{
+  background-color: #0e1654;
+}*/
+.homepagebody{
+  padding-top: 85px;
+}
+.sohagdetailbody{
+  padding-top: 50px;
+}
+#sohagbrand{
+  color: white;
+  font-size: x-large;
+}
+/*@media only screen and (max-width: 992px){
+#sohagbrand {
+ position: absolute;
+ left: 50%;
+ margin-left: -89px !important;  // 50% of logo width
+ display: block;
+  }
+}*/
+#sohagbrand:hover{
+  color:#51d4c7;
+}
+
+.nonunderline *{
+  text-decoration: none;
+}
+
+.nonunderline *:hover{
+  text-decoration: none;
+}
+
+.nonunderline *:active{
+  text-decoration: none;
+}
+
+#verticalTabs {
+  font-size: 15px;
+  text-align: center;
+  color: black;
+  padding-bottom: 10px;
+}
+#verticalTabs > li {
+  list-style-type: none;
+}
+#verticalTabs > li >a{
+  color: black;
+}
+
+
+#verticalTabs > li.active > a{
+  border-color: #a05d17!important;
+  border-radius: 5px;
+  text-decoration: none;
+  color: crimson;
+}
+
+@media only screen and (min-width:769px){
+  div.sohag-card {
+    width:60vw;
+  }
+  .center-cropped > img {
+      height: 27vw;
+    }
+    .sohagbanner , #synopsis{
+      margin : 20px 20px 20px 20px;
+    }
+    #sohag-info-heading , #synopsis-heading{
+      padding: 10px;
+    }
+    #makers{
+      padding:10px;
+    }
+    #sohag-info{
+      margin-top: 5vw;
+    }
+}
+
+
+@media only screen and (max-width:768px){
+  div.sohag-card {
+    width:40vw;
+  }
+  .center-cropped > img {
+      height: 33vw;
+    }
+    #sohagName{
+      font-size: 24px;
+    }
+    .sohagbanner{
+      width:29vw;
+      margin-top: 10px;
+      margin-right: 0px;
+    }
+
+    .sohag-detail-img > img {
+        height: 60vw;
+      }
+      #makers{
+        font-size: 10px;
+        padding:10px;
+      }
+      #sohag-info{
+        height : 60vw;
+        margin-top: 5vw;
+      }
+      #sohag-info-name{
+        margin: 0px;
+      }
+      #sohag-info-heading ,#synopsis-heading{
+        padding: 6px;
+      }
+      #synopsis{
+        margin-top: 10px;
+        margin-right: 0px;
+      }
+
+}
+@media only screen and (max-width:360px) {
+  #sohag-info{
+    font-size: 8px;
+    margin-top:2vw;
+  }
+  #makers{
+    padding: 5px;
+  }
+}
+
+div.sohag-card {
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.6);
+  margin-bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.sohag-detail p{
+  font-size: 15px;
+  color: floralwhite;
+  margin: 0;
+  background: #0e1654;
+  position: relative;
+  /* top: 50%; */
+  /* left: 50%; */
+  /* margin-right: -50%; */
+  /* transform: translate(-50%, -50%); */
+  vertical-align: middle;
+  text-align: center;
+}
+
+
+
+
+.center-cropped > img {
+    width: 100%;
+    vertical-align: middle;
+    position:center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#releaseDateBanner{
+  font-size: 10px;
+  opacity: 0.95;
+  background: linear-gradient(rgba(1, 53, 107, 0.78),#0e1654,rgba(1, 53, 107, 0.78));
+
+}
+
+#sohagName{
+  color: #650759;
+  margin-bottom: 0px;
+}
+
+#sohagName:hover{
+  color:black;
+}
+
+.sohagbanner {
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.6);
+
+}
+#sohag-info-heading{
+  text-align: center;
+  color:black;
+  background : white;
+  transform-origin: bottom left;
+  -moz-transform:rotate(-10deg);
+  -webkit-transform:rotate(-10deg);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.6);
+  background: repeating-linear-gradient(
+  -50deg,
+  black,
+  black 30px,
+  white 30px,
+  white 60px
+);
+}
+
+#sohag-info-body{
+  padding-bottom: 5px;
+  background : black;
+  color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.6);
+}
+
+
+
+/*--------------------------------------------------------------------------*/
+#icons, #addacc{
+	padding-top: 10px;
+    padding-bottom: 10px;
+}
+.icon-size{
+	width:30px;
+	height:22px;	
+}
+
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+
+
+
+
+		.fbcolor{color:#3b5998;}
+        .twcolor{color:#00aced;}
+        .incolor{color:#e95950}
+        
+        .fbpanel >.panel-heading{
+            background-color:#3b5998;
+            color: #ffffff;
+            border-color: #2c3e50;
+        }
+        .fbpanel{
+            border-color: #2c3e50;
+        }
+		
+ .twpanel >.panel-heading{
+            background-color:#00aced;
+            color: #ffffff;
+            border-color: #2c3e50;
+        }
+        .twpanel{
+            border-color: #00aced;
+        }
+        .inpanel >.panel-heading{
+            background-color:#e95950;
+            color: #ffffff;
+            border-color: #2c3e50;
+        }
+        .panel{
+            border-color: #2c3e50;
+        }
+        
+        .tweet {
+    width: 355px !important;
+        }
+
+        .tweet iframe {
+        border: none !important;
+        box-shadow: none !important;
+      }

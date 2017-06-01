@@ -1,41 +1,146 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>File upload Node.</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Of Mind</title>
+	<!-- Bootstrap 3.3.6 -->
+
+  <!-- Font Awesome -->
+  <link href="./admin/resources/css/flatly.css" rel="stylesheet" type="text/css"/>
+
+
+<style>
+    .loginbody{
+        
+        padding:0;
+        margin: 0px;
+        height:150%;
+    }
+
+   .panel-transparent {
+        background: none;
+        color: white;
+    }
+    .panel{border:5px solid #fff ;}
+
+    .panel-transparent .panel-heading{
+        background: #4d90fe !important;
+    }
+
+    .panel-transparent .panel-body{
+        background: rgba(46, 51, 56, 0.7)!important;
+
+    }
+
+     .panel-transparent-lighter {
+        background: none;
+        color: white;
+    }
+
+    .panel-transparent-lighter .panel-heading{
+        background: rgba(122, 130, 136, 0.4)!important;
+    }
+
+    .panel-transparent-lighter .panel-body{
+        background: rgba(46, 51, 56, 0.4)!important;
+
+    }
+    .bigicon{
+        color:white;
+        
+    }
+	#fixedbg{
+		position:fixed;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		z-index:0; 
+		background:#039be5;
+	}
+	#logincontainer{
+		position:relative;
+	}
+	
+  
+</style>
   </head>
-  <body>
-      <form id="uploadForm"
-          enctype="multipart/form-data"
-          action="/writemessage"
-          method="post">
-		 <input type="text" name="date"> 
-		 <input type="text" name="message"> 
-      <input type="file" name="file" />
-      <input type="submit" value="Upload Image" name="submit">
-      <span id = "status"></span>
-    </form>
+
+  <body > 
+
+ <div class="loginbody">
+<div id="fixedbg"></div>
+      <div class="container" id="logincontainer" style="padding-top:50px;">
+        <div class="row col-lg-12">
+          <div class="col-lg-6">
+                <div class="container" style="padding-top:2px;">
+                    <div class="row">
+                        <div class="col-lg-6 " style="font-family:Roboto;">
+                                <h1 style="color:white">Power Of Mind</h1>
+                               <!-- <h3 style="color:white">Quote here</h3>-->
+                       </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--description starts-->
+            <div class="col-lg-6" style="padding-top:80px;">
+            <div class="row-fluid">
+            <div class="col-lg-offset-2 col-lg-8" style="padding-top: 20px;">
+                <div class="panel panel-info">
+                      <h3  class=" text-center" >Login</h3>
+                      <div class="panel-body">
+                            
+                    <form id="loginform" >
+                           <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                <label for="username" class="control-label"></label>
+                                <input type="text" class="form-control" ng-model="userdata.username" placeholder="Enter username" required>
+                     
+                              </div>
+                            </div>
+                            
+                            <div class="form-group">
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" ng-model="userdata.password" placeholder="Enter Password" required>    
+                              </div>
+                            </div>
+                        <div class="form-group">
+                             <button type="submit" style="width:100%" class="btn btn-info" ng-click="login()">Login</button>
+                        </div>
+                        <div class="form-group">
+                             <button type="submit" style="width:100%" class="btn btn-danger" ng-click="rootctrl.redirect('/register');">Forgot Password?</button>
+                        </div>
+                       
+
+                             </form>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+      <!--outermost container ends-->
+</div>
+
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<!-- jQuery 2.2.3 -->
+<script src="./admin/resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+<!-- Bootstrap 3.3.6 -->
+<script src="./admin/resources/js/bootstrap.min.js"></script>
+
+
+
   </body>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-  <script>
-  $(document).ready(function() {
 
-     $('#uploadForm').submit(function() {
-		 $("#status").empty().text("File is uploading...");
-
-        $(this).ajaxSubmit({
-
-            error: function(xhr) {
-		            status('Error: ' + xhr.status);
-            },
-
-            success: function(response) {
-					console.log(response)
-					$("#status").empty().text(response);
-            }
-	});
-
-	return false;
-    });    
-});
-  </script>
 </html>
