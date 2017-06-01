@@ -894,7 +894,7 @@ function loadAudio(){
     //$('#addAudioForm').submit(function(e){e.preventDefault();addAudio();})
 	getAudios();
     $("div#my-dropzone").dropzone({ 
-        url: "http://localhost:3000/addAudio",
+        url: globalroot+"addAudio",
         autoProcessQueue: false,
         addRemoveLinks:true,
        // acceptedFiles: "audio/*",
@@ -944,7 +944,7 @@ function loadMessage(){
    // $('#addMessageForm').submit(function(e){e.preventDefault();addMessage();})
 	getMessages();
        $("div#message-dropzone").dropzone({ 
-        url: "http://localhost:3000/writemessage",
+        url: globalroot+"writemessage",
         autoProcessQueue: false,
         addRemoveLinks:true,
         acceptedFiles: "image/*",
@@ -1049,7 +1049,7 @@ function loadEvent(){
     //$('#addEventForm').submit(function(e){e.preventDefault();addEvent();})
 	//getEvents();
   $("div#event-dropzone").dropzone({ 
-        url: "http://localhost:3000/addEvent",
+        url: globalroot+"addEvent",
         autoProcessQueue: false,
         addRemoveLinks:true,
         acceptedFiles: "image/*",

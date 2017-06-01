@@ -170,6 +170,26 @@ server.post('/removeMessage', function(req, res, next) {
     })
 
 })
+
+server.post('/countMessages', function(req, res, next) {
+	console.log("counting messages");
+	MessageOfDay.count({},
+	function(err,count) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else{
+			console.log("MessageOfDay count is:",count)
+		}
+			res.send(200,count)
+		next()
+
+    })
+
+})
+
 /*----------------------------------------------------------------------------------------------------*/
 
 server.post('/addVideo', function(req, res, next) {
@@ -293,6 +313,29 @@ server.post('/updateVideo',function(req, res, next){
 			
 	})
 })
+
+
+
+server.post('/countVideos', function(req, res, next) {
+	console.log("counting videos");
+	Video.count({},
+	function(err,count) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else{
+			console.log("Video count is:",count)
+		}
+			res.send(200,count)
+		next()
+
+    })
+
+})
+
+
 /*-------------------------------------------------------------------------------------------------------------------*/
 server.post('/addAudio', function(req, res, next) {
 	
@@ -505,6 +548,25 @@ server.post('/updateAudio',function(req, res, next){
 })
 */
 
+
+server.post('/countAudios', function(req, res, next) {
+	console.log("counting audios");
+	Audio.count({},
+	function(err,count) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else{
+			console.log("Audio count is:",count)
+		}
+			res.send(200,count)
+		next()
+
+    })
+
+})
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addLiveDarshan', function(req, res, next) {
 	
@@ -624,6 +686,25 @@ server.post('/updateLiveDarshan',function(req, res, next){
 			
 	})
 })
+
+server.post('/countLiveDarshan', function(req, res, next) {
+	console.log("counting live darshan");
+	LiveDarshan.count({},
+	function(err,count) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else{
+			console.log("LiveDarshan count is:",count)
+		}
+			res.send(200,count)
+		next()
+
+    })
+
+})
 /*--------------------------------------------------------------------------------------------*/
 
 server.post('/addEvent', function(req, res, next) {
@@ -730,6 +811,24 @@ server.post('/removeEvent', function(req, res, next) {
     })
 
 })
+server.post('/countEvents', function(req, res, next) {
+	console.log("counting events");
+	Event.count({},
+	function(err,count) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else{
+			console.log("Event count is:",count)
+		}
+			res.send(200,count)
+		next()
+
+    })
+
+})
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addNews', function(req, res, next) {
 	
@@ -812,6 +911,25 @@ server.post('/removeNews', function(req, res, next) {
         }
         else
 			res.send(200,"DELETED")
+		next()
+
+    })
+
+})
+
+server.post('/countNews', function(req, res, next) {
+	console.log("counting news");
+	News.count({},
+	function(err,count) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else{
+			console.log("News count is:",count)
+		}
+			res.send(200,count)
 		next()
 
     })

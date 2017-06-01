@@ -1,5 +1,5 @@
-var root="http://localhost:3000/";
-var globalroot="http://localhost:3000/";
+var root="http://192.168.1.3:3000/";
+var globalroot="http://192.168.1.3:3000/";
 $.fn.serializeObject = function()
 
 {
@@ -516,7 +516,7 @@ function addNews(){
 function getNews(){
      $.ajax({
             type        : 'POST', 
-            url         : 'http://localhost:3000/news', 
+            url         : globalroot+'news', 
             encode      : true
         })
             // using the done promise callback
