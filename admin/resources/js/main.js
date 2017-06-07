@@ -1,5 +1,9 @@
-var root="http://192.168.1.3:3000/";
-var globalroot="http://192.168.1.3:3000/";
+var root="http://localhost:3000/";
+var globalroot="http://localhost:3000/";
+
+//var used to store the id of currently updating object
+var updateObjectId=null;
+
 $.fn.serializeObject = function()
 
 {
@@ -42,7 +46,7 @@ function getExactDate(d){
 }
 //------------------------------------------VIDEO STARTS -----------------------------------------------------------
 function addVideo(){
- 
+   console.log("add video called");
   sendobject=JSON.stringify($('#addVideoForm').serializeObject());
   console.log(sendobject);
  
@@ -103,7 +107,38 @@ function getVideos(){
                 console.log(data);
             });
 }
+function changeVideoDetails(){
+    sendobject=JSON.stringify($('#addVideoForm').serializeObject());
+    console.log("chnaeg video details called");
+    sobj=JSON.parse(sendobject);
+    sobj.id=updateObjectId;
+    send=JSON.stringify(sobj);
+ 
+    console.log(send);
+ $.ajax({
+     type:'POST',
+     url:globalroot+"updateVideo",
+     contentType: "application/json",
+     data:sendobject,
+     encode:true
+ }).done(function(data){
+     console.log(data);
+     $('#addVideoForm')[0].reset();
+     $('#videoHeader').html("Add Video");
+     $('#addVideoForm').unbind('submit');
+     $('#addVideoForm').submit(function(e) {e.preventDefault();addVideo();});
+     
+      $.snackbar({content:"Video added successfully!", timeout: 2000,id:"mysnack"});
+ }).fail(function(data){
+     console.log(data);
+      $.snackbar({content:"Video addition failed!", timeout: 2000,id:"mysnack"});
+ });
+    
+  getVideos();
+}
+
 function updateVideo(video){
+  
     id=video.split("-")[1];
     
     $.ajax({
@@ -123,10 +158,12 @@ function updateVideo(video){
                 $('#videotitle').val(data.title);
                 $('#videodesc').val(data.desc);
                 $('#videourl').val(data.videoPath);
-                /*
-                    
-                */
-                 $.snackbar({content:"You can edit the video now!", timeout: 2000,id:"mysnack"});
+                $('#addVideoForm').unbind('submit');
+                updateObjectId=id;
+                $('#addVideoForm').submit(function(e) {e.preventDefault();changeVideoDetails();});
+             
+                $.snackbar({content:"You can edit the video now!", timeout: 2000,id:"mysnack"});
+                
             })
             .fail(function(data){
         
@@ -592,3 +629,89 @@ function deleteNews(news){
 
 
 //------------------------------------------NEWS ENDS-----------------------------------------------------------
+
+//------------------------------------------EVENTS STARTS-----------------------------------------------------------
+function getEvents(){ 
+     $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'events', 
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+                     console.log(data);
+              
+                $.Mustache.load('templates/event.htm')
+					.fail(function () { 
+						console.log('Failed to load templates from <code>event.htm</code>');
+					})
+					.done(function () {
+                        var output=$('#event_table_body');
+
+                        output.empty();
+                        even=true;
+                        data.forEach(function(event){
+                            console.log(event);
+                            var date = new Date(
+                                event.created
+                                .replace("T"," ")
+                                .replace(/-/g,"/")
+                            );
+                             var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+                               
+                        if(even){
+                            output.mustache('event-template-even', {id:event._id,name:event.name,title:event.title,date:mdate,description:event.desc,venue:event.venue});
+                            even=false;
+                        }   
+                        else{
+                            output.mustache('event-template-odd',{id:event._id,name:event.name,title:event.title,date:mdate,description:event.desc,venue:event.venue});
+                            even=true;
+                            
+                        }
+                        
+
+
+                     });
+              
+                      $('#event_table').DataTable();
+                          
+                             
+                         })                    
+        .fail(function(data){
+                console.log("failed.....");
+                console.log(data);
+            });
+});
+}
+
+function deleteEvent(event){
+    id=event.split("-")[1];
+    
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'removeEvent', 
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $.snackbar({content:"Events deleted succesfully!", timeout: 2000,id:"mysnack"});
+            
+                /*
+                    
+                */
+                
+            })
+            .fail(function(data){
+                $.snackbar({content:"Events deletion failed!", timeout: 2000,id:"mysnack"});
+                console.log(data);
+            });
+    getEvents();
+   // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
+//------------------------------------------EVENTS ENDS-----------------------------------------------------------

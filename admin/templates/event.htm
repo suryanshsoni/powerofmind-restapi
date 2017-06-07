@@ -1,0 +1,29 @@
+<script id="event-template-even" type="text/html">
+    <tr role="row" class="even">
+      <td class="">{{date}}</td>
+      <td>{{name}}
+      </td>
+      <td>{{title}}</td>
+      <td class="sorting_1">{{{description}}}</td>
+      <td class="">{{venue}}</td>
+     <td class="">
+           <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteEvent(this.id)'>Delete</button>
+           <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateEvent(this.id)'>Update</button>
+    </td>
+    </tr>
+</script>
+
+<script id="event-template-odd" type="text/html">
+    <tr role="row" class="odd">
+     <td class="">{{date}}</td>
+      <td>{{name}}
+      </td>
+      <td>{{title}}</td>
+      <td class="sorting_1">{{{description}}}</td>
+      <td class="">{{venue}}</td>
+     <td class="">
+           <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteEvent(this.id)'>Delete</button>
+           <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateEvent(this.id)'>Update</button>
+    </td>
+    </tr>
+</script>

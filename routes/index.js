@@ -778,7 +778,7 @@ server.post('/events', function(req, res, next) {
 })
 server.post('/getEventDetails', function(req, res, next) {
 	console.log("Sending event details");
-	Event.findById(mongoose.mongo.ObjectId(req.body.id),
+	Events.findById(mongoose.mongo.ObjectId(req.body.id),
 	function(err, doc) {
 
         if (err!=null) {
@@ -797,7 +797,7 @@ server.post('/getEventDetails', function(req, res, next) {
 })
 server.post('/removeEvent', function(req, res, next) {
 	console.log("removing event");
-	Event.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	Events.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
 
         if (err!=null) {
@@ -813,7 +813,7 @@ server.post('/removeEvent', function(req, res, next) {
 })
 server.post('/countEvents', function(req, res, next) {
 	console.log("counting events");
-	Event.count({},
+	Events.count({},
 	function(err,count) {
 
         if (err!=null) {

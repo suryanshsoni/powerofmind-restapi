@@ -5,13 +5,13 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js && start http://localhost:3000"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/suryanshsoni/powerofmind.git"
   },
-  "author": "Suryansh Soni, Rishabh Panwar, Ishita Bhandari",
+  "author": "Suryansh Soni,Srajan Soni, Rishabh Panwar, Ishita Bhandari",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/suryanshsoni/powerofmind/issues"
