@@ -19,7 +19,7 @@ global.log = new winston.Logger({
     transports: [
         new winston.transports.Console({
             level: 'info',
-            timestamp: () => {
+            timestamp: function() {
                 return new Date().toString()
             },
             json: true
@@ -51,7 +51,7 @@ server.use(restify.CORS({
 /**
  * Error Handling
  */
-server.on('uncaughtException', (req, res, route, err) => {
+server.on('uncaughtException', function(req, res, route, err) {
     log.error(err.stack)
     res.send(err)
 });

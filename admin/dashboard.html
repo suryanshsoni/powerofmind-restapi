@@ -65,18 +65,35 @@
         .card {
             /* Add shadows to create the "card" effect */
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            transition: 0.3s;
+            transition: 0.5s;
+			opacity:0.85;
         }
 
         /* On mouse-over, add a deeper shadow */
         .card:hover {
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
+			opacity:0.95;
         }
 
         /* Add some padding inside the card container */
         .card-container {
             padding: 2px 16px;
         }
+		body{
+			background: url(resources/images/bg.jpg);
+		}
+		.small-box{
+			opacity:0.7;
+		}
+		.small-box:hover{
+			opacity:0.9;
+		}
+		.sidebar{
+			opacity:0.8;
+		}
+		.sidebar:hover{
+			opacity:0.9;
+		}
     </style>
 </head>
 <body class="hold-transition skin-red-light sidebar-mini">
@@ -190,7 +207,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="background: url(resources/images/bg.jpg)no-repeat;background-size:cover;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

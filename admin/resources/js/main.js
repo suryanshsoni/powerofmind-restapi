@@ -1,8 +1,10 @@
+
 var root="http://localhost:3000/";
 var globalroot="http://localhost:3000/";
 
 //var used to store the id of currently updating object
 var updateObjectId=null;
+
 
 $.fn.serializeObject = function()
 
