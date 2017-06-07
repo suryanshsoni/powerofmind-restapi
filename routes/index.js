@@ -195,7 +195,7 @@ server.post('/countMessages', function(req, res, next) {
 server.post('/addVideo', function(req, res, next) {
 	
     let data = req.body || {}
-	console.log(data)
+	console.log("adding video",data)
 	data={
 		"title":req.body.title,
 		"desc":req.body.desc,
@@ -286,6 +286,7 @@ server.post('/removeVideo', function(req, res, next) {
     })
 
 })
+
 server.post('/updateVideo',function(req, res, next){
 	console.log("updating video" + req.body.id)
 	Video.findById(mongoose.mongo.ObjectId(req.body.id),
@@ -295,11 +296,11 @@ server.post('/updateVideo',function(req, res, next){
             return next(new errors.InvalidContentError(err.errors.name.message))
 		}
 		else{
-			console.log("updating")
+			console.log("updating",video)
 			video.title=req.body.title
 			video.desc=req.body.desc
 			video.videoPath=req.body.videoPath
-			
+			console.log("updated",video)
 			video.save(function(err){
 				if(err!=null){
 				log.error(err)
@@ -314,8 +315,32 @@ server.post('/updateVideo',function(req, res, next){
 	})
 })
 
-
-
+/*
+server.post('/updateVideo',function(req, res, next){
+	console.log("updating video" + req.body._id)
+	let data = req.body || {}
+	console.log(data)
+	data=req.body
+    let video = new Video(data)
+	console.log(video)
+	Video.findByIdAndUpdate(mongoose.mongo.ObjectId(req.body.id),
+	video,
+	function(err,video){
+		if(err!=null){
+			log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+		}
+		else{
+			console.log("updated",video)
+			
+				res.send(200,"UPDATED")
+				next()
+			}
+	}
+			
+	)
+})
+*/
 server.post('/countVideos', function(req, res, next) {
 	console.log("counting videos");
 	Video.count({},
@@ -669,6 +694,7 @@ server.post('/updateLiveDarshan',function(req, res, next){
 		}
 		else{
 			console.log("updating")
+			console.log("live darshan doc:",live);
 			live.title=req.body.title
 			live.desc=req.body.desc
 			live.videoPath=req.body.videoPath
@@ -778,7 +804,7 @@ server.post('/events', function(req, res, next) {
 })
 server.post('/getEventDetails', function(req, res, next) {
 	console.log("Sending event details");
-	Event.findById(mongoose.mongo.ObjectId(req.body.id),
+	Events.findById(mongoose.mongo.ObjectId(req.body.id),
 	function(err, doc) {
 
         if (err!=null) {
@@ -797,7 +823,7 @@ server.post('/getEventDetails', function(req, res, next) {
 })
 server.post('/removeEvent', function(req, res, next) {
 	console.log("removing event");
-	Event.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	Events.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
 
         if (err!=null) {
@@ -813,7 +839,7 @@ server.post('/removeEvent', function(req, res, next) {
 })
 server.post('/countEvents', function(req, res, next) {
 	console.log("counting events");
-	Event.count({},
+	Events.count({},
 	function(err,count) {
 
         if (err!=null) {
