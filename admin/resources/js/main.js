@@ -144,6 +144,7 @@ function changeVideoDetails(){
      getVideos();
      
       $.snackbar({content:"Video added successfully!", timeout: 2000,id:"mysnack"});
+       updateObjectId=null;
  }).fail(function(data){
      console.log(data);
       $.snackbar({content:"Video addition failed!", timeout: 2000,id:"mysnack"});
@@ -255,8 +256,16 @@ function getAudios(){
                         output.empty();
                         data.forEach(function(audio){
                             console.log(audio);
+                            
                              var mdate=getExactDate(audio.created);
-                             output.mustache('audio-template', { id:audio._id,title: audio.title,date:mdate,url:globalroot+audio.audioPath });
+                            $('#audio_table').dataTable().fnAddData( [
+                            audio.title,
+                            mdate,
+                            '<audio controls><source src='+globalroot+audio.audioPath+'></audio>',
+                           
+                            "<button class='btn btn-xs btn-danger' id='del-"+audio._id+"' onclick='deleteAudio(this.id)'>Delete</button>          <button class='btn btn-xs btn-info' id='upd-"+audio._id+"'onclick='updateAudio(this.id)'>Update</button>"
+                                ] );
+                            // output.mustache('audio-template', { id:audio._id,title: audio.title,date:mdate,url:globalroot+audio.audioPath });
                          });
                        
                     });

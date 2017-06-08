@@ -44,7 +44,8 @@
     
 <!--WYSIWYG EDITOR-->
       <link rel="stylesheet" href="resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-     
+<!--Bootstrap3 player-->
+<link rel="stylesheet" href="resources/plugins/bootstrap3-player/css/bootstrap3_player.css" >
 
     
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -488,7 +489,10 @@
 <!-- DataTables -->
 <script src="resources/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
-
+<!--Bootstrap3 player-->
+<script src="resources/plugins/bootstrap3-player/js/bootstrap3_player.js"></script>
+<!--List-->
+<script src="resources/js/list.js"></script>
 <!--All form related scripts here:-->
 <script src="resources/js/main.js" type="text/javascript"></script>
 
@@ -642,7 +646,7 @@
         -->
  </script>
  <script id="audio-template" type="text/x-custom-template">
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12">
           <!-- general form elements -->
           <div class="box box-primary  card">
             <div class="box-header with-border">
@@ -680,24 +684,56 @@
           <!-- /.box -->
         </div>
   </div>
+          <!--New display starts-->
+             <div class="col-sm-12">
+        <div class="box box-success  card">
+            <div class="box-header">
+              <h3 class="box-title">All Audios</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div id="audio_table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><div class="row"><div class="col-sm-12">
+                <table id="audio_table" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="event_table_info">
+                <thead>
+        <tr role="row">
+                <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Date: activate to sort column ascending" style="width: 181px;">Title</th>
+                <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 223px;">Added On</th>
+                <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 197px;">Listen Now</th>
+               
+                <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Update/Delete: activate to sort column ascending" style="width: 112px;">Update/Delete</th>
+        </tr>
+                </thead>
+                <tbody id="audio_table_body">
+                </tbody>
+                <tfoot>
+                <tr><th rowspan="1" colspan="1">Title</th><th rowspan="1" colspan="1">Added On</th><th rowspan="1" colspan="1">Listen Now</th><th rowspan="1" colspan="1">Update/Delete</th></tr>
+                </tfoot>
+              </table></div></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+   </div>
+        <!--New display ends-->
+
+  <!--Old audio lisitng
    <div class="col-md-6 col-sm-12">
         <div class="box box-solid box-success  card">
               <div class="box-header with-border">
                 <h3 class="box-title">Audios Uploaded</h3>
                     
-              </div><!-- /.box-header -->
+              </div>
               <div class="box-body" style="max-height:30em;overflow-y:auto;" id="audio-box" >
                                            <div class="info-box">
                     
-               </div><!-- /.box-body -->
+               </div>
                   
                   
               <div class="box-footer">
                 
-              </div><!-- box-footer -->
-            </div><!-- /.box -->
+              </div>
+            </div>
    </div>
-   <!--listing audio end-->
+   listing audio end-->
  </script>
  <script id="message-template" type="text/x-custom-template">
     <div class="col-sm-12 col-md-6">
@@ -843,12 +879,42 @@
                     
               </div><!-- /.box-header -->
               <div class="box-body" id='live-video-box' style="max-height:30em;overflow-y:auto;" >
-              
+                
               </div><!-- /.box-body -->
                   
                   
               <div class="box-footer">
-                
+                <div id="users">
+
+<!-- class="search" automagically makes an input a search field. -->
+  <input class="search" placeholder="Search" />
+<!-- class="sort" automagically makes an element a sort buttons. The date-sort value decides what to sort by. -->
+  <button class="sort" data-sort="name">
+    Sort
+  </button>
+
+<!-- Child elements of container with class="list" becomes list items -->
+  <ul class="list">
+    <li>
+<!-- The innerHTML of children with class="name" becomes this items "name" value -->
+      <h3 class="name">Jonny Stromberg</h3>
+      <p class="born">1986</p>
+    </li>
+    <li>
+      <h3 class="name">Jonas Arnklint</h3>
+      <p class="born">1985</p>
+    </li>
+    <li>
+      <h3 class="name">Martina Elm</h3>
+      <p class="born">1986</p>
+    </li>
+    <li>
+      <h3 class="name">Gustaf Lindqvist</h3>
+      <p class="born">1983</p>
+    </li>
+  </ul>
+
+</div>
               </div><!-- box-footer -->
             </div><!-- /.box -->
         </div>
@@ -1116,6 +1182,11 @@ $('#master').append(template);
 $('#addLiveVideoForm').submit(function(e){e.preventDefault();addLiveVideo();})
 
 getLiveVideos();
+var options = {
+  valueNames: [ 'name', 'born' ]
+};
+
+var userList = new List('users', options);
 }
    
 function loadEvent(){
