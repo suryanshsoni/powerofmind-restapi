@@ -246,17 +246,18 @@ function getAudios(){
 
                 // log data to the console so we can see
                 console.log(data);
+                console.log("This is the data received");
                 $.Mustache.load('templates/audio.htm')
 					.fail(function () { 
 						console.log('Failed to load templates from <code>templates.htm</code>');
 					})
 					.done(function () {
                         var output=$('#audio-box');
-                        
+                        $('#audio_table').DataTable().clear();
                         output.empty();
                         data.forEach(function(audio){
                             console.log(audio);
-                            
+                            console.log("i was in");
                              var mdate=getExactDate(audio.created);
                             $('#audio_table').dataTable().fnAddData( [
                             audio.title,
@@ -325,6 +326,7 @@ function deleteAudio(audio){
 
                 // log data to the console so we can see
                 console.log(data);
+                
                 $.snackbar({content:"Audio deleted succesfully!", timeout: 2000,id:"mysnack"});
             
                 /*
@@ -336,6 +338,7 @@ function deleteAudio(audio){
                 $.snackbar({content:"Audio deletion failed!", timeout: 2000,id:"mysnack"});
                 console.log(data);
             });
+     $('#audio_table').DataTable().destroy();
     getAudios();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }

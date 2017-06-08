@@ -878,46 +878,44 @@
                 <h3 class="box-title">Active Live Darshan Link</h3>
                     
               </div><!-- /.box-header -->
-              <div class="box-body" id='live-video-box' style="max-height:30em;overflow-y:auto;" >
+                <div class="box-body">
+                <div id="live_darshan" >
+                  <input type="text" class="search" placeholder="search">
+                  <button class="sort btn btn-primary" data-sort="title">Sort</button>
+                <ul class="list" style="padding-left:0;">
+                  
+                </ul>
+              </div>
+              </div>
+              <!--
+                <div class="box-body" id='live-video-box' style="max-height:30em;overflow-y:auto;" >
                 
               </div><!-- /.box-body -->
                   
                   
               <div class="box-footer">
-                <div id="users">
-
-<!-- class="search" automagically makes an input a search field. -->
-  <input class="search" placeholder="Search" />
-<!-- class="sort" automagically makes an element a sort buttons. The date-sort value decides what to sort by. -->
-  <button class="sort" data-sort="name">
-    Sort
-  </button>
-
-<!-- Child elements of container with class="list" becomes list items -->
-  <ul class="list">
-    <li>
-<!-- The innerHTML of children with class="name" becomes this items "name" value -->
-      <h3 class="name">Jonny Stromberg</h3>
-      <p class="born">1986</p>
-    </li>
-    <li>
-      <h3 class="name">Jonas Arnklint</h3>
-      <p class="born">1985</p>
-    </li>
-    <li>
-      <h3 class="name">Martina Elm</h3>
-      <p class="born">1986</p>
-    </li>
-    <li>
-      <h3 class="name">Gustaf Lindqvist</h3>
-      <p class="born">1983</p>
-    </li>
-  </ul>
-
-</div>
               </div><!-- box-footer -->
             </div><!-- /.box -->
         </div>
+  
+ 
+  
+  <div style="display:none">
+      <li id="live-video-item">
+           <div class="info-box">
+  <span class="info-box-icon bg-red"><i class="fa  fa-video-camera"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text title"></span>
+            <span class="info-box-text date">Uploaded On {{date}}</span>
+          <span class="info-box-text"><a target="_blank" href={{url}}>Watch Now</a></span>
+            <div style="text-align:right">
+                <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteLiveVideo(this.id)'>Delete</button>
+                <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateLiveVideo(this.id)'>Update</button>
+        </div>
+        </div>
+</div> 
+      </li>
+  </div>
  </script>
     
 <script id="event-template" type="text/x-custom-template">
@@ -1182,11 +1180,25 @@ $('#master').append(template);
 $('#addLiveVideoForm').submit(function(e){e.preventDefault();addLiveVideo();})
 
 getLiveVideos();
+/*
 var options = {
   valueNames: [ 'name', 'born' ]
 };
 
 var userList = new List('users', options);
+*/
+var options={
+    valueNames: ['title','date'],
+    item:'live-video-item'
+};
+var values = [
+  { title: 'Jonny', date:'Stockholm' }
+  , { title: 'Jonas',date:'Berlin' }
+];
+
+var liveList=new List('live_darshan',options,values);
+
+//EO Function
 }
    
 function loadEvent(){
