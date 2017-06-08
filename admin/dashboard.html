@@ -593,21 +593,53 @@
           
 
         </div>
-        <div class="col-sm-6 col-md-6">
+        
+        <!--New display starts-->
+             <div class="col-sm-6">
+        <div class="box box-success  card">
+            <div class="box-header">
+              <h3 class="box-title">All Videos</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div id="video_table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><div class="row"><div class="col-sm-12"><table id="video_table" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="event_table_info">
+                <thead>
+        <tr role="row">
+                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Date: activate to sort column ascending" style="width: 181px;">Title</th>
+                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 223px;">Added On</th>
+                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 197px;">Watch Now</th>
+               
+                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Update/Delete: activate to sort column ascending" style="width: 112px;">Update/Delete</th>
+        </tr>
+                </thead>
+                <tbody id="video_table_body">
+                </tbody>
+                <tfoot>
+                <tr><th rowspan="1" colspan="1">Title</th><th rowspan="1" colspan="1">Added On</th><th rowspan="1" colspan="1">Watch now</th><th rowspan="1" colspan="1">Update/Delete</th></tr>
+                </tfoot>
+              </table></div></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+   </div>
+        <!--New display ends-->
+        <!--Old display
+        <div class="col-sm-6">
             <div class="box box-solid box-success  card">
               <div class="box-header with-border">
                 <h3 class="box-title">Videos Uploaded</h3>
                     
-              </div><!-- /.box-header -->
+              </div>
               <div class="box-body" id='video-box' style="max-height:30em;overflow-y:auto;" >
-              </div><!-- /.box-body -->
+              </div>
                   
                   
               <div class="box-footer">
                 
-              </div><!-- box-footer -->
-            </div><!-- /.box -->
+              </div>
+            </div>
         </div>
+        -->
  </script>
  <script id="audio-template" type="text/x-custom-template">
     <div class="col-sm-12 col-md-6">
@@ -874,7 +906,7 @@
    <div class="col-sm-12">
         <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
+              <h3 class="box-title">All Events</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

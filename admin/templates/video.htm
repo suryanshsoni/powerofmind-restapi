@@ -1,4 +1,4 @@
-<script id="video-template" type="text/html">
+<script id="old-video-template" type="text/html">
 
  <div class="info-box">
   <span class="info-box-icon bg-red"><i class="fa  fa-play-circle-o"></i></span>
@@ -15,4 +15,18 @@
         </div>
         </div>
 </div>
+</script>
+
+<script id="video-template" type="text/html">
+
+ <tr role="row" class="even">
+      <td class="">{{title}}</td>
+      <td>{{date}}
+      </td>
+     <td><a target="_blank" href={{url}}><i class="fa fa-external-link"></i></a></td>
+      <td class="">
+           <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteVideo(this.id)'>Delete</button>
+           <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateVideo(this.id)'>Update</button>
+    </td>
+    </tr>
 </script>

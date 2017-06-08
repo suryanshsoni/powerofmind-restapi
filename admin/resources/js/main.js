@@ -89,17 +89,28 @@ function getVideos(){
 						console.log('Failed to load templates from <code>templates.htm</code>');
 					})
 					.done(function () {
-                        var output=$('#video-box');
-                        
+                       // var output=$('#video-box');
+                       
+                        var output=$('#video_table_body');
                         output.empty();
+                        $('#video_table').DataTable().clear();
                         data.forEach(function(video){
                              console.log(video);
                              var mdate=getExactDate(video.created);
+                                $('#video_table').dataTable().fnAddData( [
+                                video.title,
+                                mdate,
+                                '<a target="_blank" href='+video.videoPath+'><i class="fa fa-external-link"></i></a>',
+                                "<button class='btn btn-xs btn-danger' id='del-"+video._id+"' onclick='deleteVideo(this.id)'>Delete</button>          <button class='btn btn-xs btn-info' id='upd-"+video._id+"'onclick='updateVideo(this.id)'>Update</button>"
+                                 ] );
+	
+	
                              //var vidurl="https://www.youtube.com/embed/"+video.videoPath.split("=").pop();
                                // console.log(vidurl);
-                             output.mustache('video-template', {id:video._id, title: video.title,date:mdate,url:video.videoPath,desc:video.desc });
+                             //output.mustache('video-template', {id:video._id, title: video.title,date:mdate,url:video.videoPath,desc:video.desc });
                          });
                        
+                         
                     });
                
                 // here we will handle errors and validation messages
@@ -108,6 +119,7 @@ function getVideos(){
         
                 console.log(data);
             });
+    
 }
 function changeVideoDetails(){
     sendobject=JSON.stringify($('#addVideoForm').serializeObject());
@@ -121,7 +133,7 @@ function changeVideoDetails(){
      type:'POST',
      url:globalroot+"updateVideo",
      contentType: "application/json",
-     data:sendobject,
+     data:send,
      encode:true
  }).done(function(data){
      console.log(data);
@@ -129,6 +141,7 @@ function changeVideoDetails(){
      $('#videoHeader').html("Add Video");
      $('#addVideoForm').unbind('submit');
      $('#addVideoForm').submit(function(e) {e.preventDefault();addVideo();});
+     getVideos();
      
       $.snackbar({content:"Video added successfully!", timeout: 2000,id:"mysnack"});
  }).fail(function(data){
@@ -136,7 +149,7 @@ function changeVideoDetails(){
       $.snackbar({content:"Video addition failed!", timeout: 2000,id:"mysnack"});
  });
     
-  getVideos();
+  
 }
 
 function updateVideo(video){
