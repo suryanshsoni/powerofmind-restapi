@@ -95,6 +95,18 @@
 		.sidebar:hover{
 			opacity:0.9;
 		}
+    .sort {
+    font-size: 12px;
+    font-size: 1.2rem;
+    padding: 5px 15px;
+    border-radius: 25px;
+    border: none;
+    display: inline-block;
+    color: #2e2e2e;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0.05);
+    margin: 2px 0;
+}
     </style>
 </head>
 <body class="hold-transition skin-red-light sidebar-mini">
@@ -211,7 +223,7 @@
   <div class="content-wrapper" style="background: url(resources/images/bg.jpg)no-repeat;background-size:cover;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+      <h1 class="text-center">
         Control Panel
         
       </h1>
@@ -443,7 +455,8 @@
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script src="./resources/js/jquery.mustache.js"></script> 
 <script src="./resources/js/mustache.js"></script>
-
+<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+<script src="./resources/js/counterup.js"></script>
     
 <script>
   $.widget.bridge('uibutton', $.ui.button);
@@ -499,63 +512,93 @@
 
 <script  id="landing" type="text/x-custom-template">
 <div class="row" >
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3 id="video_count" class="counter" >0</h3>
 
-              <p>New Orders</p>
+              <p>Videos</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="ion ion-ios-videocam"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            
           </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <h3 id="audio_count" class="counter">0</h3>
 
-              <p>Bounce Rate</p>
+              <p>Audios</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="ion ion-headphone"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            
           </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3  id="live_count" class="counter">0</h3>
 
-              <p>User Registrations</p>
+              <p>Live Darshan Links</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="ion ion-ios-circle-filled"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            
           </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-maroon">
+            <div class="inner">
+              <h3 id="message_count" class="counter">0</h3>
+
+              <p>Messages</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-document-text"></i>
+            </div>
+            
+          </div>
+        </div>
+        <!-- ./col -->
+         <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>65</h3>
+              <h3 id="news_count" class="counter">0</h3>
 
-              <p>Unique Visitors</p>
+              <p>News</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fa  fa-newspaper-o"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            
+          </div>
+        </div>
+        <!-- ./col -->
+         <div class="col-lg-4 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-purple">
+            <div class="inner">
+              <h3 id="event_count" class="counter">0</h3>
+
+              <p>Events</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-calendar"></i>
+            </div>
+            
           </div>
         </div>
         <!-- ./col -->
@@ -880,9 +923,10 @@
               </div><!-- /.box-header -->
                 <div class="box-body">
                 <div id="live_darshan" >
-                  <input type="text" class="search" placeholder="search">
-                  <button class="sort btn btn-primary" data-sort="title">Sort</button>
-                <ul class="list" style="padding-left:0;">
+                  <input type="text" class="search" placeholder="Search">
+                  <button class="sort  pull-right" data-sort="title">Sort by title</button>
+                  <button class="sort  pull-right" data-sort="date">Sort by date</button>
+                <ul class="list" style="padding-left:0;padding-top:20px;">
                   
                 </ul>
               </div>
@@ -903,14 +947,14 @@
   <div style="display:none">
       <li id="live-video-item">
            <div class="info-box">
-  <span class="info-box-icon bg-red"><i class="fa  fa-video-camera"></i></span>
+  <span class="info-box-icon bg-red"><i class="fa fa-video-camera"></i></span>
         <div class="info-box-content">
           <span class="info-box-text title"></span>
-            <span class="info-box-text date">Uploaded On {{date}}</span>
+            <span class="info-box-text ">Uploaded On <b class="date"></b></span>
           <span class="info-box-text"><a target="_blank" href={{url}}>Watch Now</a></span>
             <div style="text-align:right">
-                <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteLiveVideo(this.id)'>Delete</button>
-                <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateLiveVideo(this.id)'>Update</button>
+                <button class="btn btn-xs btn-danger id"  onclick='deleteLiveVideo(this.id)'>Delete</button>
+                <button class="btn btn-xs btn-info id"  onclick='updateLiveVideo(this.id)'>Update</button>
         </div>
         </div>
 </div> 
@@ -1011,6 +1055,8 @@ function loadLanding(){
     $("#dashboard-li").addClass("active");
     activeli="#dashboard-li";
 	
+  countObj=getCount();
+  console.log(countObj);
 }
 function loadVideo(){
 	console.log("In video function");
@@ -1188,16 +1234,23 @@ var options = {
 var userList = new List('users', options);
 */
 var options={
-    valueNames: ['title','date'],
-    item:'live-video-item'
+    valueNames: [
+    'title',
+    'date',
+     { attr: 'id', name : 'id' }
+    ],
+    item:'live-video-item',
+   
 };
+/*
 var values = [
-  { title: 'Jonny', date:'Stockholm' }
-  , { title: 'Jonas',date:'Berlin' }
+  { title: 'Jonny', date:'Stockholm',id:'1' },
+  { title: 'Jonas',date:'Berlin',id:'3' }
 ];
+*/
 
-var liveList=new List('live_darshan',options,values);
-
+var liveList=new List('live_darshan',options);
+setLiveVideoList(liveList);
 //EO Function
 }
    

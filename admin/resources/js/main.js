@@ -5,6 +5,7 @@ var globalroot="http://localhost:3000/";
 //var used to store the id of currently updating object
 var updateObjectId=null;
 
+var liveVideoList=null;
 
 $.fn.serializeObject = function()
 
@@ -45,6 +46,85 @@ function getExactDate(d){
     var date = new Date(d.replace("T"," ").replace(/-/g,"/"));
     var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
     return mdate;
+}
+
+function getCount(){
+    var js={};
+//Getting video count
+$.ajax({
+     type:'POST',
+     url:globalroot+"countVideos",
+     contentType: "application/json",
+     encode:true
+ }).done(function(data){
+        js.videoCount=data;
+        
+      }).fail(function(data){
+          console.log(data);
+    });
+
+//Getting audio count
+$.ajax({
+     type:'POST',
+     url:globalroot+"countAudios",
+     contentType: "application/json",
+     encode:true
+ }).done(function(data){
+        js.audioCount=data;
+      }).fail(function(data){
+          console.log(data);
+    });
+
+//Getting news count
+$.ajax({
+     type:'POST',
+     url:globalroot+"countLiveDarshan",
+     contentType: "application/json",
+     encode:true
+ }).done(function(data){
+        js.liveDarshanCount=data;
+      }).fail(function(data){
+          console.log(data);
+    });
+//Getting event count
+$.ajax({
+     type:'POST',
+     url:globalroot+"countEvents",
+     contentType: "application/json",
+     encode:true
+ }).done(function(data){
+        js.eventCount=data;
+      }).fail(function(data){
+          console.log(data);
+    });
+//Getting news count
+$.ajax({
+     type:'POST',
+     url:globalroot+"countNews",
+     contentType: "application/json",
+     encode:true
+ }).done(function(data){
+        js.newsCount=data;
+      }).fail(function(data){
+          console.log(data);
+    });
+//Getting message count
+$.ajax({
+     type:'POST',
+     url:globalroot+"countMessages",
+     contentType: "application/json",
+     encode:true
+ }).done(function(data){
+       
+        js.messageCount=data;
+      }).fail(function(data){
+          console.log(data);
+    });
+
+ $('#video_count').html(js.videoCount);
+ $('#audio_count').html(js.audioCount);
+ $('#message_count').html(js.messageCount);
+ return js;
 }
 //------------------------------------------VIDEO STARTS -----------------------------------------------------------
 function addVideo(){
@@ -499,11 +579,20 @@ function getLiveVideos(){
                         var output=$('#live-video-box');
                         
                         output.empty();
+                        liveVideoList.clear();
                         data.forEach(function(video){
-                            
+                            var mdate=getExactDate(video.created);
+                             
+                            liveVideoList.add({
+                                title:video.title,
+                                date:mdate,
+                                id:video._id
+                            });
+                            /* OLD MUSTACHE WAY
                              var mdate=getExactDate(video.created);
                              output.mustache('live-video-template', {id:video._id, title: video.title,date:mdate,url:video.videoPath,desc:video.desc });
-                         });
+                             */
+                        });
                        
                     });
                
@@ -516,8 +605,8 @@ function getLiveVideos(){
 }
 
 function deleteLiveVideo(video){
-    id=video.split("-")[1];
-    
+   // id=video.split("-")[1];
+   id=video;
     $.ajax({
             type        : 'POST', 
             url         : globalroot+'removeLiveDarshan', 
@@ -544,6 +633,10 @@ function deleteLiveVideo(video){
             });
     getLiveVideos();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
+
+function setLiveVideoList(list){
+    liveVideoList=list;
 }
 
 //------------------------------------------LIVE DARSHAN  ENDS  -----------------------------------------------------------
@@ -740,5 +833,39 @@ function deleteEvent(event){
             });
     getEvents();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
+
+function updateEvent(event){
+     id=event.split("-")[1];
+    
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'getVideoDetails', 
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $('#event-header').html("Editing "+data.title);
+                $('#event-title').val(data.title);
+                $('#event-date').val(data.desc);
+                $('#event-editor').val(data.videoPath);
+                $('#addEventForm').unbind('submit');
+                updateObjectId=id;
+                $('#addVideoForm').submit(function(e) {e.preventDefault();changeVideoDetails();});
+             
+                $.snackbar({content:"You can edit the video now!", timeout: 2000,id:"mysnack"});
+                
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+    getVideos();
 }
 //------------------------------------------EVENTS ENDS-----------------------------------------------------------
