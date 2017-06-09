@@ -1,0 +1,201 @@
+directory is:E:\srajan\brahmakumaris\powerofmind-restapi
+{
+  "level": "info",
+  "message": "PowerOfMind v0.0.1 ready to accept connections on port 3000 in development environment.",
+  "timestamp": "Sat Jun 10 2017 00:19:23 GMT+0530 (India Standard Time)"
+}
+counting videos
+counting audios
+Video count is: 2
+Audio count is: 1
+counting live darshan
+LiveDarshan count is: 3
+counting events
+Event count is: 1
+counting news
+News count is: 0
+counting messages
+MessageOfDay count is: 3
+Sending audios
+Sending audio details
+Sending audios
+doc is{ _id: 593ad1c0db18be16fc7e29a8,
+  title: 'asd',
+  desc: 'adf',
+  audioPath: 'uploads\\audio\\01_-_Sun_Le_Zara-(DJmaza,in)-1497027006857.mp3',
+  __v: 0,
+  modified: 2017-06-09T16:50:08.531Z,
+  created: 2017-06-09T16:50:08.531Z }
+updating audio
+start----------------================
+593ad1c0db18be16fc7e29a8
+end----------------================
+updating
+storing with 1466083985573-1496825062547-1497031048258
+{ fieldname: 'file',
+  originalname: '1466083985573-1496825062547-1497031048258.gif',
+  encoding: '7bit',
+  mimetype: 'image/gif',
+  destination: './uploads',
+  filename: '1466083985573-1496825062547-1497031048258-1497034186492.gif',
+  path: 'uploads\\1466083985573-1496825062547-1497031048258-1497034186492.gif',
+  size: 5821 }
+{ title: 'title', desc: 'adf' }
+{ _id: 593ad1c0db18be16fc7e29a8,
+  title: 'title',
+  desc: 'adf',
+  audioPath: 'uploads\\1466083985573-1496825062547-1497031048258-1497034186492.gif',
+  __v: 0,
+  modified: 2017-06-09T16:50:08.531Z,
+  created: 2017-06-09T16:50:08.531Z }
+Sending audios
+removing audio
+Sending audios
+Sending audios
+storing with Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458
+{ fieldname: 'file',
+  originalname: 'Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458.mp3',
+  encoding: '7bit',
+  mimetype: 'audio/mp3',
+  destination: './uploads/audio',
+  filename: 'Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803.mp3',
+  path: 'uploads\\audio\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803.mp3',
+  size: 4958045 }
+{ title: 'title', desc: 'asd' }
+{ title: 'title',
+  desc: 'asd',
+  audioPath: 'uploads\\audio\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803.mp3',
+  modified: null,
+  created: null,
+  _id: 593aedff1624552a4441caad }
+Sending audios
+Sending audio details
+Sending audios
+doc is{ _id: 593aedff1624552a4441caad,
+  title: 'title',
+  desc: 'asd',
+  audioPath: 'uploads\\audio\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803.mp3',
+  __v: 0,
+  modified: 2017-06-09T18:50:39.980Z,
+  created: 2017-06-09T18:50:39.980Z }
+updating audio
+start----------------================
+593aedff1624552a4441caad
+end----------------================
+updating
+storing with Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803
+{ fieldname: 'file',
+  originalname: 'Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803.mp3',
+  encoding: '7bit',
+  mimetype: 'audio/mp3',
+  destination: './uploads',
+  filename: 'Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803-1497034256277.mp3',
+  path: 'uploads\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803-1497034256277.mp3',
+  size: 4958045 }
+{ title: 'title 2', desc: 'asd' }
+{ _id: 593aedff1624552a4441caad,
+  title: 'title 2',
+  desc: 'asd',
+  audioPath: 'uploads\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803-1497034256277.mp3',
+  __v: 0,
+  modified: 2017-06-09T18:50:39.980Z,
+  created: 2017-06-09T18:50:39.980Z }
+Sending audios
+counting videos
+Video count is: 2
+counting audios
+Audio count is: 1
+counting live darshan
+counting events
+LiveDarshan count is: 3
+counting news
+Event count is: 1
+counting messages
+News count is: 0
+MessageOfDay count is: 3
+Sending audios
+Sending audio details
+Sending audios
+doc is{ _id: 593aedff1624552a4441caad,
+  title: 'title 2',
+  desc: 'asd',
+  audioPath: 'uploads\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803-1497034256277.mp3',
+  __v: 0,
+  modified: 2017-06-09T18:50:56.401Z,
+  created: 2017-06-09T18:50:39.980Z }
+updating audio
+start----------------================
+593aedff1624552a4441caad
+end----------------================
+updating
+storing with BeBopAliens-1496916277101-1497027415371
+{ fieldname: 'file',
+  originalname: 'BeBopAliens-1496916277101-1497027415371.mp3',
+  encoding: '7bit',
+  mimetype: 'audio/mp3',
+  destination: './uploads',
+  filename: 'BeBopAliens-1496916277101-1497027415371-1497034409346.mp3',
+  path: 'uploads\\BeBopAliens-1496916277101-1497027415371-1497034409346.mp3',
+  size: 4872145 }
+{ title: 'title 3', desc: 'asd' }
+{ _id: 593aedff1624552a4441caad,
+  title: 'title 3',
+  desc: 'asd',
+  audioPath: 'uploads\\BeBopAliens-1496916277101-1497027415371-1497034409346.mp3',
+  __v: 0,
+  modified: 2017-06-09T18:50:56.401Z,
+  created: 2017-06-09T18:50:39.980Z }
+Sending audios
+Sending audio details
+Sending audios
+doc is{ _id: 593aedff1624552a4441caad,
+  title: 'title 3',
+  desc: 'asd',
+  audioPath: 'uploads\\BeBopAliens-1496916277101-1497027415371-1497034409346.mp3',
+  __v: 0,
+  modified: 2017-06-09T18:53:29.434Z,
+  created: 2017-06-09T18:50:39.980Z }
+updating audio
+start----------------================
+593aedff1624552a4441caad
+end----------------================
+updating
+storing with 1466083985573-1496825062547-1497031048258
+{ fieldname: 'file',
+  originalname: '1466083985573-1496825062547-1497031048258.gif',
+  encoding: '7bit',
+  mimetype: 'image/gif',
+  destination: './uploads',
+  filename: '1466083985573-1496825062547-1497031048258-1497034420507.gif',
+  path: 'uploads\\1466083985573-1496825062547-1497031048258-1497034420507.gif',
+  size: 5821 }
+{ title: 'title 3', desc: 'asdas' }
+{ _id: 593aedff1624552a4441caad,
+  title: 'title 3',
+  desc: 'asdas',
+  audioPath: 'uploads\\1466083985573-1496825062547-1497031048258-1497034420507.gif',
+  __v: 0,
+  modified: 2017-06-09T18:53:29.434Z,
+  created: 2017-06-09T18:50:39.980Z }
+Sending audios
+storing with Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803
+{ fieldname: 'file',
+  originalname: 'Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803.mp3',
+  encoding: '7bit',
+  mimetype: 'audio/mp3',
+  destination: './uploads/audio',
+  filename: 'Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803-1497034465862.mp3',
+  path: 'uploads\\audio\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803-1497034465862.mp3',
+  size: 4958045 }
+{ title: 'asd', desc: 'asd' }
+{ title: 'asd',
+  desc: 'asd',
+  audioPath: 'uploads\\audio\\Dekha Hazaro Dafaa-(Mr-Jatt,com)-1497027253458-1497034239803-1497034465862.mp3',
+  modified: null,
+  created: null,
+  _id: 593aeee11624552a4441caae }
+Sending audios
+removing audio
+Sending audios
+removing audio
+Sending audios

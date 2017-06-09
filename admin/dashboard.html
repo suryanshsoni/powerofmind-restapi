@@ -697,7 +697,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form" id="addAudioForm" >
+            <form role="form" id="addAudioForm" method="post" >
               <div class="box-body">
                 <div class="form-group">
                   <label for="audioTitle" >Title</label>
@@ -1088,7 +1088,7 @@ function loadAudio(){
   
     //$('#addAudioForm').submit(function(e){e.preventDefault();addAudio();})
 	getAudios();
-    $("div#my-dropzone").dropzone({ 
+    var mydz=$("div#my-dropzone").dropzone({ 
         url: globalroot+"addAudio",
         autoProcessQueue: false,
         addRemoveLinks:true,
@@ -1098,9 +1098,11 @@ function loadAudio(){
         paramName:"file",
         init: function() {
         var myDropzone = this;
+       
         $('#addAudioForm').submit(function(e){e.preventDefault();e.stopPropagation();myDropzone.processQueue();})
         this.on('sending', function (data, xhr, formData) {
-            
+             //
+        
               $("#addAudioForm").find("input").each(function(){
                     formData.append($(this).attr("name"), $(this).val());
                     });
@@ -1116,13 +1118,21 @@ function loadAudio(){
             console.log(res);
             myDropzone.removeFile(file);
             $('#addAudioForm')[0].reset();
+            $("#audioHeader").html("Add audio");
+            this.options.url=globalroot+"addAudio";
             getAudios();
+            
+            js=getUpdateInfo();
+            setUpdateMode(false);
+            if(js.updateMode)
+            $.snackbar({content:"Audio updated successfully!", timeout: 2000,id:"mysnack"});
+            else
             $.snackbar({content:"Audio uploaded successfully!", timeout: 2000,id:"mysnack"});
         })
         }
                          
      });
-   
+   setAudioDropzone(mydz);
 }
 function loadMessage(){
 	console.log("In message function");

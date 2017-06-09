@@ -319,6 +319,27 @@ function addAudio(){
  
 
 }
+var audioDropzone=null;
+var updateMode=false;
+var updateId=null;
+function setUpdateMode(bool){
+    updateMode=bool;
+}
+function getUpdateInfo(){
+    js={};
+    js.updateMode=updateMode;
+    js.updateId=updateId;
+    return js;
+}
+function setAudioDropzone(){
+    var rawElement = $("div#my-dropzone").get(0);
+    audioDropzone=rawElement.dropzone;
+}
+
+function updateDropzoneParams(){
+    audioDropzone.options.url=globalroot+"updateAudio?id="+updateId;
+
+}
 
 function getAudios(){
      $.ajax({
@@ -382,10 +403,9 @@ function updateAudio(audio){
                 $('#audioHeader').html("Editing "+data.title);
                 $('#audiotitle').val(data.title);
                 $('#audiodesc').val(data.desc);
-                
-                /*
-                    
-                */
+                setUpdateMode(true);
+                updateId=id;
+                updateDropzoneParams();
                  $.snackbar({content:"You can edit the audio details now!The audio file is set to previous file", timeout: 2000,id:"mysnack"});
             })
             .fail(function(data){

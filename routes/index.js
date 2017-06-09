@@ -591,8 +591,11 @@ server.post('/removeAudio', function(req, res, next) {
 
 
 server.post('/updateAudio',function(req, res, next){
-	console.log("updating audio" + req.body.id)
-	Audio.findById(mongoose.mongo.ObjectId(req.body.id),
+	console.log("updating audio")
+	console.log("start----------------================")
+	console.log(req.query.id);
+	console.log("end----------------================")
+	Audio.findById(mongoose.mongo.ObjectId(req.query.id),
 	function(err,audio){
 		if(err!=null){
 			log.error(err)
