@@ -1,6 +1,6 @@
 
 var root="http://localhost:3000/";
-var globalroot="http://139.59.64.145:3001/";
+var globalroot="http://localhost:3000/";
 
 //var used to store the id of currently updating object
 var updateObjectId=null;

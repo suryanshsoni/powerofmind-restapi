@@ -1118,7 +1118,7 @@ function loadAudio(){
                 });
         this.on("error",function(files,errorMessage,xhr){
            console.log(errorMessage); 
-            $.snackbar({content:"Audio uplaod failed!", timeout: 2000,id:"mysnack"});
+            $.snackbar({content:"Audio upload failed!", timeout: 2000,id:"mysnack"});
         });
         this.on("success",function(file,res){
             console.log(res);
