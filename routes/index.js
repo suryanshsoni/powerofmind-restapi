@@ -496,7 +496,9 @@ server.post('/removeAudio', function(req, res, next) {
     })
 
 })
-/*
+
+
+
 server.post('/updateAudio',function(req, res, next){
 	console.log("updating audio" + req.body.id)
 	Audio.findById(mongoose.mongo.ObjectId(req.body.id),
@@ -509,69 +511,41 @@ server.post('/updateAudio',function(req, res, next){
 			console.log("updating")
 			
 			upload(req,res,function(err) {
-		if(err) {
-			return res.end(err+" Error uploading file.");
-		}
-		else {
-			console.log(req.file);	
-			console.log(req.body);
-            let data={
-				'title':req.body.title,
-				'desc':req.body.desc,
-				'audioPath':req.file.path
-			}
-			
-			let audio = new Audio(data)
-			console.log(audio)
-    
-			audio.save(function(err) {
-
-				if (err!=null) {
-					log.error(err)
-					return next(new errors.InternalError(err.message))
-					next()
+				if(err) {
+					return res.end(err+" Error uploading file.");
 				}
+				else {
+					console.log(req.file);	
+					console.log(req.body);
+					let data={
+						'title':req.body.title,
+						'desc':req.body.desc,
+						'audioPath':req.file.path
+					}
+					
+					let audio = new Audio(data)
+					console.log(audio)
 
-				res.send(201,"File Uploaded")
-				next()
+					audio.save(function(err) {
 
-			})
-		}	
-	});
+						if (err!=null) {
+							log.error(err)
+							return next(new errors.InternalError(err.message))
+							next()
+						}
+
+						res.send(201,"File Uploaded")
+						next()
+
+					})
+				}	
+			});
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			video.title=req.body.title
-			video.desc=req.body.desc
-			video.videoPath=req.body.videoPath
-			
-			video.save(function(err){
-				if(err!=null){
-				log.error(err)
-					return next(new errors.InternalError(err.message))
-					next()	
-				}
-				res.send(200,"UPDATED")
-				next()
-			})
 		}
 			
 	})
 })
-*/
 
 
 server.post('/countAudios', function(req, res, next) {
@@ -912,32 +886,29 @@ server.post('/updateEventNew',function(req, res, next){
 					else {
 						console.log(req.file);	
 						console.log(req.body);
-					events.name = req.body.name,
-					events.title = req.body.title,
-					events.venue = req.body.venue,
-					events.date = req.body.date,
-					events.desc =  req.body.desc,
-					events.imagePath = req.file.path
-					events.save(function(err){
-						if(err!=null){
-							log.error(err)
-							return next(new errors.InternalError(err.message))
-							next()	
-						}
-						res.send(200,"UPDATED")
-						next()
-					})
+						events.name = req.body.name,
+						events.title = req.body.title,
+						events.venue = req.body.venue,
+						events.date = req.body.date,
+						events.desc =  req.body.desc,
+						events.imagePath = req.file.path
+						events.save(function(err){
+							if(err!=null){
+								log.error(err)
+								return next(new errors.InternalError(err.message))
+								next()	
+							}
+							res.send(200,"UPDATED")
+							next()
+						})
 			
 			
-						}	
-					});
+					}	
+				});
 					
-				}		
-			})
-	
-	
-	
-	
+			}		
+		})
+
 })
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addNews', function(req, res, next) {
