@@ -58,7 +58,7 @@ $.ajax({
      encode:true
  }).done(function(data){
         js.videoCount=data;
-        
+        $('#video_count').html(js.videoCount);
       }).fail(function(data){
           console.log(data);
     });
@@ -71,6 +71,7 @@ $.ajax({
      encode:true
  }).done(function(data){
         js.audioCount=data;
+		$('#audio_count').html(js.audioCount);
       }).fail(function(data){
           console.log(data);
     });
@@ -117,13 +118,14 @@ $.ajax({
  }).done(function(data){
        
         js.messageCount=data;
+		$('#message_count').html(js.messageCount);
       }).fail(function(data){
           console.log(data);
     });
 
- $('#video_count').html(js.videoCount);
- $('#audio_count').html(js.audioCount);
- $('#message_count').html(js.messageCount);
+ 
+ 
+ 
  return js;
 }
 //------------------------------------------VIDEO STARTS -----------------------------------------------------------
