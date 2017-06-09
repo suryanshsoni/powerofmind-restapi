@@ -855,6 +855,45 @@ server.post('/countEvents', function(req, res, next) {
     })
 
 })
+
+server.post('/updateEvent',function(req, res, next){
+	console.log("updating event" + req.body.id)
+	upload(req,res,function(err) {
+		if(err) {
+			return res.end(err+" Error uploading file.");
+		}
+		else {
+			console.log(req.file);	
+			console.log(req.body);
+			
+			
+			Events.findById(mongoose.mongo.ObjectId(req.body.id),
+			function(err,events){
+				if(err!=null){
+					log.error(err)
+					return next(new errors.InvalidContentError(err.errors.name.message))
+				}
+				else{
+					events.name = req.body.name,
+					events.title = req.body.title,
+					events.venue = req.body.venue,
+					events.date = req.body.date,
+					events.desc =  req.body.desc,
+					events.imagePath = req.file.path
+					events.save(function(err){
+						if(err!=null){
+							log.error(err)
+							return next(new errors.InternalError(err.message))
+							next()	
+						}
+						res.send(200,"UPDATED")
+						next()
+					})
+				}		
+			})
+		}	
+	});
+})
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addNews', function(req, res, next) {
 	
