@@ -6,7 +6,6 @@ var globalroot="http://localhost:3000/";
 var updateObjectId=null;
 
 var liveVideoList=null;
-var audioDropzone=null;
 
 $.fn.serializeObject = function()
 
@@ -123,7 +122,6 @@ $.ajax({
        
         js.messageCount=data;
 		$('#message_count').html(js.messageCount);
-        $('.counter').counterUp();
       }).fail(function(data){
           console.log(data);
     });
@@ -365,35 +363,6 @@ function getAudios(){
                 console.log(data);
             });
 }
-var updateAudioMode=false;
-var updateAudioId=null;
-var updateAudioUrl=globalroot+"addAudio";
-
-function setAudioDropzone(dz){
-    audioDropzone=dz;
-    console.log("the url is ");
-}
-function getAudioMode(){
- var js={
-        updateAudio:updateAudioMode,
-        fileid:updateAudioId,
-        
-    };
-    console.log(js);
-return js;
-
-}
-function changeAudioDetails(){
-var rawElement = $("div#my-dropzone").get(0);
-var myDropzone = rawElement.dropzone;
-myDropzone.options.url=globalroot+"updateAudio";
-
-audioDropzone2=myDropzone;
-}
-function disableUpdateMode(){
-    updateAudioMode=false;
-}
-
 function updateAudio(audio){
     id=audio.split("-")[1];
    
@@ -413,11 +382,11 @@ function updateAudio(audio){
                 $('#audioHeader').html("Editing "+data.title);
                 $('#audiotitle').val(data.title);
                 $('#audiodesc').val(data.desc);
-               updateAudioMode=true;
-                updateAudioId=id;
-                updateAudioUrl=globalroot+"updateAudio";
-                changeAudioDetails();
-                $.snackbar({content:"You can edit the audio details now!The audio file is set to previous file", timeout: 2000,id:"mysnack"});
+                
+                /*
+                    
+                */
+                 $.snackbar({content:"You can edit the audio details now!The audio file is set to previous file", timeout: 2000,id:"mysnack"});
             })
             .fail(function(data){
         

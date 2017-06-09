@@ -455,7 +455,7 @@ server.post('/countVideos', function(req, res, next) {
 /*-------------------------------------------------------------------------------------------------------------------*/
 server.post('/addAudio', function(req, res, next) {
 	
-    console.log(req.body);
+    
 	
 	uploadAudio(req,res,function(err) {
 		if(err) {
@@ -591,10 +591,7 @@ server.post('/removeAudio', function(req, res, next) {
 
 
 server.post('/updateAudio',function(req, res, next){
-	console.log("updating audio" );
-	console.log(req.params);
-
-	 
+	console.log("updating audio" + req.body.id)
 	Audio.findById(mongoose.mongo.ObjectId(req.body.id),
 	function(err,audio){
 		if(err!=null){
