@@ -84,6 +84,7 @@ $.ajax({
      encode:true
  }).done(function(data){
         js.liveDarshanCount=data;
+		$('#live_count').html(js.liveDarshanCount);
       }).fail(function(data){
           console.log(data);
     });
@@ -95,6 +96,7 @@ $.ajax({
      encode:true
  }).done(function(data){
         js.eventCount=data;
+		$('#event_count').html(js.eventCount);
       }).fail(function(data){
           console.log(data);
     });
@@ -106,6 +108,7 @@ $.ajax({
      encode:true
  }).done(function(data){
         js.newsCount=data;
+		$('#news_count').html(js.newsCount);
       }).fail(function(data){
           console.log(data);
     });
