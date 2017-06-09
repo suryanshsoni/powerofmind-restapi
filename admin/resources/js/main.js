@@ -840,7 +840,7 @@ function updateEvent(event){
     
     $.ajax({
             type        : 'POST', 
-            url         : globalroot+'getVideoDetails', 
+            url         : globalroot+'getEventDetails', 
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
@@ -851,15 +851,24 @@ function updateEvent(event){
 
                 // log data to the console so we can see
                 console.log(data);
+                var date = new Date(
+                                data.created
+                                .replace("T"," ")
+                                .replace(/-/g,"/")
+                            );
+                var mdate=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+                               
                 $('#event-header').html("Editing "+data.title);
+                $('#event-name').val(data.title);
                 $('#event-title').val(data.title);
-                $('#event-date').val(data.desc);
-                $('#event-editor').val(data.videoPath);
+                $('#event-date').val(mdate);
+                $('#event-venue').val(data.venue);
+                $('#event-editor').val(data.desc);
                 $('#addEventForm').unbind('submit');
                 updateObjectId=id;
-                $('#addVideoForm').submit(function(e) {e.preventDefault();changeVideoDetails();});
+                $('#addEventForm').submit(function(e) {e.preventDefault();changeEventDetails();});
              
-                $.snackbar({content:"You can edit the video now!", timeout: 2000,id:"mysnack"});
+                $.snackbar({content:"You can edit the event now!", timeout: 2000,id:"mysnack"});
                 
             })
             .fail(function(data){
