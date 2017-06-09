@@ -799,9 +799,7 @@ server.post('/countLiveDarshan', function(req, res, next) {
 /*--------------------------------------------------------------------------------------------*/
 
 server.post('/addEvent', function(req, res, next) {
-	let data = req.body || {}
-	console.log(data)
-
+	
         let data={
 					"name": req.body.name,
 					"title": req.body.title,
