@@ -12,6 +12,14 @@ const NewsSchema = new mongoose.Schema({
 	desc: {
 		type: String,
 		required: true
+	},
+	date: {
+		type: Date,
+		required: true
+	},
+	imagePath: {
+		type: String,
+		required: true
 	}
 });
 
