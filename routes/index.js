@@ -799,21 +799,15 @@ server.post('/countLiveDarshan', function(req, res, next) {
 /*--------------------------------------------------------------------------------------------*/
 
 server.post('/addEvent', function(req, res, next) {
-	
-	uploadEvent(req,res,function(err) {
-		if(err) {
-			return res.end(err+" Error uploading file.");
-		}
-		else {
-			console.log(req.file);	
-			console.log(req.body);
-            let data={
+	let data = req.body || {}
+	console.log(data)
+
+        let data={
 					"name": req.body.name,
 					"title": req.body.title,
 					"venue": req.body.venue,
 					"date": req.body.date,
-					"desc": req.body.desc,
-					"imagePath": req.file.path
+					"desc": req.body.desc
 				}
 			
 			let events = new Events(data)
@@ -831,9 +825,7 @@ server.post('/addEvent', function(req, res, next) {
 				next()
 
 			})
-		}	
-	});
-    
+		
 
 })
 
