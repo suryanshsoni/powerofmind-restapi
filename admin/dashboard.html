@@ -1056,7 +1056,7 @@ function loadLanding(){
     activeli="#dashboard-li";
 	
   countObj=getCount();
-  console.log(countObj);
+  $('.couting').counterUp();
 }
 function loadVideo(){
 	console.log("In video function");
@@ -1085,14 +1085,17 @@ function loadAudio(){
     $(activeli).removeClass("active");
     activeli="#audio-li";
     $(activeli).addClass("active");
-  
+    var obj=getAudioMode();
+   console.log("Outputing audio details");
+   console.log(obj);
+
     //$('#addAudioForm').submit(function(e){e.preventDefault();addAudio();})
 	getAudios();
-    $("div#my-dropzone").dropzone({ 
+    audioDropZone=$("div#my-dropzone").dropzone({ 
         url: globalroot+"addAudio",
         autoProcessQueue: false,
         addRemoveLinks:true,
-       // acceptedFiles: "audio/*",
+        acceptedFiles: "audio/*",
         maxFiles: 1,
         uploadMultiple:false,
         paramName:"file",
@@ -1104,9 +1107,14 @@ function loadAudio(){
               $("#addAudioForm").find("input").each(function(){
                     formData.append($(this).attr("name"), $(this).val());
                     });
-                $("#addAudioForm").find("textarea").each(function(){
+              $("#addAudioForm").find("textarea").each(function(){
                     formData.append($(this).attr("name"), $(this).val());
-                    });
+                  });
+              var js=getAudioMode();
+              console.log("js is ---------- ");
+              console.log(js);
+              if(js.updateAudio)   
+                formData.append("id",js.fileid);
                 });
         this.on("error",function(files,errorMessage,xhr){
            console.log(errorMessage); 
@@ -1116,12 +1124,16 @@ function loadAudio(){
             console.log(res);
             myDropzone.removeFile(file);
             $('#addAudioForm')[0].reset();
+           myDropzone.options.url=globalroot+"addAudio";
+           disableUpdateMode();
+            
             getAudios();
             $.snackbar({content:"Audio uploaded successfully!", timeout: 2000,id:"mysnack"});
         })
         }
                          
      });
+   setAudioDropzone(audioDropZone);
    
 }
 function loadMessage(){
