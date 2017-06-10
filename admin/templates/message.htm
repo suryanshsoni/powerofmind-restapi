@@ -1,9 +1,9 @@
 <script id="message-img-template" type="text/html">
-
+<li>
  <!--sample message box starts-->
 <div class="box box-danger">
     <div class="box-header with-border">
-      <h3 class="box-title">{{date}}</h3> 
+      <h3 class="box-title date">{{date}}</h3> 
 
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -11,7 +11,7 @@
         </button>
         
     <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteMessage(this.id)'>Delete</button>
-    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='delteMessage(this.id)'>Update</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateMessage(this.id)'>Update</button>
 
       </div>
       <!-- /.box-tools -->
@@ -19,7 +19,7 @@
     <!-- /.box-header -->
     <div class="box-body">
         <blockquote>
-          <p>{{thought}}</p>
+          <p class="message">{{thought}}</p>
           
         </blockquote>
         <img class="img-responsive pad" src={{url}} alt="Message of the day">
@@ -27,21 +27,21 @@
     <!-- /.box-body -->
   </div>
 <!--sample box ends-->
-
+</li>
 </script>
 
 <script id="message-template" type="text/html">
-
+<li>
  <!--sample message box starts-->
 <div class="box box-danger">
     <div class="box-header with-border">
-      <h3 class="box-title">{{date}}</h3> 
+      <h3 class="box-title date">{{date}}</h3> 
 
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                  
     <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteMessage(this.id)'>Delete</button>
-    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='delteMessage(this.id)'>Update</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateMessage(this.id)'>Update</button>
         </button>
       </div>
       <!-- /.box-tools -->
@@ -49,7 +49,7 @@
     <!-- /.box-header -->
     <div class="box-body">
         <blockquote>
-          <p>{{thought}}</p>
+          <p class="message">{{thought}}</p>
           
         </blockquote>
        
@@ -57,5 +57,15 @@
     <!-- /.box-body -->
   </div>
 <!--sample box ends-->
+</li>
+</script>
 
+<script id="existing-image-message-template" type="text/html">
+    <label>Current file : <b>{{filename}}</b></label>
+   <img src="{{url}}" class="img-responsive pad">
+</script>
+
+<script id="existing-image-template" type="text/html">
+    <label>Current file : <b>{{filename}}</b></label>
+  
 </script>

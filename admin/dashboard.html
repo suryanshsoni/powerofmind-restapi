@@ -105,8 +105,25 @@
     color: #2e2e2e;
     text-decoration: none;
     background-color: rgba(0, 0, 0, 0.05);
-    margin: 2px 0;
+    margin: 2px 2px;;
 }
+  .search{
+     border-radius: 25px;
+    padding: 7px 14px;
+    background-color: transparent;
+    border: solid 1px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    box-sizing: border-box;
+    color: #2e2e2e;
+    margin-bottom: 5px;
+    outline-width:0;
+    
+  }
+  .pagination li {
+  display:inline-block;
+  padding:5px;
+}
+
     </style>
 </head>
 <body class="hold-transition skin-red-light sidebar-mini">
@@ -783,7 +800,7 @@
           <!-- general form elements -->
           <div class="box box-primary  card">
             <div class="box-header with-border">
-              <h3 class="box-title">Message of the day</h3>
+              <h3 class="box-title" id="messageHeader">Add message of the day</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -791,14 +808,14 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="message">Message of the day</label>
-                  <input type="text" class="form-control" name="message" placeholder="Enter message of the day">
+                  <input type="text" class="form-control" id="messageText"name="message" placeholder="Enter message of the day">
                 </div>
                 
                 <div class="form-group">
                   <label>Date</label>
-                  <input type="date" class="form-control" rows="3" name="date">
+                  <input type="date" id="messageDate" class="form-control" rows="3" name="date">
                 </div>
-                
+                   <div class="form-group" id="existingMessage"></div>
               <!-- /.box-body -->
                <div class="form-group">
                   <label for="imagePath">Image</label>
@@ -806,7 +823,7 @@
                   
                  </div>
 
-                  <p class="help-block">Help text here.</p>
+                 
                 </div>
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -829,8 +846,17 @@
               <!-- /.box-header -->
               <!--Main content of mesage of the day-->
               
-              <div class="box-body" style="max-height:30em;overflow-y:auto;" id="message-box" >
-              
+              <div class="box-body" style="max-height:30em;overflow-y:auto;" >
+               <div id="messageList" >
+                  <input type="text" class="search" placeholder="Search by Message/Date">
+
+                  <button class="sort  pull-right" data-sort="message">Sort by message</button>
+                  <button class="sort  pull-right" data-sort="date">Sort by date</button>
+                    <ul class="list" id="message-box"  style="padding-left:0;padding-top:20px;">
+                      
+                    </ul>
+                    <ul class="pagination"></ul>
+              </div>
           
                </div><!-- /.box-body -->
                   
@@ -841,6 +867,7 @@
             </div><!-- /.box -->
         </div>
         <!-message listisng ends-->
+       
  </script>
  
 <script id="news-template" type="text/x-custom-template">
@@ -918,7 +945,7 @@
         <div class="col-sm-6 col-md-6">
             <div class="box box-solid box-success  card">
               <div class="box-header with-border">
-                <h3 class="box-title">Active Live Darshan Link</h3>
+                <h3 class="box-title">Active Live Darshan Links</h3>
                     
               </div><!-- /.box-header -->
                 <div class="box-body">
@@ -1147,7 +1174,8 @@ function loadAudio(){
         }
                          
      });
-   setAudioDropzone(mydz);
+  setAudioDropzone();
+  setUpdateMode(false); 
 }
 function loadMessage(){
 	console.log("In message function");
@@ -1163,7 +1191,7 @@ function loadMessage(){
     $(activeli).addClass("active");
    // $('#addMessageForm').submit(function(e){e.preventDefault();addMessage();})
 	getMessages();
-       $("div#message-dropzone").dropzone({ 
+       var messdz=$("div#message-dropzone").dropzone({ 
         url: globalroot+"writemessage",
         autoProcessQueue: false,
         addRemoveLinks:true,
@@ -1198,17 +1226,26 @@ function loadMessage(){
         this.on("success",function(file,res){
             console.log(res);
             $('#addMessageForm')[0].reset();
-            
             myDropzone.removeFile(file);
-           
+            this.options.url=globalroot+"writeMessage";
             getMessages();
-            $.snackbar({content:"Message added successfully!", timeout: 2000,id:"mysnack"});
+            $('#existingMessage').html('');
+            js=getMessageUpdateInfo();
+            setMessageUpdateMode(false);
+            $("#messageHeader").html("Add message of the day");
             
+            if(js.updateMode)
+            $.snackbar({content:"Message updated successfully!", timeout: 2000,id:"mysnack"});
+            else
+            $.snackbar({content:"Message uploaded successfully!", timeout: 2000,id:"mysnack"});
+        
         })
         }
-                         
+                        
      });
-	
+
+setMessageDropzone();
+setMessageUpdateMode(false);
 }
 function loadNews(){
 	console.log("In news function");

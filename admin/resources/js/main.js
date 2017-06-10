@@ -6,6 +6,7 @@ var globalroot="http://localhost:3000/";
 var updateObjectId=null;
 
 var liveVideoList=null;
+var messageList=null;
 
 $.fn.serializeObject = function()
 
@@ -47,7 +48,14 @@ function getExactDate(d){
     var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
     return mdate;
 }
+function getHtmlSettableDate(d){
+    var date = new Date(d.replace("T"," ").replace(/-/g,"/"));
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
 
+    var today = date.getFullYear()+"-"+(month)+"-"+(day) 
+    return today;
+}
 function getCount(){
     var js={};
 //Getting video count
@@ -309,7 +317,7 @@ function deleteVideo(video){
 function addAudio(){
   //Name is add audio
   //But is used only while updating audio,with no new file used
-  //Good luck!
+ 
   sendobject=JSON.stringify($('#addAudioForm').serializeObject());
 js=JSON.parse(sendobject);
 js.id=updateId;
@@ -494,7 +502,7 @@ function addMessage(){
     
     $.ajax({
          type:'POST',
-         url:globalroot+"writemessage",
+         url:globalroot+updateMessageEndPoint,
          contentType: "application/json",
          data:sendobject,
          encode:true
@@ -507,12 +515,41 @@ function addMessage(){
          console.log(data);
         $.snackbar({content:"Addition of message failed!", timeout: 2000,id:"mysnack"});
      });
+     setMessageUpdateMode(false);
   getMessages();
 
  
 
 }
+var messageDropzone=null;
+var updateMessageMode=false;
+var updateMessageId=null;
+var updateMessageFileName="Filename";
+var updateMessagePath=null;
+var updateMessageEndPoint="writemessage";
+function setMessageUpdateMode(bool){
+    updateMessageMode=bool;
+    if(!bool){
+    $('#messageHeader').html('Add message of the day');
+    updateMessageEndPoint="writemessage";
+    $("#existingMessage").html('');
+    }
+}
+function getMessageUpdateInfo(){
+    js={};
+    js.updateMessageMode=updateMessageMode;
+    js.updateMessageId=updateMessageId;
+    return js;
+}
+function setMessageDropzone(){
+    var rawElement = $("div#message-dropzone").get(0);
+    messageDropzone=rawElement.dropzone;
+}
 
+function updateMessageParams(){
+    messageDropzone.options.url=globalroot+"updateMessage?id="+updateMessageId;
+    updateMessageEndPoint="updateMessage?id="+updateMessageId;
+}
 function getMessages(){
      $.ajax({
             type        : 'POST', 
@@ -551,7 +588,15 @@ function getMessages(){
                             
                              
                          });
-                    
+                    var options={
+                            valueNames: [
+                            'date',
+                            'message',
+                            ],
+                            page: 3,
+                            pagination: true
+                        };
+                     messageList=new List('messageList',options);
                        
                     });
                
@@ -592,7 +637,55 @@ function deleteMessage(message){
     getMessages();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
+function setMessageList(list){
+    messageList=list;
+}
+function updateMessage(message){
+    id=message.split("-")[1];
+   
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'getMessageDetails', 
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
 
+                // log data to the console so we can see
+                console.log(data);
+               
+                setMessageUpdateMode(true);
+                $('#messageHeader').html("Editing message for "+getExactDate(data.date));
+                $('#messageText').val(data.message);
+                $('#messageDate').val(getHtmlSettableDate(data.date));
+                updateMessageId=id;
+                updateMessagePath=data.imagePath;
+                updateMessageParams();
+                $.Mustache.load('templates/message.htm')
+                .fail(function () { 
+                    console.log('Failed to load templates from <code>templates.htm</code>');
+                })
+                .done(function () {
+                    var output=$('#existingMessage');
+                    output.empty();
+                    if(data.imagePath=="")
+                    output.mustache('existing-message-template', {filename:data.messagePath,url:globalroot+data.imagePath});
+                    else
+                    output.mustache('existing-image-message-template', {filename:data.messagePath,url:globalroot+data.imagePath});
+                });
+
+                 $.snackbar({content:"You can edit the message details now!The message file is set to previous file", timeout: 2000,id:"mysnack"});
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+    getMessages();
+   // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
 //------------------------------------------MESSAGE ENDS-----------------------------------------------------------
 
 //------------------------------------------Live Darshan STARTS -----------------------------------------------------------
