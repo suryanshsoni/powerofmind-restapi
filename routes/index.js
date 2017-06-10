@@ -593,9 +593,21 @@ server.post('/removeAudio', function(req, res, next) {
 server.post('/updateAudio',function(req, res, next){
 	console.log("updating audio")
 	console.log("start----------------================")
-	console.log(req.query.id);
+	let id=null;
+	console.log(req);
+	if(typeof req.query.id=="undefined"){
+		console.log("inside if ");
+		id=req.body.id;
+		
+	}
+	else{
+		console.log("else part");
+		id=req.query.id;
+	}
+
 	console.log("end----------------================")
-	Audio.findById(mongoose.mongo.ObjectId(req.query.id),
+	console.log("ID IS ______________--------------"+id);
+	Audio.findById(mongoose.mongo.ObjectId(id),
 	function(err,audio){
 		if(err!=null){
 			log.error(err)

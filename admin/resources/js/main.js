@@ -307,13 +307,34 @@ function deleteVideo(video){
 
 //------------------------------------------AUDIO STARTS -----------------------------------------------------------
 function addAudio(){
-  
+  //Name is add audio
+  //But is used only while updating audio,with no new file used
+  //Good luck!
   sendobject=JSON.stringify($('#addAudioForm').serializeObject());
-  console.log(sendobject);
-  $.ajax({
-      type:'POST',
-      
-  });
+js=JSON.parse(sendobject);
+js.id=updateId;
+sendobject=JSON.stringify(js);
+console.log(sendobject);
+
+    $.ajax({
+         type:'POST',
+         url:globalroot+"updateAudio",
+         contentType: "application/json",
+         data:sendobject,
+         encode:true
+     }).done(function(data){
+         console.log(data);
+         $('#addAudioForm')[0].reset();
+         getMessages();
+         getAudios();
+            
+        $.snackbar({content:"Audio update successfully!", timeout: 2000,id:"mysnack"});
+     }).fail(function(data){
+         console.log(data);
+        $.snackbar({content:"Updation of audio failed!", timeout: 2000,id:"mysnack"});
+     });
+  
+
   getAudios();
 
  
@@ -322,8 +343,11 @@ function addAudio(){
 var audioDropzone=null;
 var updateMode=false;
 var updateId=null;
+var updateAudioFileName="Filename";
+var updateAudioPath=null;
 function setUpdateMode(bool){
     updateMode=bool;
+    $('#audioHeader').html('Add audio');
 }
 function getUpdateInfo(){
     js={};
@@ -405,7 +429,19 @@ function updateAudio(audio){
                 $('#audiodesc').val(data.desc);
                 setUpdateMode(true);
                 updateId=id;
+                updateAudioPath=data.audioPath;
                 updateDropzoneParams();
+                $.Mustache.load('templates/audio.htm')
+                .fail(function () { 
+                    console.log('Failed to load templates from <code>templates.htm</code>');
+                })
+                .done(function () {
+                    var output=$('#existingAudio');
+                    output.empty();
+                    output.mustache('existing-audio-template', {filename:data.audioPath,url:globalroot+updateAudioPath});
+                           
+                });
+
                  $.snackbar({content:"You can edit the audio details now!The audio file is set to previous file", timeout: 2000,id:"mysnack"});
             })
             .fail(function(data){

@@ -709,7 +709,7 @@
                   <textarea class="form-control" rows="3" name="desc" placeholder="Enter description" id="audiodesc"></textarea>
                 </div>
                 
-                
+               <div class="form-group" id="existingAudio"></div>
        
               <!-- /.box-body -->
                <div class="form-group">
@@ -1087,7 +1087,7 @@ function loadAudio(){
     $(activeli).addClass("active");
   
     //$('#addAudioForm').submit(function(e){e.preventDefault();addAudio();})
-	getAudios();
+	  getAudios();
     var mydz=$("div#my-dropzone").dropzone({ 
         url: globalroot+"addAudio",
         autoProcessQueue: false,
@@ -1099,7 +1099,22 @@ function loadAudio(){
         init: function() {
         var myDropzone = this;
        
-        $('#addAudioForm').submit(function(e){e.preventDefault();e.stopPropagation();myDropzone.processQueue();})
+        $('#addAudioForm').submit(function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          
+          if (myDropzone.getQueuedFiles().length > 0)
+          {                        
+                  myDropzone.processQueue();  
+          } else { 
+            if((getUpdateInfo().updateMode))                
+                  addAudio();
+            else
+              $.snackbar({content:"Please select a audio file to upload!", timeout: 2000,id:"mysnack"});
+  
+          }     
+
+      })
         this.on('sending', function (data, xhr, formData) {
              //
         
@@ -1121,7 +1136,7 @@ function loadAudio(){
             $("#audioHeader").html("Add audio");
             this.options.url=globalroot+"addAudio";
             getAudios();
-            
+            $('#existingAudio').html('');
             js=getUpdateInfo();
             setUpdateMode(false);
             if(js.updateMode)
