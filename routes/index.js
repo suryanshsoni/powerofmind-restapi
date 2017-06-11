@@ -1038,13 +1038,17 @@ server.post('/addNews', function(req, res, next) {
 			console.log(req.file);	
 			console.log(req.body);
 			
-			
 			let data={
 					'title':req.body.title,
 					'desc':req.body.desc,
-					'date':req.body.date,
-					'imagePath':req.file.path ||{}
+					'date':req.body.date
 				}
+			if(req.file.path!=null){
+				data.imagePath=req.file.path;
+			}
+			else{
+				data.imagePath='';
+			}
 			console.log(data)
 			let news = new News(data)
 			console.log(news)
