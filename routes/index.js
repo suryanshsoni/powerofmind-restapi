@@ -1037,17 +1037,22 @@ server.post('/addNews', function(req, res, next) {
 		else {
 			console.log(req.file);	
 			console.log(req.body);
-			
-			let data={
+			let data = {}
+			if(req.file.path!=null){
+				data={
 					'title':req.body.title,
 					'desc':req.body.desc,
-					'date':req.body.date
+					'date':req.body.date,
+					'imagePath':req.file.path ||{}
 				}
-			if(req.file.path!=null){
-				data.imagePath=req.file.path;
 			}
 			else{
-				data.imagePath='';
+				data={
+					'title':req.body.title,
+					'desc':req.body.desc,
+					'date':req.body.date,
+					'imagePath':''
+				}
 			}
 			console.log(data)
 			let news = new News(data)
