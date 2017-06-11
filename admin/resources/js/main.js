@@ -7,6 +7,9 @@ var updateObjectId=null;
 
 var liveVideoList=null;
 var messageList=null;
+var eventEditor=null;
+var newsEditor=null;
+var newsDropzone=null;
 
 $.fn.serializeObject = function()
 
@@ -333,7 +336,7 @@ console.log(sendobject);
      }).done(function(data){
          console.log(data);
          $('#addAudioForm')[0].reset();
-         getMessages();
+         
          getAudios();
             
         $.snackbar({content:"Audio update successfully!", timeout: 2000,id:"mysnack"});
@@ -672,7 +675,7 @@ function updateMessage(message){
                     var output=$('#existingMessage');
                     output.empty();
                     if(data.imagePath=="")
-                    output.mustache('existing-message-template', {filename:data.messagePath,url:globalroot+data.imagePath});
+                    output.mustache('existing-message-template', {filename:"No file associated",url:globalroot+data.imagePath});
                     else
                     output.mustache('existing-image-message-template', {filename:data.messagePath,url:globalroot+data.imagePath});
                 });
@@ -848,7 +851,6 @@ function updateLiveVideo(video){
                 $('#liveVideoTitle').val(data.title);
                 $('#liveVideoDesc').val(data.desc);
                 $('#liveVideoPath').val(data.videoPath);
-               
                 $('#addLiveVideoForm').unbind('submit');
                 updateObjectId=id;
                 $('#addLiveVideoForm').submit(function(e) {e.preventDefault();changeLiveVideoDetails();});
@@ -866,34 +868,103 @@ function updateLiveVideo(video){
 //------------------------------------------LIVE DARSHAN  ENDS  -----------------------------------------------------------
 //------------------------------------------NEWS STARTS -----------------------------------------------------------
 function addNews(){
-  
-    title=$("#news-title").val();
-    content=$("#news-editor").val();
-   
-   
-    sendob=JSON.stringify({'title':title,'desc':content});
- 
+    sendobject=JSON.stringify($('#addNewsForm').serializeObject());
+    console.log(sendobject);
+    console.log("sending via main.js");
     $.ajax({
          type:'POST',
-         url:globalroot+"addNews",
+         url:globalroot+updateNewsEndPoint,
          contentType: "application/json",
-         data:sendob,
+         data:sendobject,
          encode:true
      }).done(function(data){
          console.log(data);
          $('#addNewsForm')[0].reset();
-        getNews();
+         getNews();
         $.snackbar({content:"News added successfully!", timeout: 2000,id:"mysnack"});
      }).fail(function(data){
          console.log(data);
-        $.snackbar({content:"Addition of  news failed!", timeout: 2000,id:"mysnack"});
+        $.snackbar({content:"Addition of News failed!", timeout: 2000,id:"mysnack"});
      });
-  
-
- 
+     setNewsUpdateMode(false);
+  getNews();
 
 }
+var updateNewsMode=false;
+var updateNewsId=null;
+var updateNewsFileName="Filename";
+var updateNewsPath=null;
+var updateNewsEndPoint="writeNews";
 
+function setNewsUpdateMode(bool){
+    updateNewsMode=bool;
+    if(!bool){
+    $('#newsHeader').html('Add News of the day');
+    updateNewsEndPoint="addNews";
+    $("#existingNews").html('');
+    }
+}
+function getNewsUpdateInfo(){
+    js={};
+    js.updateNewsMode=updateNewsMode;
+    js.updateNewsId=updateNewsId;
+    return js;
+}
+
+
+function updateNewsParams(){
+    newsDropzone.options.url=globalroot+"updateNews?id="+updateNewsId;
+    updateNewsEndPoint="updateNews?id="+updateNewsId;
+}
+function updateNews(news){
+    id=news.split("-")[1];
+   
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'getNewsDetails', 
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+               
+                setNewsUpdateMode(true);
+                $('#newsHeader').html("Editing News for "+getExactDate(data.date));
+                $('#news-title').val(data.title);
+                $('#newsDate').val(getHtmlSettableDate(data.date));
+                $('iframe').contents().find('.wysihtml5-editor').html(data.desc);
+               
+                updateNewsId=id;
+                updateNewsPath=data.imagePath;
+                updateNewsParams();
+                $.Mustache.load('templates/news.htm')
+                .fail(function () { 
+                    console.log('Failed to load templates from <code>news.htm</code>');
+                })
+                .done(function () {
+                    var output=$('#existingNews');
+                    output.empty();
+                    if(data.imagePath=="")
+                    output.mustache('existing-news-template', {filename:"No file associated",url:globalroot+data.imagePath});
+                    else
+                    output.mustache('existing-image-news-template', {filename:data.imagePath,url:globalroot+data.imagePath});
+             
+               });
+
+                 $.snackbar({content:"You can edit the news details now!The News file is set to previous file", timeout: 2000,id:"mysnack"});
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+    getNews();
+   // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
 function getNews(){
      $.ajax({
             type        : 'POST', 
@@ -910,25 +981,39 @@ function getNews(){
 						console.log('Failed to load templates from <code>templates.htm</code>');
 					})
 					.done(function () {
-                        var output=$('#latest-news');
+                        var output=$('#news-box');
                        
                         output.empty();
                         data.forEach(function(news){
                             console.log(news);
                             var date = new Date(
-                                news.created
+                                news.date
                                 .replace("T"," ")
                                 .replace(/-/g,"/")
                             );
                              var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
                              
                             
-                                output.mustache('latest-news-template', {id:news._id,title:news.title,content:news.desc,date:mdate});
-                           
+                           if(news.imagePath!=""){
+                               output.mustache('latest-news-img-template', {id:news._id,title:news.title,content:news.desc,date:mdate,url:globalroot+news.imagePath});
+                           }
+                           else{
+                               console.log("outputing without image")
+                                 output.mustache('latest-news-template', {id:news._id,title:news.title,content:news.desc,date:mdate});
+                            }
+                            
                           
                              
                          });
-                    
+                        var options={
+                        valueNames: [
+                        'date',
+                        'title',
+                        ],
+                        page: 3,
+                        pagination: true
+                        };
+                     messageList=new List('newsList',options);
                        
                     });
                
@@ -975,6 +1060,30 @@ function deleteNews(news){
 //------------------------------------------NEWS ENDS-----------------------------------------------------------
 
 //------------------------------------------EVENTS STARTS-----------------------------------------------------------
+
+function addEvent(){
+   console.log("add Event called");
+  sendobject=JSON.stringify($('#addEventForm').serializeObject());
+  console.log(sendobject);
+ 
+ $.ajax({
+     type:'POST',
+     url:globalroot+"addEvent",
+     contentType: "application/json",
+     data:sendobject,
+     encode:true
+ }).done(function(data){
+     console.log(data);
+     $('#addEventForm')[0].reset();
+      $.snackbar({content:"Event added successfully!", timeout: 2000,id:"mysnack"});
+ }).fail(function(data){
+     console.log(data);
+      $.snackbar({content:"Event addition failed!", timeout: 2000,id:"mysnack"});
+ });
+    
+  getEvents();
+}
+
 function getEvents(){ 
      $.ajax({
             type        : 'POST', 
@@ -991,7 +1100,7 @@ function getEvents(){
 					})
 					.done(function () {
                         var output=$('#event_table_body');
-
+                             $('#event_table').DataTable().destroy();
                         output.empty();
                         even=true;
                         data.forEach(function(event){
@@ -1002,7 +1111,7 @@ function getEvents(){
                                 .replace(/-/g,"/")
                             );
                              var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
-                               
+                           
                         if(even){
                             output.mustache('event-template-even', {id:event._id,name:event.name,title:event.title,date:mdate,description:event.desc,venue:event.venue});
                             even=false;
@@ -1012,12 +1121,9 @@ function getEvents(){
                             even=true;
                             
                         }
-                        
-
-
-                     });
-              
-                      $('#event_table').DataTable();
+                       });
+               $('#event_table').DataTable();
+                     
                           
                              
                          })                    
@@ -1059,6 +1165,39 @@ function deleteEvent(event){
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 
+function changeEventDetails(){
+    sendobject=JSON.stringify($('#addEventForm').serializeObject());
+    sobj=JSON.parse(sendobject);
+    sobj.id=updateObjectId;
+    send=JSON.stringify(sobj);
+ 
+    console.log(send);
+ $.ajax({
+     type:'POST',
+     url:globalroot+"updateEvent",
+     contentType: "application/json",
+     data:send,
+     encode:true
+ }).done(function(data){
+     console.log(data);
+     $('#addEventForm')[0].reset();
+     $('#event-header').html("Add Event");
+     $('iframe').contents().find('.wysihtml5-editor').html();
+                
+     $('#addEventForm').unbind('submit');
+     $('#addEventForm').submit(function(e) {e.preventDefault();addEvent();});
+     getEvents();
+     
+      $.snackbar({content:"Event added successfully!", timeout: 2000,id:"mysnack"});
+       updateObjectId=null;
+ }).fail(function(data){
+     console.log(data);
+      $.snackbar({content:"Event addition failed!", timeout: 2000,id:"mysnack"});
+ });
+    
+  
+}
+
 function updateEvent(event){
      id=event.split("-")[1];
     
@@ -1075,23 +1214,16 @@ function updateEvent(event){
 
                 // log data to the console so we can see
                 console.log(data);
-                var date = new Date(
-                                data.created
-                                .replace("T"," ")
-                                .replace(/-/g,"/")
-                            );
-                var mdate=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
                                
                 $('#event-header').html("Editing "+data.title);
                 $('#event-name').val(data.title);
                 $('#event-title').val(data.title);
-                $('#event-date').val(mdate);
+                $('#event-date').val(getHtmlSettableDate(data.created));
                 $('#event-venue').val(data.venue);
-                $('#event-editor').val(data.desc);
+                $('iframe').contents().find('.wysihtml5-editor').html(data.desc);
                 $('#addEventForm').unbind('submit');
                 updateObjectId=id;
                 $('#addEventForm').submit(function(e) {e.preventDefault();changeEventDetails();});
-             
                 $.snackbar({content:"You can edit the event now!", timeout: 2000,id:"mysnack"});
                 
             })

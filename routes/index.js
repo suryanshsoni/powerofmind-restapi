@@ -1074,14 +1074,24 @@ server.post('/addNews', function(req, res, next) {
 		else {
 			console.log(req.file);	
 			console.log(req.body);
-			
-			
-			let data={
+			let data = {}
+			if(typeof (req.file) !="undefined"){
+				console.log("inside exisitng part");
+				data={
 					'title':req.body.title,
 					'desc':req.body.desc,
 					'date':req.body.date,
 					'imagePath':req.file.path ||{}
 				}
+			}
+			else{
+				data={
+					'title':req.body.title,
+					'desc':req.body.desc,
+					'date':req.body.date,
+					'imagePath':''
+				}
+			}
 			console.log(data)
 			let news = new News(data)
 			console.log(news)
@@ -1190,8 +1200,23 @@ server.post('/countNews', function(req, res, next) {
 
 })
 server.post('/updateNews',function(req, res, next){
-	console.log("updating news" + req.body.id)
-	News.findById(mongoose.mongo.ObjectId(req.body.id),
+	console.log("updating news")
+	console.log("start----------------================")
+	let id=null;
+	console.log(req);
+	if(typeof req.query.id=="undefined"){
+		console.log("inside if ");
+		id=req.body.id;
+		
+	}
+	else{
+		console.log("else part");
+		id=req.query.id;
+	}
+
+	console.log("end----------------================")
+	console.log("ID IS ______________--------------"+id);
+	News.findById(mongoose.mongo.ObjectId(id),
 	function(err,news){
 		if(err!=null){
 			log.error(err)

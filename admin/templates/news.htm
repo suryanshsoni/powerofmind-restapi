@@ -1,46 +1,74 @@
-<script id="latest-news-template" type="text/html">
-<div class="col-sm-12 col-md-4">
-    
+<script id="latest-news-img-template" type="text/html">
+  <li>
+ <!--sample message box starts-->
+<div class="box box-danger">
+    <div class="box-header with-border">
+      <h3 class="box-title title">{{title}}</h3> 
 
-<div class="box box-widget card">
-            <div class="box-header with-border">
-              <div class="user-block">
-                
-                <h1 class="username">{{title}}</h1>
-                
-              </div>
-              <!-- /.user-block -->
-              <div class="box-tools">
-              
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteNews(this.id)'>Delete</button>
-                <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateNews(this.id)'>Update</button>
-                </button>
-                
-              </div>
-              <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <!-- post text -->
-              <div>{{{content}}} </div>
 
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            
+        </button>
         
+    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteNews(this.id)'>Delete</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateNews(this.id)'>Update</button>
 
-              <!-- Attachment -->
-              
-              <!-- /.attachment-block -->
-
-              <!-- Social sharing buttons -->
-              
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer box-comments">
-              
-              
-            </div>
-          
-          </div>
+      </div>
+      <!-- /.box-tools -->
     </div>
- 
+    <!-- /.box-header -->
+    <div class="box-body">
+       <p>Added On : <span class="date">{{date}}</span></p>
+       <blockquote>
+          <p class="title">{{{content}}}</p>
+          
+        </blockquote>
+        <img class="img-responsive pad" src={{url}} alt="News Image">
+    </div>
+    <!-- /.box-body -->
+  </div>
+<!--sample box ends-->
+</li>
+</script>
+<script id="latest-news-template" type="text/html">
+  <li>
+ <!--sample message box starts-->
+<div class="box box-danger">
+    <div class="box-header with-border">
+      <h3 class="box-title title">{{title}}</h3> 
+
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            
+        </button>
+        
+    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteNews(this.id)'>Delete</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateNews(this.id)'>Update</button>
+
+      </div>
+      <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+      <p>Added On : <span class="date">{{date}}</span></p>
+        <blockquote>
+          <p class="title">{{{content}}}</p>
+          
+        </blockquote>
+        </div>
+    <!-- /.box-body -->
+  </div>
+<!--sample box ends-->
+</li>
+</script>
+<script id="existing-image-news-template" type="text/html">
+    <label>Current file : <b>{{filename}}</b></label>
+   <img src="{{url}}" class="img-responsive pad">
+</script>
+</script>
+<script id="existing-news-template" type="text/html">
+    <label>Current file : <b>{{filename}}</b></label>
+  
 </script>
