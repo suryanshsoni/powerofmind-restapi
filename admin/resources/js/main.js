@@ -733,21 +733,27 @@ function getLiveVideos(){
                         var output=$('#live-video-box');
                         
                         output.empty();
-                        liveVideoList.clear();
+                       
                         data.forEach(function(video){
                             var mdate=getExactDate(video.created);
-                             
-                            liveVideoList.add({
-                                title:video.title,
-                                date:mdate,
-                                id:video._id
-                            });
-                            /* OLD MUSTACHE WAY
+                     
+                          
                              var mdate=getExactDate(video.created);
                              output.mustache('live-video-template', {id:video._id, title: video.title,date:mdate,url:video.videoPath,desc:video.desc });
-                             */
+                             
                         });
-                       
+                       var options={
+                            valueNames: [
+                            'title',
+                            'date',
+                            { attr: 'id', name : 'id' }
+                            ],
+                            item:'live-video-item',
+                            page:2,
+                            pagination:true
+                        };
+                     var liveList=new List('live_darshan',options);
+                    setLiveVideoList(liveList);
                     });
                
                 // here we will handle errors and validation messages
@@ -759,8 +765,8 @@ function getLiveVideos(){
 }
 
 function deleteLiveVideo(video){
-   // id=video.split("-")[1];
-   id=video;
+    id=video.split("-")[1];
+   //id=video;
     $.ajax({
             type        : 'POST', 
             url         : globalroot+'removeLiveDarshan', 
@@ -791,6 +797,70 @@ function deleteLiveVideo(video){
 
 function setLiveVideoList(list){
     liveVideoList=list;
+}
+function changeLiveVideoDetails(){
+    sendobject=JSON.stringify($('#addLiveVideoForm').serializeObject());
+    console.log("chnaeg live video details called");
+    sobj=JSON.parse(sendobject);
+    sobj.id=updateObjectId;
+    send=JSON.stringify(sobj);
+ 
+    console.log(send);
+ $.ajax({
+     type:'POST',
+     url:globalroot+"updateLiveDarshan",
+     contentType: "application/json",
+     data:send,
+     encode:true
+ }).done(function(data){
+     console.log(data);
+     $('#addLiveVideoForm')[0].reset();
+     $('#liveVideoHeader').html("Add Live Darshan Stream");
+     $('#addLiveVideoForm').unbind('submit');
+     $('#addLiveVideoForm').submit(function(e) {e.preventDefault();addLiveVideo();});
+     getLiveVideos();
+     $.snackbar({content:"Live stream updated successfully!", timeout: 2000,id:"mysnack"});
+     updateObjectId=null;
+ }).fail(function(data){
+     console.log(data);
+     $.snackbar({content:"Live stream updation failed!", timeout: 2000,id:"mysnack"});
+ });
+    
+  
+}
+function updateLiveVideo(video){
+    id=video.split("-")[1];
+    
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'getLiveDarshanDetails', 
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $('#liveVideoHeader').html("Editing "+data.title);
+                $('#liveVideoTitle').val(data.title);
+                $('#liveVideoDesc').val(data.desc);
+                $('#liveVideoPath').val(data.videoPath);
+               
+                $('#addLiveVideoForm').unbind('submit');
+                updateObjectId=id;
+                $('#addLiveVideoForm').submit(function(e) {e.preventDefault();changeLiveVideoDetails();});
+             
+                $.snackbar({content:"You can edit the video now!", timeout: 2000,id:"mysnack"});
+                
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+    getVideos();
 }
 
 //------------------------------------------LIVE DARSHAN  ENDS  -----------------------------------------------------------
