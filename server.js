@@ -8,7 +8,8 @@ const config        = require('./config'),
       bunyan        = require('bunyan'),
       winston       = require('winston'),
       bunyanWinston = require('bunyan-winston-adapter'),
-      mongoose      = require('mongoose')
+      mongoose      = require('mongoose'),
+	   passport     = require('passport')
 	  
 mongoose.Promise=require('bluebird')  
 
@@ -47,6 +48,7 @@ server.use(restify.CORS({
     origins: ['*'],
     headers: ['application/json','application/x-www-form-urlencoded','multipart/form-data','text/html']                 // sets expose-headers
 }));
+server.use(passport.initialize());
 
 /**
  * Error Handling
