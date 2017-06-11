@@ -7,7 +7,7 @@ var updateObjectId=null;
 
 var liveVideoList=null;
 var messageList=null;
-
+var eventEditor=null;
 $.fn.serializeObject = function()
 
 {
@@ -848,7 +848,6 @@ function updateLiveVideo(video){
                 $('#liveVideoTitle').val(data.title);
                 $('#liveVideoDesc').val(data.desc);
                 $('#liveVideoPath').val(data.videoPath);
-               
                 $('#addLiveVideoForm').unbind('submit');
                 updateObjectId=id;
                 $('#addLiveVideoForm').submit(function(e) {e.preventDefault();changeLiveVideoDetails();});
@@ -975,6 +974,30 @@ function deleteNews(news){
 //------------------------------------------NEWS ENDS-----------------------------------------------------------
 
 //------------------------------------------EVENTS STARTS-----------------------------------------------------------
+
+function addEvent(){
+   console.log("add Event called");
+  sendobject=JSON.stringify($('#addEventForm').serializeObject());
+  console.log(sendobject);
+ 
+ $.ajax({
+     type:'POST',
+     url:globalroot+"addEvent",
+     contentType: "application/json",
+     data:sendobject,
+     encode:true
+ }).done(function(data){
+     console.log(data);
+     $('#addEventForm')[0].reset();
+      $.snackbar({content:"Event added successfully!", timeout: 2000,id:"mysnack"});
+ }).fail(function(data){
+     console.log(data);
+      $.snackbar({content:"Event addition failed!", timeout: 2000,id:"mysnack"});
+ });
+    
+  getEvents();
+}
+
 function getEvents(){ 
      $.ajax({
             type        : 'POST', 
@@ -991,7 +1014,7 @@ function getEvents(){
 					})
 					.done(function () {
                         var output=$('#event_table_body');
-
+                             $('#event_table').DataTable().destroy();
                         output.empty();
                         even=true;
                         data.forEach(function(event){
@@ -1002,7 +1025,7 @@ function getEvents(){
                                 .replace(/-/g,"/")
                             );
                              var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
-                               
+                           
                         if(even){
                             output.mustache('event-template-even', {id:event._id,name:event.name,title:event.title,date:mdate,description:event.desc,venue:event.venue});
                             even=false;
@@ -1012,12 +1035,9 @@ function getEvents(){
                             even=true;
                             
                         }
-                        
-
-
-                     });
-              
-                      $('#event_table').DataTable();
+                       });
+               $('#event_table').DataTable();
+                     
                           
                              
                          })                    
@@ -1059,6 +1079,39 @@ function deleteEvent(event){
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 
+function changeEventDetails(){
+    sendobject=JSON.stringify($('#addEventForm').serializeObject());
+    sobj=JSON.parse(sendobject);
+    sobj.id=updateObjectId;
+    send=JSON.stringify(sobj);
+ 
+    console.log(send);
+ $.ajax({
+     type:'POST',
+     url:globalroot+"updateEvent",
+     contentType: "application/json",
+     data:send,
+     encode:true
+ }).done(function(data){
+     console.log(data);
+     $('#addEventForm')[0].reset();
+     $('#event-header').html("Add Event");
+     $('iframe').contents().find('.wysihtml5-editor').html();
+                
+     $('#addEventForm').unbind('submit');
+     $('#addEventForm').submit(function(e) {e.preventDefault();addEvent();});
+     getEvents();
+     
+      $.snackbar({content:"Event added successfully!", timeout: 2000,id:"mysnack"});
+       updateObjectId=null;
+ }).fail(function(data){
+     console.log(data);
+      $.snackbar({content:"Event addition failed!", timeout: 2000,id:"mysnack"});
+ });
+    
+  
+}
+
 function updateEvent(event){
      id=event.split("-")[1];
     
@@ -1075,23 +1128,16 @@ function updateEvent(event){
 
                 // log data to the console so we can see
                 console.log(data);
-                var date = new Date(
-                                data.created
-                                .replace("T"," ")
-                                .replace(/-/g,"/")
-                            );
-                var mdate=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
                                
                 $('#event-header').html("Editing "+data.title);
                 $('#event-name').val(data.title);
                 $('#event-title').val(data.title);
-                $('#event-date').val(mdate);
+                $('#event-date').val(getHtmlSettableDate(data.created));
                 $('#event-venue').val(data.venue);
-                $('#event-editor').val(data.desc);
+                $('iframe').contents().find('.wysihtml5-editor').html(data.desc);
                 $('#addEventForm').unbind('submit');
                 updateObjectId=id;
                 $('#addEventForm').submit(function(e) {e.preventDefault();changeEventDetails();});
-             
                 $.snackbar({content:"You can edit the event now!", timeout: 2000,id:"mysnack"});
                 
             })
