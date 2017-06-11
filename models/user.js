@@ -4,7 +4,8 @@ const mongoose = require('mongoose'),
 	  mongooseApiQuery = require('mongoose-api-query'),
       createdModified = require('mongoose-createdmodified').createdModifiedPlugin,
 	  crypto = require('crypto'),
-	  jwt = require('jsonwebtoken');
+	  jwt = require('jsonwebtoken'),
+	  config=require('../config');
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -30,9 +31,20 @@ UserSchema.methods.validPassword = function(password) {
   return this.hash === hash;
 };
 
+UserSchema.methods.generateJwt = function() {
+  var expiry = new Date();
+  expiry.setDate(expiry.getDate() + 7);
+
+  return jwt.sign({
+    _id: this._id,
+    email: this.email,
+    name: this.name,
+    exp: parseInt(expiry.getTime() / 1000),
+  }, config.MY_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
+};
+
 UserSchema.plugin(mongooseApiQuery)
 UserSchema.plugin(createdModified, { index: true })
-
 const User = mongoose.model('User', UserSchema)
 module.exports = User
 
