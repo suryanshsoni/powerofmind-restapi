@@ -816,7 +816,7 @@
                   <input type="date" id="messageDate" class="form-control" rows="3" name="date">
                 </div>
                    <div class="form-group" id="existingMessage"></div>
-              <!-- /.box-body -->
+              
                <div class="form-group">
                   <label for="imagePath">Image</label>
                   <div class="dropzone dropzone-previews" id="message-dropzone">
@@ -871,38 +871,87 @@
  </script>
  
 <script id="news-template" type="text/x-custom-template">
-   <div class="col-sm-12">
+   <div class="col-sm-12 col-md-6">
         <div class="box box-info  card">
             <div class="box-header">
-              <h3 class="box-title">Add News
+              <h3 class="box-title" id="newsHeader">Add News
                 <small>@PowerOfMind</small>
               </h3>
              
               
             </div>
             <!-- /.box-header -->
+             <form id="addNewsForm">
             <div class="box-body pad " >
-                <form id="addNewsForm">
+               
                 <div class="form-group">
                   <label for="title">Title</label>
                   <input type="text" class="form-control" name="title" id="news-title" placeholder="Enter title">
                 </div>
                 <div class="form-group">
-              <textarea style="width:100%"id="news-editor" placeholder="Enter news here">
-                    
-              </textarea>
-              </div>
+                  <label>Date</label>
+                  <input type="date" id="newsDate" class="form-control" rows="3" name="date">
+                </div>
+                
+                <div class="form-group" id="existingNews"></div>
+              
+               
               <div class="form-group">
-                <button type="submit" class="btn btn-primary">Add News</button>
+                 <label for="date">News description</label>
+                  <textarea class="form-control" style="width:100%" id="news-editor" name="desc" rows=5 placeholder="Enter event description here">
+
+                  </textarea>
               </div>
-              </form>
+               
+              <div class="form-group">
+                  <label for="imagePath">Image</label>
+                  <div class="dropzone dropzone-previews" id="news-dropzone">
+              </div>
+              </div>
+              <div class="box-footer">
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+              </div>
+              
             </div>
+            </form>
           </div>
     </div>
-    <div class="col-sm-12">
-        <div id="latest-news">
-        </div>
     </div>
+
+  <!--News listsing starts-->
+        <div class="col-sm-12 col-md-6">
+        
+             <div class="box box-solid box-success  card">
+              <div class="box-header with-border">
+                <h3 class="box-title">News</h3>
+                    
+              </div>
+              <!-- /.box-header -->
+              <!--Main content of news-->
+              
+              <div class="box-body" style="max-height:30em;overflow-y:auto;" >
+               <div id="newsList" >
+                  <input type="text" class="search" placeholder="Search">
+
+                  <button class="sort  pull-right" data-sort="News">Sort by title</button>
+                  <button class="sort  pull-right" data-sort="date">Sort by date</button>
+                    <ul class="list" id="news-box"  style="padding-left:0;padding-top:20px;">
+                      
+                    </ul>
+                    <ul class="pagination"></ul>
+              </div>
+          
+               </div><!-- /.box-body -->
+                  
+                  
+              <div class="box-footer">
+                
+              </div><!-- box-footer -->
+            </div><!-- /.box -->
+        </div>
+        <!-News listisng ends-->
     
   
 </script> 
@@ -1256,14 +1305,66 @@ function loadNews(){
     activeli="#news-li";
     $(activeli).addClass("active");
 	$('#master').append(template);
-    $('#news-editor').wysihtml5();
-	$("#addNewsForm").submit(function(e){
+  editor=$('#news-editor').wysihtml5();
+	getNews();
+
+  newsDropzone=$("div#news-dropzone").dropzone({ 
+        url: globalroot+"addNews",
+        autoProcessQueue: false,
+        addRemoveLinks:true,
+        acceptedFiles: "image/*",
+        maxFiles: 1,
+        uploadMultiple:false,
+        paramName:"file",
+        init: function() {
+        var myDropzone = this;
+        $('#addNewsForm').submit(function(e){e.preventDefault();
+                                                e.stopPropagation();
+                                                 if (myDropzone.getQueuedFiles().length > 0)
+                                                {                        
+                                                        myDropzone.processQueue();  
+                                                } else {                 
+                                                        addNews();
+                                                }     
+
+                                                
+                                               })
+        this.on('sending', function (data, xhr, formData) {
+              $("#addNewsForm").find("input").each(function(){
+                    formData.append($(this).attr("name"), $(this).val());
+                    });
+                formData.append("desc",editor.val());
+                });
+        this.on("error",function(files,errorNews,xhr){
+           console.log(errorNews); 
+            
+        });
+        this.on("success",function(file,res){
+            console.log(res);
+            $('#addNewsForm')[0].reset();
+            myDropzone.removeFile(file);
+            this.options.url=globalroot+"addNews";
+            getNews();
+            $('#existingNews').html('');
+            js=getNewsUpdateInfo();
+            setNewsUpdateMode(false);
+            $("#newsHeader").html("Add News of the day");
+            
+            if(js.updateMode)
+            $.snackbar({content:"News updated successfully!", timeout: 2000,id:"mysnack"});
+            else
+            $.snackbar({content:"News uploaded successfully!", timeout: 2000,id:"mysnack"});
         
-       e.preventDefault();
-    addNews();
-       content=$("#news-editor").val();
-    });
-    getNews();
+        })
+        }
+                        
+     });
+
+var rawElement = $("div#news-dropzone").get(0);
+newsDropzone=rawElement.dropzone;
+setNewsUpdateMode(false);
+
+
 }
 
 
