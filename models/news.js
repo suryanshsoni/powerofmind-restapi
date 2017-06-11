@@ -18,8 +18,7 @@ const NewsSchema = new mongoose.Schema({
  		required: true
  	},
  	imagePath: {
- 		type: String,
- 		required: true
+ 		type: String
   	}
 });
 
