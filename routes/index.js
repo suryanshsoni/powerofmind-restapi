@@ -61,9 +61,23 @@ var storageEvent	=	multer.diskStorage({
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
 })
+var storageNews	=	multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './uploads/news');
+  },
+  filename: function (req, file, callback) {
+    var filename=file.originalname.split(".");
+   var extension=filename[filename.length-1];
+	filename.pop();
+	var name=filename.join();
+	console.log("storing with "+name);
+    callback(null, name + '-' + Date.now()+'.'+extension);
+  }
+})
 var upload = multer({ storage : storage}).single('file')
 var uploadAudio = multer({ storage : storageAudio}).single('file')
 var uploadMessage = multer({ storage : storageMessage}).single('file')
+var uploadNews = multer({ storage : storageNews}).single('file')
 var uploadEvent = multer({ storage : storageEvent}).single('file')
 /**
  * Model Schema
@@ -1001,25 +1015,44 @@ server.post('/updateEventold',function(req, res, next){
 /*-------------------------------------------------------------------------------------------------*/
 server.post('/addNews', function(req, res, next) {
 	
-    let data = req.body || {}
-	console.log(data)
-    let news = new News(data)
-	console.log(news)
-    
-	 news.save(function(err) {
+	uploadNews(req,res,function(err) {
+		if(err) {
+			return res.end(err+" Error uploading file.");
+		}
+		else {
+			console.log(req.file);	
+			console.log(req.body);
+			
+			
+			let data={
+					'title':req.body.title,
+					'desc':req.body.desc,
+					'date':req.body.date,
+					'imagePath':req.file.path ||{}
+				}
+			console.log(data)
+			let news = new News(data)
+			console.log(news)
+			
+			 news.save(function(err) {
 
-        if (err!=null) {
-            log.error(err)
-            return next(new errors.InternalError(err.message))
-            next()
-        }
+				if (err!=null) {
+					log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()
+				}
 
-        res.send(201,"ADDED NEWS")
-        next()
+				res.send(201,"ADDED NEWS")
+				next()
+			})
+		}	
+	});
+	
+	
+	
 
     })
 
-})
 
 server.post('/news', function(req, res, next) {
 	console.log("Sending news");
@@ -1103,4 +1136,52 @@ server.post('/countNews', function(req, res, next) {
 
     })
 
+})
+server.post('/updateNews',function(req, res, next){
+	console.log("updating news" + req.body.id)
+	News.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err,news){
+		if(err!=null){
+			log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+		}
+		else{
+			console.log("updating")
+			
+			uploadNews(req,res,function(err) {
+				if(err) {
+					return res.end(err+" Error uploading file.");
+				}
+				else {
+					console.log(req.file);	
+					console.log(req.body);
+					
+					news.title=req.body.title
+					news.desc=req.body.desc
+					news.date=req.body.date
+					if(req.file!=null)
+						news.imagePath=req.file.path
+					
+					
+					console.log(news)
+
+					news.save(function(err) {
+
+						if (err!=null) {
+							log.error(err)
+							return next(new errors.InternalError(err.message))
+							next()
+						}
+
+						res.send(201,"File Updated")
+						next()
+
+					})
+				}	
+			});
+			
+			
+		}
+			
+	})
 })
