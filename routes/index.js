@@ -227,8 +227,23 @@ server.post('/removeMessage', function(req, res, next) {
 })
 
 server.post('/updateMessage',function(req, res, next){
-	console.log("updating message" + req.body.id)
-	MessageOfDay.findById(mongoose.mongo.ObjectId(req.body.id),
+	console.log("updating message")
+	console.log("start----------------================")
+	let id=null;
+	console.log(req);
+	if(typeof req.query.id=="undefined"){
+		console.log("inside if ");
+		id=req.body.id;
+		
+	}
+	else{
+		console.log("else part");
+		id=req.query.id;
+	}
+
+	console.log("end----------------================")
+	console.log("ID IS ______________--------------"+id);
+	MessageOfDay.findById(mongoose.mongo.ObjectId(id),
 	function(err,message){
 		if(err!=null){
 			log.error(err)
