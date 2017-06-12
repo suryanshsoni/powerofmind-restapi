@@ -125,7 +125,7 @@ server.post('/register',function(req,res,next){
     });
   });
 })
->>>>>>> 3ea1691936179b4e2b62d1e6dc975e9f39883b45
+
 
 /*----------------------------------------------------------------------------------------------*/
 server.post('/writemessage', function(req, res, next) {
