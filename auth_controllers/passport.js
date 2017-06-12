@@ -1,12 +1,11 @@
 'use strict'
 
-const passport = require('passport-restify'),
- LocalStrategy = require('passport-local').Strategy,
+const LocalStrategy = require('passport-local').Strategy,
  mongoose = require('mongoose')
  
 const User = require('../models/user')
 
- 
+ module.exports = function(passport){
  passport.use(new LocalStrategy({
     usernameField: 'email'
   },
@@ -29,4 +28,5 @@ const User = require('../models/user')
       return done(null, user);
     });
   }
-));
+ ));
+ }

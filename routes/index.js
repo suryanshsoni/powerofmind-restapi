@@ -8,15 +8,64 @@ const _      = require('lodash'),
 	  dateTime = require('node-datetime'),
 	  multer = require('multer'),
 	  mongoose = require('mongoose'),
-	  jwt = require('restify-jwt'),
 	  config = require('../config'),
-	  passport = require('../auth_controllers/passport')
+	  passport = require('passport-restify'),
+	  nJwt = require('njwt')
 
-var auth = jwt({
-  secret: config.MY_SECRET,
-  userProperty: 'payload'
+ /**
+ * Model Schema
+ */
+
+const MessageOfDay = require('../models/messageofday')
+const Video = require('../models/video')
+const Audio = require('../models/audio')
+const LiveDarshan = require('../models/livedarshan')
+const News = require('../models/news')
+const Events = require('../models/events')
+const User = require('../models/user')	  
+
+//passport initialization
+server.use(passport.initialize());
+
+require('../auth_controllers/passport')(passport);
+var ctrlLogin = require('../auth_controllers/login') 
+
+
+var authnjwt = function(req,res,next){
+	//let token = req.headers.authorization.split(" ")[1];
+	let token = req.authorization.credentials
+	nJwt.verify(token,config.MY_SECRET,function(err,verifiedJwt){
+  if(err){
+    console.log(err); // Token has expired, has been tampered with, etc
+	res.send(400,"Tampered/Expired token");
+	
+  }else{
+	var jwtbody=verifiedJwt.body
+	var id=jwtbody['_id'];	
+    console.log(verifiedJwt," ",token); // Will contain the header and body
+	User.findById(mongoose.mongo.ObjectId(id),
+	function(err, doc) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+		console.log("doc is"+doc);
+		if(doc!=null && doc.token==token){
+			next()
+		}
+        else{
+			res.header('Location',"/admin");
+			res.send(200,"Not found/Wrong Credentials")
+		}
+			
+
+    })
+  }
 });
+}
 
+//multer upload setup
 var storage	=	multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, './uploads');
@@ -87,18 +136,6 @@ var uploadAudio = multer({ storage : storageAudio}).single('file')
 var uploadMessage = multer({ storage : storageMessage}).single('file')
 var uploadNews = multer({ storage : storageNews}).single('file')
 var uploadEvent = multer({ storage : storageEvent}).single('file')
-/**
- * Model Schema
- */
- 
- 
-const MessageOfDay = require('../models/messageofday')
-const Video = require('../models/video')
-const Audio = require('../models/audio')
-const LiveDarshan = require('../models/livedarshan')
-const News = require('../models/news')
-const Events = require('../models/events')
-const User = require('../models/user')
 
 /*----------------------------------------------------------------------------------------------*/
 
@@ -109,7 +146,7 @@ server.post('/register',function(req,res,next){
   user.email = req.body.email;
 
   user.setPassword(req.body.password);
-
+  user.count=0;
   user.save(function(err) {
 	if (err!=null) {
 		log.error(err)
@@ -118,12 +155,92 @@ server.post('/register',function(req,res,next){
 	}
     var token;
     token = user.generateJwt();
-    res.status(200);
-    res.json({
-      "token" : token
-    });
+	var state = user.setLoggedIn(token);
+	if(state==true){
+		res.status(200);
+		res.json({
+		  "token" : token
+		});	
+	}
+			
   });
 })
+/*
+server.post('/login',function(req,res,next){
+	  User.findOne({ email: req.body.email }, function (err, user) {
+      if (err) {
+			log.error(err)
+			return next(new errors.InternalError(err.message))
+			next()
+		}
+      // Return if user not found in database
+      if (!user) {
+			res.send(201,"User not found")
+			next()
+      }
+      // Return if password is wrong
+      if (!user.validPassword(req.body.password)) {
+			res.send(201,"Wrong Password")
+			next()
+
+      }
+      // If credentials are correct, return the user object
+	  let doc={
+		  'email':user.email,
+		  'token':user.generateJwt()
+	  }
+      res.send(doc)
+	  next()
+    });
+})
+*/
+/*
+server.post('/login',passport.authenticate('local'), function(err, user, info){
+    var token;
+
+    // If Passport throws/catches an error
+    if (err) {
+      res.status(404).json(err);
+      return;
+    }
+
+    // If a user is found
+    if(user){
+      token = user.generateJwt();
+      res.status(200);
+      res.json({
+        "token" : token
+      });
+    } else {
+      // If user is not found
+      res.status(401).json(info);
+    }
+  })
+*/
+server.post('/login',ctrlLogin.login)
+server.post('/logout',function(req, res,next){
+	
+    User.findById(mongoose.mongo.ObjectId(req.body.id),
+		function(err, user) {
+
+			if (err!=null) {
+				log.error(err)
+				return next(new errors.InvalidContentError(err.errors.name.message))
+			}
+			console.log("user is"+user);
+			user.token=''
+			user.loggedIn=false
+			user.save(function(err){
+				if (err!=null) {
+				log.error(err)
+				return next(new errors.InvalidContentError(err.errors.name.message))
+				}
+				res.redirect("/admin",next)
+			})
+				
+
+    })
+  })
 
 /*----------------------------------------------------------------------------------------------*/
 server.post('/writemessage', function(req, res, next) {
@@ -349,8 +466,8 @@ server.post('/countMessages', function(req, res, next) {
 
 /*----------------------------------------------------------------------------------------------------*/
 
-server.post('/addVideo', function(req, res, next) {
-	
+server.post('/addVideo',authnjwt, function(req, res, next) {
+	//console.log(req.headers.authorization.split(" ")[1])
     let data = req.body || {}
 	console.log("adding video",data)
 	data={

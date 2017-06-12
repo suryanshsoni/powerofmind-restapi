@@ -8,9 +8,7 @@ const config        = require('./config'),
       bunyan        = require('bunyan'),
       winston       = require('winston'),
       bunyanWinston = require('bunyan-winston-adapter'),
-      mongoose      = require('mongoose'),
-	  passport     = require('./auth_controllers/passport'),
-	  p=require('passport')
+      mongoose      = require('mongoose')
 	  
 mongoose.Promise=require('bluebird')  
 
@@ -49,6 +47,7 @@ server.use(restify.CORS({
     origins: ['*'],
     headers: ['application/json','application/x-www-form-urlencoded','multipart/form-data','text/html']                 // sets expose-headers
 }));
+server.use(restify.authorizationParser());
 
 /**
  * Error Handling
@@ -71,6 +70,7 @@ server.get(/\/admin\/?.*/, restify.serveStatic({
 server.get(/\/uploads\/?.*/, restify.serveStatic({
      directory: __dirname
  }));
+ require('./routes')
 server.listen(config.port, function() {
 
     mongoose.connection.on('error', function(err) {
@@ -93,7 +93,7 @@ server.listen(config.port, function() {
             config.env
         )
 
-        require('./routes')
+        
 
     })
 

@@ -9,7 +9,7 @@ module.exports.register = function(req, res) {
   user.email = req.body.email;
 
   user.setPassword(req.body.password);
-
+  user.count=0;
   user.save(function(err) {
 	if (err!=null) {
 		log.error(err)
@@ -19,8 +19,10 @@ module.exports.register = function(req, res) {
     var token;
     token = user.generateJwt();
     res.status(200);
+	res.session=token;
     res.json({
-      "token" : token
+      "token" : token,
+	  "id":user._id
     });
   });
 };
