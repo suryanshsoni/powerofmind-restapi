@@ -7,7 +7,15 @@ const _      = require('lodash'),
       errors = require('restify-errors'),
 	  dateTime = require('node-datetime'),
 	  multer = require('multer'),
-	  mongoose = require('mongoose')
+	  mongoose = require('mongoose'),
+	  jwt = require('restify-jwt'),
+	  config = require('../config'),
+	  passport = require('../auth_controllers/passport')
+
+var auth = jwt({
+  secret: config.MY_SECRET,
+  userProperty: 'payload'
+});
 
 var storage	=	multer.diskStorage({
   destination: function (req, file, callback) {
@@ -82,6 +90,8 @@ var uploadEvent = multer({ storage : storageEvent}).single('file')
 /**
  * Model Schema
  */
+ 
+ 
 const MessageOfDay = require('../models/messageofday')
 const Video = require('../models/video')
 const Audio = require('../models/audio')
@@ -89,7 +99,35 @@ const LiveDarshan = require('../models/livedarshan')
 const News = require('../models/news')
 const Events = require('../models/events')
 const Centre = require('../models/centre')
+const User = require('../models/user')
 
+/*----------------------------------------------------------------------------------------------*/
+
+server.post('/register',function(req,res,next){
+  var user = new User();
+
+  user.name = req.body.name;
+  user.email = req.body.email;
+
+  user.setPassword(req.body.password);
+
+  user.save(function(err) {
+	if (err!=null) {
+		log.error(err)
+		return next(new errors.InternalError(err.message))
+		next()
+	}
+    var token;
+    token = user.generateJwt();
+    res.status(200);
+    res.json({
+      "token" : token
+    });
+  });
+})
+>>>>>>> 3ea1691936179b4e2b62d1e6dc975e9f39883b45
+
+/*----------------------------------------------------------------------------------------------*/
 server.post('/writemessage', function(req, res, next) {
 	
 	uploadMessage(req,res,function(err) {

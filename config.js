@@ -9,4 +9,5 @@ module.exports={
     db: {
         uri: 'mongodb://localhost:27017/powerofmind',
     },
+	MY_SECRET:"thisismysecretcodekjkbku2441gvbjnjsnf1412321jnwjenvajdbgdh2fjwbghbfkj62ngiu"
 }

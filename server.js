@@ -9,7 +9,8 @@ const config        = require('./config'),
       winston       = require('winston'),
       bunyanWinston = require('bunyan-winston-adapter'),
       mongoose      = require('mongoose'),
-	   passport     = require('passport')
+	  passport     = require('./auth_controllers/passport'),
+	  p=require('passport')
 	  
 mongoose.Promise=require('bluebird')  
 
@@ -48,7 +49,6 @@ server.use(restify.CORS({
     origins: ['*'],
     headers: ['application/json','application/x-www-form-urlencoded','multipart/form-data','text/html']                 // sets expose-headers
 }));
-server.use(passport.initialize());
 
 /**
  * Error Handling
@@ -57,7 +57,6 @@ server.on('uncaughtException', function(req, res, route, err) {
     log.error(err.stack)
     res.send(err)
 });
-
 /**
  * Lift Server, Connect to DB & Bind Routes
  */
