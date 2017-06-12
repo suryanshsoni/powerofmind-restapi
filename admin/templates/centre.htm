@@ -1,0 +1,18 @@
+<script id="centre-template" type="text/html">
+	<li>
+ <div class="info-box">
+  <span class="info-box-icon bg-red"><i class="fa  fa-map-marker"></i></span>
+        <div class="info-box-content">
+          <p class="info-box-text address" style="font-weight:bold">{{address}}</p>
+            <span class="info-box-text city">{{city}}</span>
+            <span class="info-box-text state">{{state}}</span>
+            <span class="info-box-text country">{{country}}</span>
+            <span class="info-box-text pin">{{pin}}</span>
+           <div style="text-align:right">
+                <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteCentre(this.id)'>Delete</button>
+                <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateCentre(this.id)'>Update</button>
+        </div>
+        </div>
+</div>
+</li>
+</script>

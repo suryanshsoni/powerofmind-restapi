@@ -137,6 +137,7 @@ var uploadMessage = multer({ storage : storageMessage}).single('file')
 var uploadNews = multer({ storage : storageNews}).single('file')
 var uploadEvent = multer({ storage : storageEvent}).single('file')
 
+
 /*----------------------------------------------------------------------------------------------*/
 
 server.post('/register',function(req,res,next){
@@ -241,6 +242,7 @@ server.post('/logout',function(req, res,next){
 
     })
   })
+
 
 /*----------------------------------------------------------------------------------------------*/
 server.post('/writemessage', function(req, res, next) {
@@ -862,8 +864,11 @@ server.post('/addLiveDarshan', function(req, res, next) {
 	console.log(data)
 	data={
 		"title":req.body.title,
-		"desc":req.body.desc,
-		"videoPath":req.body.videoPath
+		"date":req.body.date,
+		"time":req.body.time,
+		"venue":req.body.venue,
+		"videoPath":req.body.videoPath,
+		"desc":req.body.desc
 	}
     let livedarshan = new LiveDarshan(data)
 	console.log(livedarshan)
@@ -961,7 +966,9 @@ server.post('/updateLiveDarshan',function(req, res, next){
 			live.title=req.body.title
 			live.desc=req.body.desc
 			live.videoPath=req.body.videoPath
-			
+			live.date=req.body.date
+			live.time=req.body.time
+			live.venue=req.body.venue
 			live.save(function(err){
 				if(err!=null){
 				log.error(err)
@@ -1378,4 +1385,68 @@ server.post('/updateNews',function(req, res, next){
 		}
 			
 	})
+})
+
+/*----------------------------------------------------------------------------------------------------*/
+
+server.post('/addCentre', function(req, res, next) {
+	
+    let data = req.body || {}
+	console.log("adding centre",data)
+	data={
+		"address":req.body.address,
+		"city":req.body.city,
+		"state":req.body.state,
+		"country":req.body.country,
+		"pin":req.body.pin,
+		"latitude":req.body.latitude,
+		"longitude":req.body.longitude,
+	}
+
+    let centre = new Centre(data)
+	console.log(centre)
+    
+	 centre.save(function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InternalError(err.message))
+            next()
+        }
+
+        res.send(201,"ADDED")
+        next()
+
+    })
+
+})
+
+server.post('/centres', function(req, res, next) {
+	console.log("Sending centre");
+	let data = req.body || {}
+	let index = 0
+	if(data!=null)
+		index=data.index
+	Centre.find(
+	{},
+	[],
+	{
+		skip:index, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
 })
