@@ -11,6 +11,9 @@ var eventEditor=null;
 var newsEditor=null;
 var newsDropzone=null;
 
+var mapLat=0;
+var mapLon=0;
+
 $.fn.serializeObject = function()
 
 {
@@ -147,7 +150,7 @@ function addVideo(){
    console.log("add video called");
   sendobject=JSON.stringify($('#addVideoForm').serializeObject());
   console.log(sendobject);
- 
+  
  $.ajax({
      type:'POST',
      url:globalroot+"addVideo",
@@ -738,24 +741,22 @@ function getLiveVideos(){
                         output.empty();
                        
                         data.forEach(function(video){
-                            var mdate=getExactDate(video.created);
-                     
-                          
-                             var mdate=getExactDate(video.created);
-                             output.mustache('live-video-template', {id:video._id, title: video.title,date:mdate,url:video.videoPath,desc:video.desc });
+                             var mdate=getExactDate(video.date);
+                             output.mustache('live-video-template', {id:video._id, title: video.title,date:mdate,url:video.videoPath,desc:video.desc,venue:video.venue,time:video.time});
                              
                         });
                        var options={
                             valueNames: [
                             'title',
                             'date',
+                            'venue',
                             { attr: 'id', name : 'id' }
                             ],
                             item:'live-video-item',
                             page:2,
                             pagination:true
                         };
-                     var liveList=new List('live_darshan',options);
+                    var liveList=new List('live_darshan',options);
                     setLiveVideoList(liveList);
                     });
                
@@ -850,6 +851,8 @@ function updateLiveVideo(video){
                 $('#liveVideoHeader').html("Editing "+data.title);
                 $('#liveVideoTitle').val(data.title);
                 $('#liveVideoDesc').val(data.desc);
+                $('#liveVideoVenue').val(data.venue);
+                $('#liveVideoDate').val(getHtmlSettableDate(data.date));
                 $('#liveVideoPath').val(data.videoPath);
                 $('#addLiveVideoForm').unbind('submit');
                 updateObjectId=id;
@@ -1106,7 +1109,7 @@ function getEvents(){
                         data.forEach(function(event){
                             console.log(event);
                             var date = new Date(
-                                event.created
+                                event.date
                                 .replace("T"," ")
                                 .replace(/-/g,"/")
                             );
@@ -1234,3 +1237,82 @@ function updateEvent(event){
     getVideos();
 }
 //------------------------------------------EVENTS ENDS-----------------------------------------------------------
+//------------------------------------------Centre LOCATOR STARTS-----------------------------------------------------------
+function addCentre(){
+   console.log("add Centre called");
+  sendobject=JSON.stringify($('#addCentreForm').serializeObject());
+  console.log(sendobject);
+ js=JSON.parse(sendobject);
+  js.latitude=mapLat;
+  js.longitude=mapLon;
+  sendobject=JSON.stringify(js);
+ $.ajax({
+     type:'POST',
+     url:globalroot+"addCentre",
+     contentType: "application/json",
+     data:sendobject,
+     encode:true
+ }).done(function(data){
+     console.log(data);
+     $('#addCentreForm')[0].reset();
+      $.snackbar({content:"Centre added successfully!", timeout: 2000,id:"mysnack"});
+ }).fail(function(data){
+     console.log(data);
+      $.snackbar({content:"Centre addition failed!", timeout: 2000,id:"mysnack"});
+ });
+    
+  getCentres();
+
+ 
+
+}
+
+function getCentres(){
+     $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'centres', 
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $.Mustache.load('templates/Centre.htm')
+					.fail(function () { 
+						console.log('Failed to load templates from <code>templates.htm</code>');
+					})
+					.done(function () {
+                        console.log(data);
+                        var output=$("#center-box");
+                        output.empty();
+                        data.forEach(function(centre){
+                            output.mustache('centre-template', {id:centre._id,address:centre.address,city:centre.city,state:centre.state,country:centre.country,pin:centre.pin});
+                        });
+                         var options={
+                            valueNames: [
+                            'state',
+                            'address',
+                            'city',
+                            'country',
+                            'pin',
+                            ],
+                            page: 3,
+                            pagination: true
+                        };
+                     messageList=new List('centreList',options);
+                       
+                    })
+
+               
+                // here we will handle errors and validation messages
+            
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+    
+        
+}
+//------------------------------------------Centre LOCATOR ENDS-----------------------------------------------------------

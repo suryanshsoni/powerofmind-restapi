@@ -21,8 +21,8 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="./resources/plugins/iCheck/flat/blue.css">
     <!-- fullCalendar 2.2.5-->
-  <link rel="stylesheet" href="resources/plugins/fullcalendar/fullcalendar.min.css">
-  <link rel="stylesheet" href="resources/plugins/fullcalendar/fullcalendar.print.css" media="print">
+  <link rel="stylesheet" href="./resources/plugins/fullcalendar/fullcalendar.min.css">
+  <link rel="stylesheet" href="./resources/plugins/fullcalendar/fullcalendar.print.css" media="print">
 
   <!-- jvectormap -->
   <link rel="stylesheet" href="./resources/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
@@ -33,7 +33,7 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="./resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <!--Dropzone css-->
-    <link rel="stylesheet" href="resources/plugins/dropzone/dropzone.css">
+    <link rel="stylesheet" href="./resources/plugins/dropzone/dropzone.css">
   <link rel="import" href=""templates="templates/landing.html">
   <!-- DataTables -->
   <link rel="stylesheet" href="resources/plugins/datatables/dataTables.bootstrap.css">
@@ -42,8 +42,6 @@
    <link rel="stylesheet" href="resources/plugins/snackbar/dist/snackbar.min.css">
    <link rel="stylesheet" href="resources/plugins/snackbar/themes-css/material.css">
     
-<!--WYSIWYG EDITOR-->
-      <link rel="stylesheet" href="resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <!--Bootstrap3 player-->
 <link rel="stylesheet" href="resources/plugins/bootstrap3-player/css/bootstrap3_player.css" >
 
@@ -122,7 +120,53 @@
   .pagination li {
   display:inline-block;
   padding:5px;
-}
+  }
+  #map {
+      height: 500px;
+      width: 100%;
+    }
+     .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
 
     </style>
 </head>
@@ -229,7 +273,11 @@
             <i class="fa fa-calendar"></i> <span>Events</span>
         </a>
         </li>
-       
+         <li id="centre-locator-li">
+          <a href="#" onclick="loadCentreLocator()">
+            <i class="fa fa-map-marker"></i> <span>Centre Locator</span>
+        </a>
+        </li>
       
       </ul>
     </section>
@@ -240,7 +288,7 @@
   <div class="content-wrapper" style="background: url(resources/images/bg.jpg)no-repeat;background-size:cover;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1 class="text-center">
+      <h1 class="text-center" style="color:white">
         Control Panel
         
       </h1>
@@ -478,6 +526,8 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
+
+
 <!-- Bootstrap 3.3.6 -->
 <script src="./resources/js/bootstrap.min.js"></script>
 
@@ -509,8 +559,8 @@
 <script src="resources/plugins/dropzone/dropzone.js"></script>
     <script src="resources/plugins/snackbar/dist/snackbar.min.js"></script>
 <!--WYSWYG EDITOR-->
-<script src="/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>  
-<script src="/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.js"></script>  
+<script src="./resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>  
+<script src="resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.js"></script>  
 
 <!-- fullCalendar 2.2.5 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
@@ -848,7 +898,7 @@
               
               <div class="box-body" style="max-height:30em;overflow-y:auto;" >
                <div id="messageList" >
-                  <input type="text" class="search" placeholder="Search by Message/Date">
+                  <input type="text" class="search" placeholder="Search by Message/Date" >
 
                   <button class="sort  pull-right" data-sort="message">Sort by message</button>
                   <button class="sort  pull-right" data-sort="date">Sort by date</button>
@@ -970,7 +1020,18 @@
                   <label for="videoTitle">Title</label>
                   <input type="text" class="form-control" id="liveVideoTitle" name="title" placeholder="Enter title of video">
                 </div>
-               
+                 <div class="form-group">
+                  <label for="date">Date</label>
+                  <input type="date" class="form-control" name="date" id="liveVideoDate" placeholder="Enter date">
+                </div>
+                 <div class="form-group">
+                  <label for="time">Time</label>
+                  <input type="time" class="form-control" name="time" id="liveVideoTime">
+                </div>
+                <div class="form-group">
+                  <label for="date">Venue</label>
+                  <input type="text" class="form-control" name="venue" id="liveVideoVenue" placeholder="Enter venue">
+                </div>
                 <div class="form-group">
                   <label>Description</label>
                   <textarea class="form-control" rows="3" name="desc" placeholder="Enter description" id="liveVideoDesc"></textarea>
@@ -1025,8 +1086,9 @@
   <span class="info-box-icon bg-red"><i class="fa fa-video-camera"></i></span>
         <div class="info-box-content">
           <span class="info-box-text title"></span>
-            <span class="info-box-text ">Uploaded On <b class="date"></b></span>
-          <span class="info-box-text"><a target="_blank" href={{url}}>Watch Now</a></span>
+            <span class="info-box-text ">Date <b class="date"></b></span>
+            <span class="info-box-text ">Venue <b class="venue"></b></span>
+            <span class="info-box-text"><a target="_blank" href={{url}}>Watch Now</a></span>
             <div style="text-align:right">
                 <button class="btn btn-xs btn-danger id"  onclick='deleteLiveVideo(this.id)'>Delete</button>
                 <button class="btn btn-xs btn-info id"  onclick='updateLiveVideo(this.id)'>Update</button>
@@ -1113,6 +1175,105 @@
             <!-- /.box-body -->
           </div>
    </div>
+</script>
+<script id="center-locator-template" type="text/x-custom-template">
+<input  class="controls search" type="text" id="pac-input" placeholder="Enter a location">
+  <div class="col-sm-12 col-md-7">
+          <!-- general form elements -->
+          <div class="box box-primary  card">
+            <div class="box-header with-border">
+              <h3 class="box-title" id="centerHeader">Add New Centre</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" id="addCentreForm">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="Center">Drop marker at center</label>
+                    <div id="map"></div>
+                 </div>
+                 <div class="form-group">
+                          <label>Chosen Address is</label>
+                          <textarea id="centerAddress" name="address" class="form-control"></textarea>
+                  </div>
+                <div class="row">
+                   
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                              <label>City</label>
+                             <input type="text" id="centerCity"name="city" class="form-control">
+                       </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                          <label for="">State</label>
+                           <input type="text" id="centerState" name="state" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-group">
+                           <label for="">Country</label>
+                            <input type="text" id="centerCountry" name="country" class="form-control">
+                      </div>
+                    </div>
+                    
+                     <div class="col-lg-3">
+                       <div class="form-group">
+                         <label for="">PIN</label>
+                         <input type="text" id="centerPIN" name="pin" class="form-control">
+                        </div>
+                     </div>
+                </div>
+           <!--rows ends-->                
+                </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+
+          <!-- Form Element sizes -->
+        </div>
+     </div>
+        <!--Center listsing starts-->
+        <div class="col-sm-12 col-md-5">
+        
+             <div class="box box-solid box-success  card">
+              <div class="box-header with-border">
+                <h3 class="box-title">Centres</h3>
+                    
+              </div>
+              <!-- /.box-header -->
+              <!--Main content of centres-->
+              
+              <div class="box-body" style="max-height:30em;overflow-y:auto;" >
+               <div id=" centerList" >
+               
+                      <input type="text" class="search" style="width:25em;" placeholder="Search by Centre/State/Country">
+                  
+            
+           
+                    <button class="sort" data-sort="city">Sort by City</button>
+                    <button class="sort" data-sort="state">Sort by Country</button>
+           
+                  <ul class="list" id="center-box"  style="padding-left:0;padding-top:20px;">
+                      
+                  </ul>
+                    <ul class="pagination"></ul>
+              </div>
+          
+               </div><!-- /.box-body -->
+                  
+                  
+              <div class="box-footer">
+                
+              </div><!-- box-footer -->
+            </div><!-- /.box -->
+        </div>
+        <!-Center listisng ends-->
+       
+
 </script>
 <script>
 var activeli="#dashboard-li";
@@ -1348,7 +1509,7 @@ function loadNews(){
             $('#existingNews').html('');
             js=getNewsUpdateInfo();
             setNewsUpdateMode(false);
-            $("#newsHeader").html("Add News of the day");
+            $("#newsHeader").html("Add News");
             
             if(js.updateMode)
             $.snackbar({content:"News updated successfully!", timeout: 2000,id:"mysnack"});
@@ -1410,11 +1571,160 @@ function loadEvent(){
    
 	
 }
-   
+function loadCentreLocator(){
+	console.log("In centew locator function");
+	var remove = document.getElementById('master');
+	while( remove.hasChildNodes() ){
+		remove.removeChild(remove.lastChild);
+	}
+    var template = $('#center-locator-template').html();
+    
+	$('#master').append(template);
+    $(activeli).removeClass("active");
+    activeli="#centre-locator-li";
+    $(activeli).addClass("active");
+    $('#addCentreForm').submit(function(e){e.preventDefault();addCentre();})
+    getCentres();
+    initializeMap();
+  }
+ 
   
+
+  function initializeMap() {
+
+    var myLatlng =new google.maps.LatLng('22.7196','75.8577');
+    var mapOptions = {
+      zoom: 12,
+      center: myLatlng
+    }
+var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+// Place a draggable marker on the map
+
+var marker = new google.maps.Marker({
+    position: myLatlng,
+    map: map,
+    draggable:true,
+    title:"Drag me!"
+});
+
+
+
+
+
+      var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+
+          if (places.length == 0) {
+            return;
+          }
+
+          // Clear out the old markers.
+          markers.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          markers = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+          
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location,
+              draggable:true,
+              title:"Drag to center's location"
+            }));
+            markers.forEach(function(marker){
+                 //this function is added so that upon changing location,the marker is stil daraggble and gives us results
+            google.maps.event.addListener(marker, "dragend",showLocationDetails);
+         
+            });
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+            });
+
+          map.fitBounds(bounds);
+        });
+    google.maps.event.addListener(marker, "dragend",showLocationDetails);
+   
+}
+function showLocationDetails(event){
+    var latitude = this.position.lat();
+    var longitude = this.position.lng();
+    mapLat=latitude;
+    mapLon=longitude;
+    results=getReverseGeocodingData(mapLat,mapLon,function(results){
+      console.log(results);
+      components=results.address_components;
+    start=components.length-1;
+    stop=start-4;
+    details=new Array();
+    for(i=start;i>stop;--i){
+        details.push(components[i].long_name)
+    }
+    console.log("address are");
+    console.log(details);
+    $('#centerAddress').html(results.formatted_address);
+    $('#centerCity').val(details[3]);
+    $('#centerState').val(details[2]);
+    $('#centerCountry').val(details[1]);
+    $('#centerPIN').val(details[0]);
+    });
+
+
+/*
+
+    console.log(results);
+    
+    */
+}
+function getReverseGeocodingData(lat, lng,callback) {
+    var latlng = new google.maps.LatLng(lat, lng);
+    // This is making the Geocode request
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+        if (status !== google.maps.GeocoderStatus.OK) {
+            alert(status);
+        }
+        // This is checking to see if the Geoeode Status is OK before proceeding
+        if (status == google.maps.GeocoderStatus.OK) {
+            callback(results[0]);
+           //console.log(results);
+            //var address = (results[0].formatted_address);
+            //return results[0];
+        }
+    });
+}
+
+
 
 
 </script>
-
+<!-- Gooogle Maps-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdfUd_gUFfAyfXNOTmeAi6HTrA1iPYIP8&libraries=places"
+    async defer></script>
 </body>
 </html>
