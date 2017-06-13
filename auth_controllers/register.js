@@ -22,7 +22,8 @@ module.exports.register = function(req, res) {
 	res.session=token;
     res.json({
       "token" : token,
-	  "id":user._id
+	  "id":user._id,
+	  "status":true
     });
   });
 };

@@ -8,7 +8,7 @@ module.exports.login = function(req, res) {
 
     // If Passport throws/catches an error
     if (err) {
-      res.send(404,err);
+      res.send(404,{"err":err,"status":false});
       return;
     }
 
@@ -21,13 +21,14 @@ module.exports.login = function(req, res) {
 			res.session=token;
 			res.json({
 			  "token" : token,
-			  "id":user._id
+			  "id":user._id,
+			  "status":true
 			});	
 	}
 		  
     } else {
       // If user is not found
-      res.send(401,info);
+      res.send(401,{"err":info,"status":false});
     }
   })(req,res);
 

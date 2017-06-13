@@ -37,7 +37,8 @@ var authnjwt = function(req,res,next){
 	nJwt.verify(token,config.MY_SECRET,function(err,verifiedJwt){
   if(err){
     console.log(err); // Token has expired, has been tampered with, etc
-	res.send(400,"Tampered/Expired token");
+	var jsRes={"status":"Tampered/Expired token"};
+	res.send(400,jsRes);
 	
   }else{
 	var jwtbody=verifiedJwt.body
@@ -56,7 +57,7 @@ var authnjwt = function(req,res,next){
 		}
         else{
 			res.header('Location',"/admin");
-			res.send(200,"Not found/Wrong Credentials")
+			res.send(200,{"status":"Not found/Wrong Credentials"})
 		}
 			
 
@@ -151,8 +152,9 @@ server.post('/register',function(req,res,next){
   user.save(function(err) {
 	if (err!=null) {
 		log.error(err)
-		return next(new errors.InternalError(err.message))
-		next()
+		//console.log( new errors.InternalError(err.message))
+		res.send(400,{"status":false,"err":err.message})
+		return
 	}
     var token;
     token = user.generateJwt();
@@ -160,11 +162,15 @@ server.post('/register',function(req,res,next){
 	if(state==true){
 		res.status(200);
 		res.json({
-		  "token" : token
+		  "token" : token,
+		  "status":true
 		});	
 	}
 			
   });
+})
+server.post("/authenticate",authnjwt,function(req,res){
+		res.send(200,{"status":"OK"})
 })
 /*
 server.post('/login',function(req,res,next){
