@@ -316,11 +316,42 @@ server.post('/message1', function(req, res, next) {
     })
 
 })
+server.post('/messagelast', function(req, res, next) {
+	console.log("Sending message");
+	var datetime = new Date();
+	console.log(datetime);
+	MessageOfDay.find(
+	{
+		date:{$lte:datetime} 
+	},
+	[],
+	{
+		skip:0, // Starting Row
+		//limit:10, // Ending Row
+		sort:{
+			date: -1 //Sort by Date Added DESC
+		}
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
+})
 
 server.post('/message', function(req, res, next) {
 	console.log("Sending message");
+	var datetime = new Date();
+	console.log(datetime);
 	MessageOfDay.findOne(
-	{date:"2017-03-03T18:30:00.000Z"},
+	{date:datetime},
 	[],
 	{
 		skip:0, // Starting Row
