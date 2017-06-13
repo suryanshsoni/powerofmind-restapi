@@ -150,17 +150,32 @@
 
 <script>
 $('#loginform').submit(function(e){
-e.preventDefault();
-username=$("#username").val();
-	password=$("#password").val();
+    e.preventDefault();
+    js={};
+    
+    js.email=$("#username").val();
+	js.password=$("#password").val();
 	
-	if(username=="admin" && password=="powerofmind321@")
-		window.location="/admin/dashboard.html";
-	else{
+    $.ajax({
+     type:'POST',
+     url:globalroot+"login",
+     data:JSON.stringify(js),
+     contentType: "application/json",
+     encode:true
+    }).done(function(data){
+       sessionStorage.id=data.id;
+       sessionStorage.token=data.token;
+       window.location="/admin/dashboard.html";
+       console.log("this is the data");
+        }).fail(function(data){
+      	 $.snackbar({content:"Incorrect Credentials", timeout: 2000,id:"mysnack"});
+    });
+
+	
+	/*else{
 		console.log("Incorrect credentials");
-		$.snackbar({content:"Incorrect Credentials", timeout: 2000,id:"mysnack"});
 		return false;
-	}
+	}*/
 });
 
 

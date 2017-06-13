@@ -207,7 +207,7 @@
                   <a href="#" class="btn btn-default btn-flat">Change Password</a>
                 </div>
                 <div class="pull-right">
-                  <a href="/admin/" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="" class="btn btn-default btn-flat" onclick="logout()">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -1720,7 +1720,45 @@ function getReverseGeocodingData(lat, lng,callback) {
     });
 }
 
+$(document).ready(function(){
 
+  $.ajax({
+     type:'POST',
+     url:globalroot+"authenticate",
+    
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+     contentType: "application/json",
+     encode:true
+    }).done(function(data){
+     console.log(data);
+     if(data.status!="OK")
+        window.location="/admin";
+       console.log("this is the data");
+        }).fail(function(data){
+       window.location="/admin";
+    });
+});
+//Logout
+function logout(){
+  var js={};
+  js.id=sessionStorage.id;
+  $.ajax({
+     type:'POST',
+     url:globalroot+"authenticate",
+     id:JSON.stringify(js),
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+     contentType: "application/json",
+     encode:true
+    }).done(function(data){
+      console.log(data);
+      sessionStorage.clear();
+       window.location="/admin";
+       console.log("this is the data");
+        }).fail(function(data){
+     
+    });
+
+}
 
 
 </script>

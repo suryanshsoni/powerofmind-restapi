@@ -7,7 +7,7 @@ module.exports={
     port: process.env.PORT || 3000,
     base_url: process.env.BASE_URL || 'http://localhost:3000',
     db: {
-        uri: 'mongodb://localhost:27017/powerofmind',
+        uri: 'mongodb://127.0.0.1:27017/powerofmind',
     },
 	MY_SECRET:"thisismysecretcodekjkbku2441gvbjnjsnf1412321jnwjenvajdbgdh2fjwbghbfkj62ngiu"
 }

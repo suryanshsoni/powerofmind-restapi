@@ -156,6 +156,9 @@ function addVideo(){
      url:globalroot+"addVideo",
      contentType: "application/json",
      data:sendobject,
+     headers: {
+    'Authorization': 'Bearer ' + sessionStorage.token
+  },
      encode:true
  }).done(function(data){
      console.log(data);
@@ -176,7 +179,10 @@ function getVideos(){
      $.ajax({
             type        : 'POST', 
             url         : globalroot+'videos', 
-            encode      : true
+            encode      : true,
+            headers: {
+    'Authorization': 'Bearer ' + sessionStorage.token
+  }
         })
             // using the done promise callback
             .done(function(data) {
@@ -233,7 +239,7 @@ function changeVideoDetails(){
      url:globalroot+"updateVideo",
      contentType: "application/json",
      data:send,
-     encode:true
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },encode:true
  }).done(function(data){
      console.log(data);
      $('#addVideoForm')[0].reset();
@@ -262,6 +268,7 @@ function updateVideo(video){
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             encode      : true
         })
             // using the done promise callback
@@ -294,6 +301,7 @@ function deleteVideo(video){
             type        : 'POST', 
             url         : globalroot+'removeVideo', 
             data        :JSON.stringify({"id":id}),
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             processData: false,
             contentType: 'application/json',
             encode      : true
@@ -335,6 +343,7 @@ console.log(sendobject);
          url:globalroot+"updateAudio",
          contentType: "application/json",
          data:sendobject,
+         headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
          encode:true
      }).done(function(data){
          console.log(data);
@@ -383,7 +392,8 @@ function getAudios(){
      $.ajax({
             type        : 'POST', 
             url         : globalroot+'audios', 
-            encode      : true
+            encode      : true,
+             headers: {     'Authorization': 'Bearer ' + sessionStorage.token   }
         })
             // using the done promise callback
             .done(function(data) {
@@ -429,6 +439,7 @@ function updateAudio(audio){
             type        : 'POST', 
             url         : globalroot+'getAudioDetails', 
             data        :JSON.stringify({"id":id}),
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             processData: false,
             contentType: 'application/json',
             encode      : true
@@ -472,6 +483,7 @@ function deleteAudio(audio){
             type        : 'POST', 
             url         : globalroot+'removeAudio', 
             data        :JSON.stringify({"id":id}),
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             processData: false,
             contentType: 'application/json',
             encode      : true
@@ -509,6 +521,7 @@ function addMessage(){
     $.ajax({
          type:'POST',
          url:globalroot+updateMessageEndPoint,
+         headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
          contentType: "application/json",
          data:sendobject,
          encode:true
@@ -560,6 +573,7 @@ function getMessages(){
      $.ajax({
             type        : 'POST', 
             url         : globalroot+'/message1', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             encode      : true
         })
             // using the done promise callback
@@ -622,6 +636,7 @@ function deleteMessage(message){
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
+             headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             encode      : true
         })
             // using the done promise callback
@@ -653,6 +668,7 @@ function updateMessage(message){
             type        : 'POST', 
             url         : globalroot+'getMessageDetails', 
             data        :JSON.stringify({"id":id}),
+             headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             processData: false,
             contentType: 'application/json',
             encode      : true
@@ -704,6 +720,7 @@ function addLiveVideo(){
      type:'POST',
      url:globalroot+"addLiveDarshan",
      contentType: "application/json",
+      headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
      data:sendobject,
      encode:true
  }).done(function(data){
@@ -723,7 +740,8 @@ function addLiveVideo(){
 function getLiveVideos(){
      $.ajax({
             type        : 'POST', 
-            url         : globalroot+'liveDarshan', 
+            url         : globalroot+'liveDarshan',
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   }, 
             encode      : true
         })
             // using the done promise callback
@@ -777,6 +795,7 @@ function deleteLiveVideo(video){
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             encode      : true
         })
             // using the done promise callback
@@ -813,6 +832,7 @@ function changeLiveVideoDetails(){
  $.ajax({
      type:'POST',
      url:globalroot+"updateLiveDarshan",
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
      contentType: "application/json",
      data:send,
      encode:true
@@ -841,6 +861,7 @@ function updateLiveVideo(video){
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             encode      : true
         })
             // using the done promise callback
@@ -877,6 +898,7 @@ function addNews(){
     $.ajax({
          type:'POST',
          url:globalroot+updateNewsEndPoint,
+         headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
          contentType: "application/json",
          data:sendobject,
          encode:true
@@ -925,6 +947,7 @@ function updateNews(news){
     $.ajax({
             type        : 'POST', 
             url         : globalroot+'getNewsDetails', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
@@ -971,6 +994,7 @@ function updateNews(news){
 function getNews(){
      $.ajax({
             type        : 'POST', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             url         : globalroot+'news', 
             encode      : true
         })
@@ -1034,6 +1058,7 @@ function deleteNews(news){
     $.ajax({
             type        : 'POST', 
             url         : globalroot+'removeNews', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
@@ -1073,6 +1098,7 @@ function addEvent(){
      type:'POST',
      url:globalroot+"addEvent",
      contentType: "application/json",
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
      data:sendobject,
      encode:true
  }).done(function(data){
@@ -1091,6 +1117,7 @@ function getEvents(){
      $.ajax({
             type        : 'POST', 
             url         : globalroot+'events', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             encode      : true
         })
             // using the done promise callback
@@ -1143,6 +1170,7 @@ function deleteEvent(event){
     $.ajax({
             type        : 'POST', 
             url         : globalroot+'removeEvent', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             data        :JSON.stringify({"id":id}),
             processData: false,
             contentType: 'application/json',
@@ -1177,6 +1205,7 @@ function changeEventDetails(){
     console.log(send);
  $.ajax({
      type:'POST',
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
      url:globalroot+"updateEvent",
      contentType: "application/json",
      data:send,
@@ -1206,6 +1235,7 @@ function updateEvent(event){
     
     $.ajax({
             type        : 'POST', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             url         : globalroot+'getEventDetails', 
             data        :JSON.stringify({"id":id}),
             processData: false,
@@ -1249,6 +1279,7 @@ function addCentre(){
  $.ajax({
      type:'POST',
      url:globalroot+"addCentre",
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
      contentType: "application/json",
      data:sendobject,
      encode:true
@@ -1270,6 +1301,7 @@ function addCentre(){
 function getCentres(){
      $.ajax({
             type        : 'POST', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
             url         : globalroot+'centres', 
             encode      : true
         })
