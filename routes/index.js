@@ -249,9 +249,34 @@ server.post('/logout',function(req, res,next){
     })
   })
 
+  server.post('/changePassword',authnjwt,function(req,res){
+	console.log("changing password")
+	User.findById(mongoose.mongo.ObjectId(req.body.id),
+		function(err, user) {
+
+			if (err!=null) {
+				log.error(err)
+				return next(new errors.InvalidContentError(err.errors.name.message))
+			}
+			console.log("user is"+user);
+			if (!user.validPassword(req.body.cur_password)) {
+				res.send(200,{"status":false,"err":"Wrong Password"})
+			}
+			user.setPassword(req.body.new_password);
+			user.save(function(err){
+				if (err!=null) {
+				log.error(err)
+				return next(new errors.InvalidContentError(err.errors.name.message))
+				}
+				res.send(200,{"status":"OK"})
+			})
+				
+
+    })
+  })
 
 /*----------------------------------------------------------------------------------------------*/
-server.post('/writemessage', function(req, res, next) {
+server.post('/writemessage', authnjwt,function(req, res, next) {
 	
 	uploadMessage(req,res,function(err) {
 		if(err) {
@@ -402,7 +427,7 @@ server.post('/getMessageDetails', function(req, res, next) {
 
 })
 
-server.post('/removeMessage', function(req, res, next) {
+server.post('/removeMessage',authnjwt, function(req, res, next) {
 	console.log("removing message");
 	MessageOfDay.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
@@ -419,7 +444,7 @@ server.post('/removeMessage', function(req, res, next) {
 
 })
 
-server.post('/updateMessage',function(req, res, next){
+server.post('/updateMessage',authnjwt,function(req, res, next){
 	console.log("updating message")
 	console.log("start----------------================")
 	let id=null;
@@ -583,7 +608,7 @@ server.post('/getVideoDetails', function(req, res, next) {
 
 })
 
-server.post('/removeVideo', function(req, res, next) {
+server.post('/removeVideo',authnjwt, function(req, res, next) {
 	console.log("removing video");
 	Video.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
@@ -600,7 +625,7 @@ server.post('/removeVideo', function(req, res, next) {
 
 })
 
-server.post('/updateVideo',function(req, res, next){
+server.post('/updateVideo',authnjwt,function(req, res, next){
 	console.log("updating video" + req.body.id)
 	Video.findById(mongoose.mongo.ObjectId(req.body.id),
 	function(err,video){
@@ -675,7 +700,7 @@ server.post('/countVideos', function(req, res, next) {
 
 
 /*-------------------------------------------------------------------------------------------------------------------*/
-server.post('/addAudio', function(req, res, next) {
+server.post('/addAudio', authnjwt,function(req, res, next) {
 	
     
 	
@@ -793,7 +818,7 @@ server.post('/getAudioDetails', function(req, res, next) {
     })
 
 })
-server.post('/removeAudio', function(req, res, next) {
+server.post('/removeAudio',authnjwt, function(req, res, next) {
 	console.log("removing audio");
 	Audio.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
@@ -812,7 +837,7 @@ server.post('/removeAudio', function(req, res, next) {
 
 
 
-server.post('/updateAudio',function(req, res, next){
+server.post('/updateAudio',authnjwt,function(req, res, next){
 	console.log("updating audio")
 	console.log("start----------------================")
 	let id=null;
@@ -895,7 +920,7 @@ server.post('/countAudios', function(req, res, next) {
 
 })
 /*-------------------------------------------------------------------------------------------------*/
-server.post('/addLiveDarshan', function(req, res, next) {
+server.post('/addLiveDarshan',authnjwt, function(req, res, next) {
 	
     let data = req.body || {}
 	console.log(data)
@@ -973,7 +998,7 @@ server.post('/getLiveDarshanDetails', function(req, res, next) {
     })
 
 })
-server.post('/removeLiveDarshan', function(req, res, next) {
+server.post('/removeLiveDarshan',authnjwt, function(req, res, next) {
 	console.log("removing Live Darshan");
 	LiveDarshan.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
@@ -989,7 +1014,7 @@ server.post('/removeLiveDarshan', function(req, res, next) {
     })
 
 })
-server.post('/updateLiveDarshan',function(req, res, next){
+server.post('/updateLiveDarshan',authnjwt,function(req, res, next){
 	console.log("updating live darshan" + req.body.id)
 	LiveDarshan.findById(mongoose.mongo.ObjectId(req.body.id),
 	function(err,live){
@@ -1040,7 +1065,7 @@ server.post('/countLiveDarshan', function(req, res, next) {
 })
 /*--------------------------------------------------------------------------------------------*/
 
-server.post('/addEvent', function(req, res, next) {
+server.post('/addEvent',authnjwt, function(req, res, next) {
 	
         let data={
 					"name": req.body.name,
@@ -1118,7 +1143,7 @@ server.post('/getEventDetails', function(req, res, next) {
     })
 
 })
-server.post('/removeEvent', function(req, res, next) {
+server.post('/removeEvent',authnjwt, function(req, res, next) {
 	console.log("removing event");
 	Events.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
@@ -1153,7 +1178,7 @@ server.post('/countEvents', function(req, res, next) {
 
 })
 
-server.post('/updateEvent',function(req, res, next){
+server.post('/updateEvent',authnjwt,function(req, res, next){
 	console.log("updating event" + req.body.id)
 	
 			Events.findById(mongoose.mongo.ObjectId(req.body.id),
@@ -1182,7 +1207,7 @@ server.post('/updateEvent',function(req, res, next){
 	
 })
 
-server.post('/updateEventold',function(req, res, next){
+server.post('/updateEventold',authnjwt,function(req, res, next){
 	console.log("updating event" + req.body.id)
 	Events.findById(mongoose.mongo.ObjectId(req.body.id),
 		function(err,events){
@@ -1226,7 +1251,7 @@ server.post('/updateEventold',function(req, res, next){
 
 })
 /*-------------------------------------------------------------------------------------------------*/
-server.post('/addNews', function(req, res, next) {
+server.post('/addNews',authnjwt, function(req, res, next) {
 	
 	uploadNews(req,res,function(err) {
 		if(err) {
@@ -1325,7 +1350,7 @@ server.post('/getNewsDetails', function(req, res, next) {
     })
 
 })
-server.post('/removeNews', function(req, res, next) {
+server.post('/removeNews',authnjwt, function(req, res, next) {
 	console.log("removing news");
 	News.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
 	function(err) {
@@ -1360,7 +1385,7 @@ server.post('/countNews', function(req, res, next) {
     })
 
 })
-server.post('/updateNews',function(req, res, next){
+server.post('/updateNews',authnjwt,function(req, res, next){
 	console.log("updating news")
 	console.log("start----------------================")
 	let id=null;
@@ -1426,7 +1451,7 @@ server.post('/updateNews',function(req, res, next){
 
 /*----------------------------------------------------------------------------------------------------*/
 
-server.post('/addCentre', function(req, res, next) {
+server.post('/addCentre',authnjwt, function(req, res, next) {
 	
     let data = req.body || {}
 	console.log("adding centre",data)
