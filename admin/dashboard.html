@@ -45,6 +45,13 @@
 <!--Bootstrap3 player-->
 <link rel="stylesheet" href="resources/plugins/bootstrap3-player/css/bootstrap3_player.css" >
 
+<!-- jQuery 2.2.3 -->
+<script src="./resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+<!--All form related scripts here:-->
+<script src="resources/js/main.js" type="text/javascript"></script>
     
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -52,6 +59,29 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <script>
+  $('body').css('display', 'none');
+
+    $.ajax({
+     type:'POST',
+     url:globalroot+"authenticate",
+     async:false,
+     headers: {'Authorization': 'Bearer ' + sessionStorage.token},
+     contentType: "application/json",
+     encode:true,
+     cache: false,
+    }).done(function(data){
+     console.log(data);
+     if(data.status!="OK")
+        window.location="/admin";
+      else{
+        $('body').css('display', 'block');
+      }
+       console.log("this is the data");
+        }).fail(function(data){
+       window.location="/admin";
+    });
+</script>
     <style>
         .dropzone {
         border: 2px dashed #0087F7;
@@ -514,10 +544,6 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
-<script src="./resources/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script src="./resources/js/jquery.mustache.js"></script> 
 <script src="./resources/js/mustache.js"></script>
@@ -574,8 +600,6 @@
 <script src="resources/plugins/bootstrap3-player/js/bootstrap3_player.js"></script>
 <!--List-->
 <script src="resources/js/list.js"></script>
-<!--All form related scripts here:-->
-<script src="resources/js/main.js" type="text/javascript"></script>
 
 
 <script  id="landing" type="text/x-custom-template">
