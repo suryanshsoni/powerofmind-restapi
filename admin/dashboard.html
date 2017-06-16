@@ -557,15 +557,15 @@
       <div class="modal-body">
 			<div class="form-group">
 				<label for="oldpass">Enter your current password</label>
-				<input type="password" name="cur_password" id="oldpass" class="form-control">
+				<input type="password" required name="cur_password" id="oldpass" class="form-control">
 			</div>
 			<div class="form-group">
 				<label for="oldpass">Enter your new password</label>
-				<input  type="password" name="new_password" id="newpass" class="form-control">
+				<input  type="password" required name="new_password" id="newpass" class="form-control">
 			</div>
 			<div class="form-group">
 				<label for="oldpass">One more time</label>
-				<input  type="password"  name="repass" id="repass" onkeyup="verifypass()" class="form-control">
+				<input  type="password" required  name="repass" id="repass" onkeyup="verifypass()" class="form-control">
 			</div>
 			<div class="form-group">
 				<p id="repasshelp"></p>
@@ -745,17 +745,17 @@
             <form id="addVideoForm">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="videoTitle">Title</label>
-                  <input type="text" class="form-control"   name="title" id="videotitle" placeholder="Enter title of video">
+                  <label for="videoTitle">Title *</label>
+                  <input type="text" class="form-control" required  name="title" id="videotitle" placeholder="Enter title of video">
                 </div>
                
                 <div class="form-group">
-                  <label>Description</label>
-                  <textarea class="form-control" rows="3" name="desc" id="videodesc" placeholder="Enter description"></textarea>
+                  <label>Description *</label>
+                  <textarea class="form-control" rows="3" name="desc" required  id="videodesc" placeholder="Enter description"></textarea>
                 </div>
                  <div class="form-group">
-                  <label for="videoURL">URL</label>
-                  <input type="text" class="form-control" name="videoPath" id="videourl" placeholder="URL of the video">
+                  <label for="videoURL">URL *</label>
+                  <input type="text" class="form-control" name="videoPath" required   id="videourl" placeholder="URL of the video">
                 </div>
                 <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -829,20 +829,20 @@
             <form role="form" id="addAudioForm" method="post" >
               <div class="box-body">
                 <div class="form-group">
-                  <label for="audioTitle" >Title</label>
-                  <input type="text" class="form-control" name="title" placeholder="Enter title" id="audiotitle">
+                  <label for="audioTitle" >Title * </label>
+                  <input type="text" class="form-control" required name="title" placeholder="Enter title" id="audiotitle">
                 </div>
                 
                 <div class="form-group">
-                  <label>Description</label>
-                  <textarea class="form-control" rows="3" name="desc" placeholder="Enter description" id="audiodesc"></textarea>
+                  <label>Description *</label>
+                  <textarea class="form-control" rows="3" name="desc" required  placeholder="Enter description" id="audiodesc"></textarea>
                 </div>
                 
                <div class="form-group" id="existingAudio"></div>
        
               <!-- /.box-body -->
                <div class="form-group">
-                  <label for="exampleInputFile">File input</label>
+                  <label for="exampleInputFile">File input *</label>
                   <div class="dropzone dropzone-previews" id="my-dropzone" name="userPhoto">
                   
                     </div>
@@ -919,13 +919,13 @@
             <form role="form" id="addMessageForm">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="message">Message of the day</label>
-                  <input type="text" class="form-control" id="messageText"name="message" placeholder="Enter message of the day">
+                  <label for="message">Message of the day *</label>
+                  <input type="text" class="form-control" required id="messageText"name="message" placeholder="Enter message of the day">
                 </div>
                 
                 <div class="form-group">
-                  <label>Date</label>
-                  <input type="date" id="messageDate" class="form-control" rows="3" name="date">
+                  <label>Date *</label>
+                  <input type="date" id="messageDate" required  class="form-control" rows="3" name="date">
                 </div>
                    <div class="form-group" id="existingMessage"></div>
               
@@ -997,26 +997,26 @@
             <div class="box-body pad " >
                
                 <div class="form-group">
-                  <label for="title">Title</label>
-                  <input type="text" class="form-control" name="title" id="news-title" placeholder="Enter title">
+                  <label for="title">Title *</label>
+                  <input type="text" class="form-control" required name="title" id="news-title" placeholder="Enter title">
                 </div>
                 <div class="form-group">
-                  <label>Date</label>
-                  <input type="date" id="newsDate" class="form-control" rows="3" name="date">
+                  <label>Date *</label>
+                  <input type="date" id="newsDate" class="form-control"  required rows="3" name="date">
                 </div>
                 
                 <div class="form-group" id="existingNews"></div>
               
                
               <div class="form-group">
-                 <label for="date">News description</label>
-                  <textarea class="form-control" style="width:100%" id="news-editor" name="desc" rows=5 placeholder="Enter event description here">
+                 <label for="date">News description *</label>
+                  <textarea class="form-control" style="width:100%" id="news-editor" required  name="desc" rows=5 placeholder="Enter event description here">
 
                   </textarea>
               </div>
                
               <div class="form-group">
-                  <label for="imagePath">Image</label>
+                  <label for="imagePath">Image </label>
                   <div class="dropzone dropzone-previews" id="news-dropzone">
               </div>
               </div>
@@ -1079,28 +1079,28 @@
             <form id="addLiveVideoForm">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="videoTitle">Title</label>
-                  <input type="text" class="form-control" id="liveVideoTitle" name="title" placeholder="Enter title of video">
+                  <label for="videoTitle">Title * </label>
+                  <input type="text" class="form-control" id="liveVideoTitle" required  name="title" placeholder="Enter title of video">
                 </div>
                  <div class="form-group">
-                  <label for="date">Date</label>
-                  <input type="date" class="form-control" name="date" id="liveVideoDate" placeholder="Enter date">
+                  <label for="date">Date * </label>
+                  <input type="date" class="form-control" name="date" id="liveVideoDate" required  placeholder="Enter date">
                 </div>
                  <div class="form-group">
-                  <label for="time">Time</label>
-                  <input type="time" class="form-control" name="time" id="liveVideoTime">
+                  <label for="time">Time * </label>
+                  <input type="time" class="form-control" name="time"  required  id="liveVideoTime">
                 </div>
                 <div class="form-group">
-                  <label for="date">Venue</label>
-                  <input type="text" class="form-control" name="venue" id="liveVideoVenue" placeholder="Enter venue">
+                  <label for="date">Venue * </label>
+                  <input type="text" class="form-control" name="venue" required  id="liveVideoVenue" placeholder="Enter venue">
                 </div>
                 <div class="form-group">
-                  <label>Description</label>
-                  <textarea class="form-control" rows="3" name="desc" placeholder="Enter description" id="liveVideoDesc"></textarea>
+                  <label>Description * </label>
+                  <textarea class="form-control" rows="3" name="desc" required  placeholder="Enter description" id="liveVideoDesc"></textarea>
                 </div>
                  <div class="form-group">
-                  <label for="videoURL">URL</label>
-                  <input type="text" class="form-control" name="videoPath" placeholder="URL of the live video" id="liveVideoPath">
+                  <label for="videoURL">URL * </label>
+                  <input type="text" class="form-control" name="videoPath" required  placeholder="URL of the live video" id="liveVideoPath">
                 </div>
                 <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -1175,24 +1175,24 @@
             <div class="box-body pad " >
                 <form id="addEventForm">
                 <div class="form-group">
-                  <label for="title">Name</label>
-                  <input type="text" class="form-control" name="name" id="event-name" placeholder="Enter name">
+                  <label for="title">Name * </label>
+                  <input type="text" class="form-control" required  name="name" id="event-name" placeholder="Enter name">
                 </div>
                 <div class="form-group">
-                  <label for="title">Title</label>
-                  <input type="text" class="form-control" name="title" id="event-title" placeholder="Enter title">
+                  <label for="title">Title * </label>
+                  <input type="text" class="form-control" required  name="title" id="event-title" placeholder="Enter title">
                 </div>
                 <div class="form-group">
-                  <label for="date">Date</label>
-                  <input type="date" class="form-control" name="date" id="event-date" placeholder="Enter date">
+                  <label for="date">Date * </label>
+                  <input type="date" class="form-control" required  name="date" id="event-date" placeholder="Enter date">
                 </div>
                 <div class="form-group">
-                  <label for="date">Venue</label>
-                  <input type="text" class="form-control" name="venue" id="event-venue" placeholder="Enter venue">
+                  <label for="date">Venue * </label>
+                  <input type="text" class="form-control"required   name="venue" id="event-venue" placeholder="Enter venue">
                 </div>
                 <div class="form-group">
-                 <label for="date">Event description</label>
-                  <textarea class="form-control" style="width:100%" id="event-editor" name="desc" rows=5 placeholder="Enter event description here">
+                 <label for="date">Event description * </label>
+                  <textarea class="form-control" style="width:100%" required  id="event-editor" name="desc" rows=5 placeholder="Enter event description here">
 
                   </textarea>
               </div>
@@ -1255,34 +1255,34 @@
                     <div id="map"></div>
                  </div>
                  <div class="form-group">
-                          <label>Chosen Address is</label>
-                          <textarea id="centerAddress" name="address" class="form-control"></textarea>
+                          <label>Chosen Address is * </label>
+                          <textarea id="centerAddress"  required  name="address" class="form-control"></textarea>
                   </div>
                 <div class="row">
                    
                     <div class="col-lg-3">
                         <div class="form-group">
-                              <label>City</label>
-                             <input type="text" id="centerCity"name="city" class="form-control">
+                              <label>City * </label>
+                             <input type="text" id="centerCity" required  name="city" class="form-control">
                        </div>
                     </div>
                     <div class="col-lg-3">
                       <div class="form-group">
-                          <label for="">State</label>
-                           <input type="text" id="centerState" name="state" class="form-control">
+                          <label for="">State * </label>
+                           <input type="text" id="centerState"  required  name="state" class="form-control">
                       </div>
                     </div>
                     <div class="col-lg-3">
                       <div class="form-group">
-                           <label for="">Country</label>
-                            <input type="text" id="centerCountry" name="country" class="form-control">
+                           <label for="">Country * </label>
+                            <input type="text" id="centerCountry"  required  name="country" class="form-control">
                       </div>
                     </div>
                     
                      <div class="col-lg-3">
                        <div class="form-group">
-                         <label for="">PIN</label>
-                         <input type="text" id="centerPIN" name="pin" class="form-control">
+                         <label for="">PIN * </label>
+                         <input type="text" id="centerPIN"  required  name="pin" class="form-control">
                         </div>
                      </div>
                 </div>
@@ -1815,8 +1815,8 @@ function logout(){
   $.ajax({
      type:'POST',
      url:globalroot+"logout",
-     id:JSON.stringify(js),
-     headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+     data:JSON.stringify(js),
+     headers: {     'Authorization': 'Bearer ' + sessionStorage.token  },
      contentType: "application/json",
      encode:true
     }).done(function(data){
@@ -1870,10 +1870,10 @@ $("#changePasswordForm").submit(function(e){
      encode:true
  }).done(function(data){
      console.log(data);
-	 if(data.status="OK"){
+	 if(data.status){
 		 $('#changePasswordForm')[0].reset();
 		$("#dismissModal").click();
-		$('#repasshelp').val();
+		$('#repasshelp').html('');
       $.snackbar({content:"Password changed successfully!", timeout: 2000,id:"mysnack"});	
 	 }
 	 else if(!data.status){
