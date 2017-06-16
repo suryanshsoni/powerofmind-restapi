@@ -234,7 +234,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Change Password</a>
+                  <a href="#" class="btn btn-default btn-flat" data-toggle="modal" data-target="#changePassword">Change Password</a>
                 </div>
                 <div class="pull-right">
                   <a href="" class="btn btn-default btn-flat" onclick="logout()">Sign out</a>
@@ -543,7 +543,44 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
+<!-- Modal -->
+<div id="changePassword" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Change Password</h4>
+      </div>
+	  <form id="changePasswordForm">
+      <div class="modal-body">
+			<div class="form-group">
+				<label for="oldpass">Enter your current password</label>
+				<input type="password" name="cur_password" id="oldpass" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="oldpass">Enter your new password</label>
+				<input  type="password" name="new_password" id="newpass" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="oldpass">One more time</label>
+				<input  type="password"  name="repass" id="repass" onkeyup="verifypass()" class="form-control">
+			</div>
+			<div class="form-group">
+				<p id="repasshelp"></p>
+			</div>
+		
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-default"id="dismissModal" data-dismiss="modal">Close</button>
+      </div>
+	  </form>
+    </div>
+
+  </div>
+</div>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script src="./resources/js/jquery.mustache.js"></script> 
 <script src="./resources/js/mustache.js"></script>
@@ -1297,7 +1334,7 @@
             </div><!-- /.box -->
         </div>
         <!-Center listisng ends-->
-       
+  
 
 </script>
 <script>
@@ -1777,7 +1814,7 @@ function logout(){
   js.id=sessionStorage.id;
   $.ajax({
      type:'POST',
-     url:globalroot+"authenticate",
+     url:globalroot+"logout",
      id:JSON.stringify(js),
      headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
      contentType: "application/json",
@@ -1793,8 +1830,69 @@ function logout(){
 
 }
 
+function verifypass(){
+    var passfield=document.getElementById('newpass');
+    var repassfield=document.getElementById('repass');
+    var help=document.getElementById("repasshelp");
+    help.setAttribute("visibility","visible");
+    if(passfield.value!=""){
+         if(passfield.value===repassfield.value ){
+         help.innerHTML="Passwords match!! Good to go!";
+         help.setAttribute("style","font-size: 15px;color:"+'green'+";font-weight:bold;");
+        return true;
+    }
+    else{
+        
+        help.innerHTML="Passwords don't match!!";
+        help.setAttribute("style","font-size: 15px;color:orange;font-weight:bold");
+      
+        return false;
+    }
+    }
+   
+}
+$("#changePasswordForm").submit(function(e){
+	e.preventDefault();
+	console.log("Inside");
+	 sendobject=JSON.stringify($('#changePasswordForm').serializeObject());
+	js=JSON.parse(sendobject);
+	js.id=sessionStorage.id;
+	sendobject=JSON.stringify(js);
+	if(verifypass()){
+	$.ajax({
+     type:'POST',
+     url:globalroot+"changePassword",
+     contentType: "application/json",
+     data:sendobject,
+     headers: {
+    'Authorization': 'Bearer ' + sessionStorage.token
+	},
+     encode:true
+ }).done(function(data){
+     console.log(data);
+	 if(data.status="OK"){
+		 $('#changePasswordForm')[0].reset();
+		$("#dismissModal").click();
+		$('#repasshelp').val();
+      $.snackbar({content:"Password changed successfully!", timeout: 2000,id:"mysnack"});	
+	 }
+	 else if(!data.status){
+		$.snackbar({content:"Old Password doesn't match!", timeout: 2000,id:"mysnack"});	
+	
+	 }
+    
+ }).fail(function(data){
+     console.log(data);
+      $.snackbar({content:"Old Password doesn't match !", timeout: 2000,id:"mysnack"});
+ });
+ }
+ else{
+	alert("Passwords do not match!");
+ }
+});
 
 </script>
+
 <!-- Gooogle Maps-->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdfUd_gUFfAyfXNOTmeAi6HTrA1iPYIP8&libraries=places"
     async defer></script>

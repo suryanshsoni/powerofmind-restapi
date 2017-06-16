@@ -249,7 +249,7 @@ server.post('/logout',function(req, res,next){
     })
   })
 
-  server.post('/changePassword',authnjwt,function(req,res){
+  server.post('/changePassword',authnjwt,function(req,res,next){
 	console.log("changing password")
 	User.findById(mongoose.mongo.ObjectId(req.body.id),
 		function(err, user) {
@@ -261,15 +261,19 @@ server.post('/logout',function(req, res,next){
 			console.log("user is"+user);
 			if (!user.validPassword(req.body.cur_password)) {
 				res.send(200,{"status":false,"err":"Wrong Password"})
+				next()
 			}
-			user.setPassword(req.body.new_password);
+			else{
+					user.setPassword(req.body.new_password);
 			user.save(function(err){
 				if (err!=null) {
 				log.error(err)
 				return next(new errors.InvalidContentError(err.errors.name.message))
 				}
-				res.send(200,{"status":"OK"})
+				res.send(200,{"status":true})
 			})
+			}
+			
 				
 
     })
