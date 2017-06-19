@@ -1534,8 +1534,8 @@ server.post('/centres', function(req, res, next) {
 })
 
 /*---------------------------------------------------------------------------------------------------------------*/
-server.post('/addArticle', authnjwt,function(req, res, next) {
-	
+server.post('/addArticle',function(req, res, next) {
+	console.log("adding article")
 	uploadArticle(req,res,function(err) {
 		if(err) {
 			return res.end(err+" Error uploading file.");

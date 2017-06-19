@@ -10,8 +10,7 @@ const ArticleSchema = new mongoose.Schema({
 		required: true
 	},
 	imagePath:{
-		type: String,
-		required:true
+		type: String
 	},
 	desc: {
 		type: String,
