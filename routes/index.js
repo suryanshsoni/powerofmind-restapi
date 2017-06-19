@@ -1680,7 +1680,7 @@ server.post('/updateArticle',authnjwt,function(req, res, next){
 						article.imagePath=req.file.path 
 					
 					
-					console.log(message)
+					console.log(article)
 
 					article.save(function(err) {
 
