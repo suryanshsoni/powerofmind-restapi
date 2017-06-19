@@ -1,4 +1,4 @@
-<script id="existing-article-img-template" type="text/html">
+<script id="article-img-template" type="text/html">
   <li>
  <!--sample message box starts-->
 <div class="box box-danger">
@@ -11,8 +11,8 @@
             
         </button>
         
-    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteArticles(this.id)'>Delete</button>
-    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateArticles(this.id)'>Update</button>
+    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteArticle(this.id)'>Delete</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateArticle(this.id)'>Update</button>
 
       </div>
       <!-- /.box-tools -->
@@ -31,7 +31,7 @@
 <!--sample box ends-->
 </li>
 </script>
-<script id="existing-article-template" type="text/html">
+<script id="article-template" type="text/html">
   <li>
  <!--sample message box starts-->
 <div class="box box-danger">
@@ -44,8 +44,8 @@
             
         </button>
         
-    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteArticles(this.id)'>Delete</button>
-    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateArticles(this.id)'>Update</button>
+    <button class="btn btn-xs btn-danger" id='del-{{id}}' onclick='deleteArticle(this.id)'>Delete</button>
+    <button class="btn btn-xs btn-info" id='upd-{{id}}' onclick='updateArticle(this.id)'>Update</button>
 
       </div>
       <!-- /.box-tools -->
@@ -63,12 +63,12 @@
 <!--sample box ends-->
 </li>
 </script>
-<script id="existing-image-articles-template" type="text/html">
+<script id="existing-article-img-template" type="text/html">
     <label>Current file : <b>{{filename}}</b></label>
    <img src="{{url}}" class="img-responsive pad">
 </script>
 </script>
-<script id="existing-articles-template" type="text/html">
+<script id="existing-article-template" type="text/html">
     <label>Current file : <b>{{filename}}</b></label>
   
 </script>

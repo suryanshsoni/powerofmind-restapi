@@ -1337,9 +1337,8 @@ function updateArticle(article){
                 console.log(data);
                
                 setArticleUpdateMode(true);
-                $('#articleHeader').html("Editing article for "+getExactDate(data.date));
+                $('#articleHeader').html("Editing article for "+getExactDate(data.created));
                 $('#article-title').val(data.title);
-                $('#articleDate').val(getHtmlSettableDate(data.date));
                 $('iframe').contents().find('.wysihtml5-editor').html(data.desc);
                
                 updateArticleId=id;
@@ -1399,11 +1398,11 @@ function getArticle(){
                              
                             
                            if(article.imagePath!=""){
-                               output.mustache('latest-article-img-template', {id:article._id,title:article.title,content:article.desc,date:mdate,url:globalroot+article.imagePath});
+                               output.mustache('article-img-template', {id:article._id,title:article.title,content:article.desc,date:mdate,url:globalroot+article.imagePath});
                            }
                            else{
                                console.log("outputing without image")
-                                 output.mustache('latest-article-template', {id:article._id,title:article.title,content:article.desc,date:mdate});
+                                 output.mustache('article-template', {id:article._id,title:article.title,content:article.desc,date:mdate});
                             }
                             
                           
@@ -1454,7 +1453,7 @@ function deleteArticle(article){
                 
             })
             .fail(function(data){
-                $.snackbar({content:"article deletion failed!", timeout: 2000,id:"mysnack"});
+                $.snackbar({content:"Article deletion failed!", timeout: 2000,id:"mysnack"});
                 console.log(data);
             });
     getArticle();
