@@ -1267,6 +1267,204 @@ function updateEvent(event){
     getVideos();
 }
 //------------------------------------------EVENTS ENDS-----------------------------------------------------------
+//------------------------------------------article STARTS -----------------------------------------------------------
+function addArticle(){
+    sendobject=JSON.stringify($('#addArticleForm').serializeObject());
+    console.log(sendobject);
+    console.log("sending via main.js");
+    $.ajax({
+         type:'POST',
+         url:globalroot+updateArticleEndPoint,
+         headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+         contentType: "application/json",
+         data:sendobject,
+         encode:true
+     }).done(function(data){
+         console.log(data);
+         $('#addArticleForm')[0].reset();
+         getArticle();
+        $.snackbar({content:"Article added successfully!", timeout: 2000,id:"mysnack"});
+     }).fail(function(data){
+         console.log(data);
+        $.snackbar({content:"Addition of article failed!", timeout: 2000,id:"mysnack"});
+     });
+     setArticleUpdateMode(false);
+  getArticle();
+
+}
+var updateArticleMode=false;
+var updateArticleId=null;
+var updateArticleFileName="Filename";
+var updateArticlePath=null;
+var updateArticleEndPoint="addArticle";
+
+function setArticleUpdateMode(bool){
+    updateArticleMode=bool;
+    if(!bool){
+    $('#articleHeader').html('Add article of the day');
+    updateArticleEndPoint="addArticle";
+    $("#existingArticle").html('');
+    }
+}
+function getArticleUpdateInfo(){
+    js={};
+    js.updateArticleMode=updateArticleMode;
+    js.updateArticleId=updateArticleId;
+    return js;
+}
+
+
+function updateArticleParams(){
+    articleDropzone.options.url=globalroot+"updateArticle?id="+updateArticleId;
+    updateArticleEndPoint="updateArticle?id="+updateArticleId;
+}
+function updateArticle(article){
+    id=article.split("-")[1];
+   
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'getArticleDetails', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+               
+                setArticleUpdateMode(true);
+                $('#articleHeader').html("Editing article for "+getExactDate(data.date));
+                $('#article-title').val(data.title);
+                $('#articleDate').val(getHtmlSettableDate(data.date));
+                $('iframe').contents().find('.wysihtml5-editor').html(data.desc);
+               
+                updateArticleId=id;
+                updateArticlePath=data.imagePath;
+                updateArticleParams();
+                $.Mustache.load('templates/articles.htm')
+                .fail(function () { 
+                    console.log('Failed to load templates from <code>articles.htm</code>');
+                })
+                .done(function () {
+                    var output=$('#existingArticle');
+                    output.empty();
+                    if(data.imagePath=="")
+                    output.mustache('existing-article-template', {filename:"No file associated",url:globalroot+data.imagePath});
+                    else
+                    output.mustache('existing-article-img-template', {filename:data.imagePath,url:globalroot+data.imagePath});
+             
+               });
+
+                 $.snackbar({content:"You can edit the article details now!The article file is set to previous file", timeout: 2000,id:"mysnack"});
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+    getArticle();
+   // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
+function getArticle(){
+     $.ajax({
+            type        : 'POST', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+            url         : globalroot+'articles', 
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $.Mustache.load('templates/articles.htm')
+					.fail(function () { 
+						console.log('Failed to load templates from <code>templates.htm</code>');
+					})
+					.done(function () {
+                        var output=$('#article-box');
+                       
+                        output.empty();
+                        data.forEach(function(article){
+                            console.log(article);
+                            var date = new Date(
+                                article.created
+                                .replace("T"," ")
+                                .replace(/-/g,"/")
+                            );
+                             var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+                             
+                            
+                           if(article.imagePath!=""){
+                               output.mustache('latest-article-img-template', {id:article._id,title:article.title,content:article.desc,date:mdate,url:globalroot+article.imagePath});
+                           }
+                           else{
+                               console.log("outputing without image")
+                                 output.mustache('latest-article-template', {id:article._id,title:article.title,content:article.desc,date:mdate});
+                            }
+                            
+                          
+                             
+                         });
+                        var options={
+                        valueNames: [
+                        'date',
+                        'title',
+                        ],
+                        page: 3,
+                        pagination: true
+                        };
+                     messageList=new List('articleList',options);
+                       
+                    });
+               
+                // here we will handle errors and validation messages
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+}
+
+function deleteArticle(article){
+    id=article.split("-")[1];
+    
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'removeArticle', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $.snackbar({content:"Article deleted succesfully!", timeout: 2000,id:"mysnack"});
+            
+                /*
+                    
+                */
+                
+            })
+            .fail(function(data){
+                $.snackbar({content:"article deletion failed!", timeout: 2000,id:"mysnack"});
+                console.log(data);
+            });
+    getArticle();
+   // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
+
+
+//------------------------------------------article ENDS-----------------------------------------------------------
+
+
 //------------------------------------------Centre LOCATOR STARTS-----------------------------------------------------------
 function addCentre(){
    console.log("add Centre called");
