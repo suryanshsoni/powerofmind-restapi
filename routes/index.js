@@ -23,6 +23,7 @@ const LiveDarshan = require('../models/livedarshan')
 const News = require('../models/news')
 const Events = require('../models/events')
 const User = require('../models/user')	  
+const Article = require('../models/article')
 
 //passport initialization
 server.use(passport.initialize());
@@ -132,11 +133,26 @@ var storageNews	=	multer.diskStorage({
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
 })
+
+var storageArticle	=	multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './uploads/articles');
+  },
+  filename: function (req, file, callback) {
+    var filename=file.originalname.split(".");
+   var extension=filename[filename.length-1];
+	filename.pop();
+	var name=filename.join();
+	console.log("storing with "+name);
+    callback(null, name + '-' + Date.now()+'.'+extension);
+  }
+})
 var upload = multer({ storage : storage}).single('file')
 var uploadAudio = multer({ storage : storageAudio}).single('file')
 var uploadMessage = multer({ storage : storageMessage}).single('file')
 var uploadNews = multer({ storage : storageNews}).single('file')
 var uploadEvent = multer({ storage : storageEvent}).single('file')
+var uploadArticle = multer({ storage : storageArticle}).single('file')
 
 
 /*----------------------------------------------------------------------------------------------*/
@@ -1516,3 +1532,193 @@ server.post('/centres', function(req, res, next) {
     })
 
 })
+
+/*---------------------------------------------------------------------------------------------------------------*/
+server.post('/addArticle', authnjwt,function(req, res, next) {
+	
+	uploadArticle(req,res,function(err) {
+		if(err) {
+			return res.end(err+" Error uploading file.");
+		}
+		else {
+			console.log(req.file);	
+			console.log(req.body);
+			let data={}
+			if(req.file!=null){ 
+				data={
+					'title':req.body.title,
+					'imagePath':req.file.path || {},
+					'desc':req.body.desc
+				}
+			}
+			else{
+				data={
+					'title':req.body.title,
+					'imagePath':'',
+					'desc':req.body.desc
+				}
+			}
+			
+			let article = new Article(data)
+			console.log(article)
+			
+			article.save(function(err) {
+
+				if (err!=null) {
+					log.error(err)
+					return next(new errors.InternalError(err.message))
+					next()
+				}
+
+				res.send(201,"ADDED")
+				next()
+
+			})
+		}	
+	});
+
+})
+
+	
+server.post('/articles', function(req, res, next) {
+	console.log("Sending articles");
+	Article.find(
+	{},
+	[],
+	{
+		skip:0 // Starting Row
+		//limit:10, // Ending Row
+		
+	},
+	function(err, doc) {
+
+        if (err) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+	
+        res.send(doc)
+        next()
+
+    })
+
+})
+server.post('/getArticleDetails', function(req, res, next) {
+	console.log("Sending article details");
+	Article.findById(mongoose.mongo.ObjectId(req.body.id),
+	function(err, doc) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+		console.log("article doc is"+doc);
+		if(doc!=null)
+			res.send(doc)
+        else
+			res.send(200,"Not found")
+		next()
+
+    })
+
+})
+
+server.post('/removeArticle',authnjwt, function(req, res, next) {
+	console.log("removing articles");
+	Article.findByIdAndRemove(mongoose.mongo.ObjectId(req.body.id),
+	function(err) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else
+			res.send(200,"DELETED")
+		next()
+
+    })
+
+})
+
+server.post('/updateArticle',authnjwt,function(req, res, next){
+	console.log("updating article")
+	console.log("start----------------================")
+	let id=null;
+	console.log(req);
+	if(typeof req.query.id=="undefined"){
+		console.log("inside if ");
+		id=req.body.id;
+		
+	}
+	else{
+		console.log("else part");
+		id=req.query.id;
+	}
+
+	console.log("end----------------================")
+	console.log("ID IS ______________--------------"+id);
+	Article.findById(mongoose.mongo.ObjectId(id),
+	function(err,article){
+		if(err!=null){
+			log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+		}
+		else{
+			console.log("updating")
+			
+			uploadArticle(req,res,function(err) {
+				if(err) {
+					return res.end(err+" Error uploading file.");
+				}
+				else {
+					console.log(req.file);	
+					console.log(req.body);
+					
+					article.title=req.body.title
+					article.desc=req.body.desc
+					if(req.file!=null)
+						article.imagePath=req.file.path 
+					
+					
+					console.log(message)
+
+					article.save(function(err) {
+
+						if (err!=null) {
+							log.error(err)
+							return next(new errors.InternalError(err.message))
+							next()
+						}
+
+						res.send(201,"File Updated")
+						next()
+
+					})
+				}	
+			});
+			
+			
+		}
+			
+	})
+})
+
+server.post('/countArticles', function(req, res, next) {
+	console.log("counting articles");
+	Article.count({},
+	function(err,count) {
+
+        if (err!=null) {
+            log.error(err)
+            return next(new errors.InvalidContentError(err.errors.name.message))
+        }
+        else{
+			console.log("Article count is:",count)
+		}
+			res.send(200,count)
+		next()
+
+    })
+
+})
+
