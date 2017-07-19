@@ -303,6 +303,12 @@
             <i class="fa fa-calendar"></i> <span>Events</span>
         </a>
         </li>
+       
+        <li id="article-li">
+          <a href="#" onclick="loadArticle()">
+            <i class="fa fa-pencil"></i> <span>Articles</span>
+        </a>
+        </li>
 		<!--
          <li id="centre-locator-li">
           <a href="#" onclick="loadCentreLocator()">
@@ -327,7 +333,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" id="master">
+    <section class="content" id="master" style="overflow:auto">
       <!-- Small boxes (Stat box) -->
       
       
@@ -755,7 +761,7 @@
                 </div>
                  <div class="form-group">
                   <label for="videoURL">URL *</label>
-                  <input type="text" class="form-control" name="videoPath" required   id="videourl" placeholder="URL of the video">
+                  <input type="url" class="form-control" name="videoPath" required   id="videourl" placeholder="URL of the video">
                 </div>
                 <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -781,18 +787,16 @@
               <div id="video_table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><div class="row"><div class="col-sm-12"><table id="video_table" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="event_table_info">
                 <thead>
         <tr role="row">
-                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Date: activate to sort column ascending" style="width: 181px;">Title</th>
-                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 223px;">Added On</th>
-                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 197px;">Watch Now</th>
+                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 181px;">Title</th>
+                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Added on: activate to sort column ascending" style="width: 223px;">Added On</th>
+                <th data-orderable="false" rowspan="1" colspan="1">Watch Now</th>
                
-                <th class="sorting" tabindex="0" aria-controls="video_table" rowspan="1" colspan="1" aria-label="Update/Delete: activate to sort column ascending" style="width: 112px;">Update/Delete</th>
+                <th data-orderable="false" rowspan="1" colspan="1" style="width: 112px;">Delete/Update</th>
         </tr>
                 </thead>
                 <tbody id="video_table_body">
                 </tbody>
-                <tfoot>
-                <tr><th rowspan="1" colspan="1">Title</th><th rowspan="1" colspan="1">Added On</th><th rowspan="1" colspan="1">Watch now</th><th rowspan="1" colspan="1">Update/Delete</th></tr>
-                </tfoot>
+                
               </table></div></div>
             </div>
             <!-- /.box-body -->
@@ -818,7 +822,7 @@
         -->
  </script>
  <script id="audio-template" type="text/x-custom-template">
-    <div class="col-sm-12">
+    <div class="col-sm-4">
           <!-- general form elements -->
           <div class="box box-primary  card">
             <div class="box-header with-border">
@@ -857,7 +861,7 @@
         </div>
   </div>
           <!--New display starts-->
-             <div class="col-sm-12">
+             <div class="col-sm-8">
         <div class="box box-success  card">
             <div class="box-header">
               <h3 class="box-title">All Audios</h3>
@@ -870,16 +874,14 @@
         <tr role="row">
                 <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Date: activate to sort column ascending" style="width: 181px;">Title</th>
                 <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 223px;">Added On</th>
-                <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 197px;">Listen Now</th>
+                <th data-orderable="false" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 197px;">Listen Now</th>
                
-                <th class="sorting" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Update/Delete: activate to sort column ascending" style="width: 112px;">Update/Delete</th>
+                <th  data-orderable="false" tabindex="0" aria-controls="audio_table" rowspan="1" colspan="1" aria-label="Update/Delete: activate to sort column ascending" style="width: 112px;">Update/Delete</th>
         </tr>
                 </thead>
                 <tbody id="audio_table_body">
                 </tbody>
-                <tfoot>
-                <tr><th rowspan="1" colspan="1">Title</th><th rowspan="1" colspan="1">Added On</th><th rowspan="1" colspan="1">Listen Now</th><th rowspan="1" colspan="1">Update/Delete</th></tr>
-                </tfoot>
+               
               </table></div></div>
             </div>
             <!-- /.box-body -->
@@ -1100,7 +1102,7 @@
                 </div>
                  <div class="form-group">
                   <label for="videoURL">URL * </label>
-                  <input type="text" class="form-control" name="videoPath" required  placeholder="URL of the live video" id="liveVideoPath">
+                  <input type="url" class="form-control" name="videoPath" required  placeholder="URL of the live video" id="liveVideoPath">
                 </div>
                 <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -1224,14 +1226,12 @@
                 <th class="sorting" tabindex="0" aria-controls="event_table" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending" style="width: 197px;">Title</th>
                 <th class="sorting_desc" tabindex="0" aria-controls="event_table" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending" aria-sort="descending" style="width: 155px;">Description</th>
                 <th class="sorting" tabindex="0" aria-controls="event_table" rowspan="1" colspan="1" aria-label="Venue: activate to sort column ascending" style="width: 112px;">Venue</th>
-                <th class="sorting" tabindex="0" aria-controls="event_table" rowspan="1" colspan="1" aria-label="Update/Delete: activate to sort column ascending" style="width: 112px;">Update/Delete</th>
+                <th class="sorting" data-orderable="false" tabindex="0" aria-controls="event_table" rowspan="1" colspan="1" aria-label="Update/Delete: activate to sort column ascending" style="width: 112px;">Update/Delete</th>
         </tr>
                 </thead>
                 <tbody id="event_table_body">
                 </tbody>
-                <tfoot>
-                <tr><th rowspan="1" colspan="1">Date</th><th rowspan="1" colspan="1">Name</th><th rowspan="1" colspan="1">Title</th><th rowspan="1" colspan="1">Description</th><th rowspan="1" colspan="1">Venue</th><th rowspan="1" colspan="1">Update/Delete</th></tr>
-                </tfoot>
+                
               </table></div></div></div>
             </div>
             <!-- /.box-body -->
@@ -1336,6 +1336,90 @@
         <!-Center listisng ends-->
   
 
+</script>
+<script id="article-template" type="text/x-custom-template">
+  <div class="col-sm-12 col-md-6">
+        <div class="box box-info  card">
+            <div class="box-header">
+              <h3 class="box-title" id="articleHeader">Add article
+               
+              </h3>
+             
+              
+            </div>
+            <!-- /.box-header -->
+             <form id="addArticleForm">
+            <div class="box-body pad " >
+               
+                <div class="form-group">
+                  <label for="title">Title *</label>
+                  <input type="text" class="form-control" required name="title" id="article-title" placeholder="Enter title">
+                </div>
+                
+                
+                <div class="form-group" id="existingArticle"></div>
+              
+               
+              <div class="form-group">
+                 <label for="date">Article description *</label>
+                  <textarea class="form-control" style="width:100%" id="article-editor" required  name="desc" rows=5 placeholder="Enter event description here">
+
+                  </textarea>
+              </div>
+               
+              <div class="form-group">
+                  <label for="imagePath">Image </label>
+                  <div class="dropzone dropzone-previews" id="article-dropzone">
+              </div>
+
+              </div>
+
+              <div class="box-footer">
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+              </div>
+              
+            </div>
+            </form>
+          </div>
+    </div>
+    </div>
+
+  <!--article listsing starts-->
+        <div class="col-sm-12 col-md-6">
+        
+             <div class="box box-solid box-success  card">
+              <div class="box-header with-border">
+                <h3 class="box-title">All articles</h3>
+                    
+              </div>
+              <!-- /.box-header -->
+              <!--Main content of article-->
+              
+              <div class="box-body" style="max-height:30em;overflow-y:auto;" >
+               <div id="articleList" >
+                  <input type="text" class="search" placeholder="Search">
+
+                  <button class="sort  pull-right" data-sort="title">Sort by title</button>
+                  <button class="sort  pull-right" data-sort="date">Sort by date</button>
+                    <ul class="list" id="article-box"  style="padding-left:0;padding-top:20px;">
+                      
+                    </ul>
+                    <ul class="pagination"></ul>
+              </div>
+          
+               </div><!-- /.box-body -->
+                  
+                  
+              <div class="box-footer">
+                
+              </div><!-- box-footer -->
+            </div><!-- /.box -->
+        </div>
+        <!-article listisng ends-->
+     
+  
 </script>
 <script>
 var activeli="#dashboard-li";
@@ -1457,13 +1541,14 @@ function loadMessage(){
 		remove.removeChild(remove.lastChild);
 	}
     var template = $('#message-template').html();
-    
+  
 	$('#master').append(template);
     $(activeli).removeClass("active");
     activeli="#message-li";
     $(activeli).addClass("active");
    // $('#addMessageForm').submit(function(e){e.preventDefault();addMessage();})
 	getMessages();
+  $("#messageDate").attr("min",new Date().toJSON().split("T")[0]);
        var messdz=$("div#message-dropzone").dropzone({ 
         url: globalroot+"writemessage",
         autoProcessQueue: false,
@@ -1642,6 +1727,7 @@ function loadEvent(){
    
 	
 }
+
 function loadCentreLocator(){
 	console.log("In centew locator function");
 	var remove = document.getElementById('master');
@@ -1659,7 +1745,89 @@ function loadCentreLocator(){
     initializeMap();
   }
  
-  
+  function loadArticle(){
+	console.log("In article function");
+	var remove = document.getElementById('master');
+	while( remove.hasChildNodes() ){
+		remove.removeChild(remove.lastChild);
+	}
+    var template = $('#article-template').html();
+    $(activeli).removeClass("active");
+    activeli="#article-li";
+    $(activeli).addClass("active");
+	$('#master').append(template);
+  editor=$('#article-editor').wysihtml5();
+	getArticle();
+
+  articleDropzone=$("div#article-dropzone").dropzone({ 
+        url: globalroot+"addArticle",
+        autoProcessQueue: false,
+        addRemoveLinks:true,
+        acceptedFiles: "image/*",
+		headers: {
+			'Authorization': 'Bearer ' + sessionStorage.token
+		},
+        maxFiles: 1,
+        uploadMultiple:false,
+        paramName:"file",
+        init: function() {
+        var myDropzone = this;
+        $('#addArticleForm').submit(function(e){e.preventDefault();
+                                                e.stopPropagation();
+                                                 if (myDropzone.getQueuedFiles().length > 0)
+                                                {                        
+                                                        myDropzone.processQueue();  
+                                                } else {                 
+                                                        addArticle();
+                                                }     
+
+                                                
+                                               })
+        this.on('sending', function (data, xhr, formData) {
+              $("#addArticleForm").find("input").each(function(){
+                    formData.append($(this).attr("name"), $(this).val());
+                    });
+                formData.append("desc",editor.val());
+                });
+        this.on("error",function(files,errorarticle,xhr){
+           console.log(errorarticle); 
+            
+        });
+        this.on("success",function(file,res){
+            console.log(res);
+            $('#addArticleForm')[0].reset();
+            myDropzone.removeFile(file);
+            this.options.url=globalroot+"addArticle";
+            getArticle();
+            $('#existingArticle').html('');
+            js=getArticleUpdateInfo();
+            setArticleUpdateMode(false);
+            $("#articleHeader").html("Add article");
+            
+            if(js.updateMode)
+            $.snackbar({content:"Article updated successfully!", timeout: 2000,id:"mysnack"});
+            else
+            $.snackbar({content:"Article added successfully!", timeout: 2000,id:"mysnack"});
+        
+        })
+        }
+                        
+     });
+
+var rawElement = $("div#article-dropzone").get(0);
+articleDropzone=rawElement.dropzone;
+setArticleUpdateMode(false);
+
+
+}
+
+
+$(document).ready(function(e){
+    loadLanding();
+   
+    
+});
+
 
   function initializeMap() {
 
@@ -1820,7 +1988,7 @@ function logout(){
      contentType: "application/json",
      encode:true
     }).done(function(data){
-      console.log(data);
+     // console.log(data);
       sessionStorage.clear();
        window.location="/admin";
        console.log("this is the data");
@@ -1891,6 +2059,30 @@ $("#changePasswordForm").submit(function(e){
  }
 });
 
+
+//destroy session if no mouse movement or key press for 30 minutes
+var idleTime = 0;
+$(document).ready(function () {
+    //Increment the idle time counter every minute.
+    var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+    //Zero the idle timer on mouse movement.
+    $(this).mousemove(function (e) {
+        idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+        idleTime = 0;
+    });
+});
+
+function timerIncrement() {
+    idleTime = idleTime + 1;
+   // console.log(idleTime);
+    if (idleTime >30) { // 30 minutes
+       logout();
+       
+    }
+}
 </script>
 
 <!-- Gooogle Maps-->

@@ -14,6 +14,9 @@ var newsDropzone=null;
 var mapLat=0;
 var mapLon=0;
 
+//Used to display message when no search result is found
+var noItems = $('<li id="no-items-found">No items found</li>');
+
 $.fn.serializeObject = function()
 
 {
@@ -162,14 +165,14 @@ function addVideo(){
      encode:true
  }).done(function(data){
      console.log(data);
-     $('#addVideoForm')[0].reset();
-      $.snackbar({content:"Video added successfully!", timeout: 2000,id:"mysnack"});
+    $('#addVideoForm')[0].reset();
+    $.snackbar({content:"Video added successfully!", timeout: 2000,id:"mysnack"});
+    getVideos();
  }).fail(function(data){
      console.log(data);
       $.snackbar({content:"Video addition failed!", timeout: 2000,id:"mysnack"});
  });
     
-  getVideos();
 
  
 
@@ -181,50 +184,33 @@ function getVideos(){
             url         : globalroot+'videos', 
             encode      : true,
             headers: {
-    'Authorization': 'Bearer ' + sessionStorage.token
-  }
+            'Authorization': 'Bearer ' + sessionStorage.token
+            }     
         })
             // using the done promise callback
-            .done(function(data) {
+        .done(function(data) {
+            console.log("I received this ");
+            console.log(data);
+                var output=$('#video_table_body');
+            // output.empty();
+           console.log("clearing the data");
+            $('#video_table').DataTable().clear().draw();
 
+            data.forEach(function(video){
+                    console.log(video);
+                    var mdate=getExactDate(video.created);
+                    $('#video_table').DataTable().row.add(
+                            [
+                        video.title,
+                        mdate,
+                            '<a target="_blank" href='+video.videoPath+'><i class="fa fa-external-link"></i></a>',
+                            "<button class='btn btn-xs btn-danger' id='del-"+video._id+"' onclick='deleteVideo(this.id)'>Delete</button>          <button class='btn btn-xs btn-info' id='upd-"+video._id+"'onclick='updateVideo(this.id)'>Update</button>"
+                        ] 
+                        ).draw();
+                        });
+            
                 // log data to the console so we can see
-                console.log(data);
-                $.Mustache.load('templates/video.htm')
-					.fail(function () { 
-						console.log('Failed to load templates from <code>templates.htm</code>');
-					})
-					.done(function () {
-                       // var output=$('#video-box');
-                       
-                        var output=$('#video_table_body');
-                        output.empty();
-                        $('#video_table').DataTable().clear();
-                        data.forEach(function(video){
-                             console.log(video);
-                             var mdate=getExactDate(video.created);
-                                $('#video_table').dataTable().fnAddData( [
-                                video.title,
-                                mdate,
-                                '<a target="_blank" href='+video.videoPath+'><i class="fa fa-external-link"></i></a>',
-                                "<button class='btn btn-xs btn-danger' id='del-"+video._id+"' onclick='deleteVideo(this.id)'>Delete</button>          <button class='btn btn-xs btn-info' id='upd-"+video._id+"'onclick='updateVideo(this.id)'>Update</button>"
-                                 ] );
-	
-	
-                             //var vidurl="https://www.youtube.com/embed/"+video.videoPath.split("=").pop();
-                               // console.log(vidurl);
-                             //output.mustache('video-template', {id:video._id, title: video.title,date:mdate,url:video.videoPath,desc:video.desc });
-                         });
-                       
-                         
-                    });
-               
-                // here we will handle errors and validation messages
-            })
-            .fail(function(data){
-        
-                console.log(data);
-            });
-    
+            });  
 }
 function changeVideoDetails(){
     sendobject=JSON.stringify($('#addVideoForm').serializeObject());
@@ -285,13 +271,13 @@ function updateVideo(video){
                 $('#addVideoForm').submit(function(e) {e.preventDefault();changeVideoDetails();});
              
                 $.snackbar({content:"You can edit the video now!", timeout: 2000,id:"mysnack"});
+                getVideos();
                 
             })
             .fail(function(data){
         
                 console.log(data);
             });
-    getVideos();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 function deleteVideo(video){
@@ -312,6 +298,7 @@ function deleteVideo(video){
                 // log data to the console so we can see
                 console.log(data);
                 $.snackbar({content:"Video deleted succesfully!", timeout: 2000,id:"mysnack"});
+                getVideos();
             
                 /*
                     
@@ -322,7 +309,6 @@ function deleteVideo(video){
         
                 console.log(data);
             });
-    getVideos();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 //------------------------------------------VIDEO ENDS  -----------------------------------------------------------
@@ -358,7 +344,7 @@ console.log(sendobject);
      });
   
 
-  getAudios();
+  
 
  
 
@@ -407,19 +393,20 @@ function getAudios(){
 					})
 					.done(function () {
                         var output=$('#audio-box');
-                        $('#audio_table').DataTable().clear();
-                        output.empty();
+                        $('#audio_table').DataTable().clear().draw();
+                        //output.empty();
+
                         data.forEach(function(audio){
                             console.log(audio);
                             console.log("i was in");
                              var mdate=getExactDate(audio.created);
-                            $('#audio_table').dataTable().fnAddData( [
+                            $('#audio_table').DataTable().row.add( [
                             audio.title,
                             mdate,
                             '<audio controls><source src='+globalroot+audio.audioPath+'></audio>',
                            
                             "<button class='btn btn-xs btn-danger' id='del-"+audio._id+"' onclick='deleteAudio(this.id)'>Delete</button>          <button class='btn btn-xs btn-info' id='upd-"+audio._id+"'onclick='updateAudio(this.id)'>Update</button>"
-                                ] );
+                                ] ).draw();
                             // output.mustache('audio-template', { id:audio._id,title: audio.title,date:mdate,url:globalroot+audio.audioPath });
                          });
                        
@@ -465,6 +452,7 @@ function updateAudio(audio){
                     output.empty();
                     output.mustache('existing-audio-template', {filename:data.audioPath,url:globalroot+updateAudioPath});
                            
+                    getAudios();
                 });
 
                  $.snackbar({content:"You can edit the audio details now!The audio file is set to previous file", timeout: 2000,id:"mysnack"});
@@ -473,7 +461,6 @@ function updateAudio(audio){
         
                 console.log(data);
             });
-    getAudios();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 function deleteAudio(audio){
@@ -495,18 +482,12 @@ function deleteAudio(audio){
                 console.log(data);
                 
                 $.snackbar({content:"Audio deleted succesfully!", timeout: 2000,id:"mysnack"});
-            
-                /*
-                    
-                */
-                
+                getAudios();
             })
             .fail(function(data){
                 $.snackbar({content:"Audio deletion failed!", timeout: 2000,id:"mysnack"});
                 console.log(data);
             });
-     $('#audio_table').DataTable().destroy();
-    getAudios();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 
@@ -535,7 +516,7 @@ function addMessage(){
         $.snackbar({content:"Addition of message failed!", timeout: 2000,id:"mysnack"});
      });
      setMessageUpdateMode(false);
-  getMessages();
+  
 
  
 
@@ -617,7 +598,13 @@ function getMessages(){
                             pagination: true
                         };
                      messageList=new List('messageList',options);
-                       
+                     messageList.on('updated', function(list) {
+                        if (list.matchingItems.length == 0) {
+                            $(list.list).append(noItems);
+                        } else {
+                            noItems.detach();
+                        }
+                     });
                     });
                
                 // here we will handle errors and validation messages
@@ -646,6 +633,7 @@ function deleteMessage(message){
                 console.log(data);
                 $.snackbar({content:"Message deleted succesfully!", timeout: 2000,id:"mysnack"});
             
+                getMessages();
                 /*
                     
                 */
@@ -655,7 +643,6 @@ function deleteMessage(message){
                 $.snackbar({content:"Message deletion failed!", timeout: 2000,id:"mysnack"});
                 console.log(data);
             });
-    getMessages();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 function setMessageList(list){
@@ -705,7 +692,7 @@ function updateMessage(message){
         
                 console.log(data);
             });
-    getMessages();
+    
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 //------------------------------------------MESSAGE ENDS-----------------------------------------------------------
@@ -775,6 +762,14 @@ function getLiveVideos(){
                             pagination:true
                         };
                     var liveList=new List('live_darshan',options);
+                    liveList.on('updated', function(list) {
+                        if (list.matchingItems.length == 0) {
+                            $(list.list).append(noItems);
+                        } else {
+                            noItems.detach();
+                        }
+                     });
+                
                     setLiveVideoList(liveList);
                     });
                
@@ -886,7 +881,7 @@ function updateLiveVideo(video){
         
                 console.log(data);
             });
-    getVideos();
+    getLiveVideos();
 }
 
 //------------------------------------------LIVE DARSHAN  ENDS  -----------------------------------------------------------
@@ -912,7 +907,7 @@ function addNews(){
         $.snackbar({content:"Addition of News failed!", timeout: 2000,id:"mysnack"});
      });
      setNewsUpdateMode(false);
-  getNews();
+
 
 }
 var updateNewsMode=false;
@@ -988,7 +983,7 @@ function updateNews(news){
         
                 console.log(data);
             });
-    getNews();
+    
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 function getNews(){
@@ -1041,7 +1036,13 @@ function getNews(){
                         pagination: true
                         };
                      messageList=new List('newsList',options);
-                       
+                    messageList.on('updated', function(list) {
+                        if (list.matchingItems.length == 0) {
+                            $(list.list).append(noItems);
+                        } else {
+                            noItems.detach();
+                        }
+                     }); 
                     });
                
                 // here we will handle errors and validation messages
@@ -1070,6 +1071,7 @@ function deleteNews(news){
                 // log data to the console so we can see
                 console.log(data);
                 $.snackbar({content:"News deleted succesfully!", timeout: 2000,id:"mysnack"});
+                getNews();
             
                 /*
                     
@@ -1080,7 +1082,6 @@ function deleteNews(news){
                 $.snackbar({content:"News deletion failed!", timeout: 2000,id:"mysnack"});
                 console.log(data);
             });
-    getNews();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 
@@ -1105,12 +1106,12 @@ function addEvent(){
      console.log(data);
      $('#addEventForm')[0].reset();
       $.snackbar({content:"Event added successfully!", timeout: 2000,id:"mysnack"});
+    getEvents();
  }).fail(function(data){
      console.log(data);
       $.snackbar({content:"Event addition failed!", timeout: 2000,id:"mysnack"});
  });
     
-  getEvents();
 }
 
 function getEvents(){ 
@@ -1130,7 +1131,7 @@ function getEvents(){
 					})
 					.done(function () {
                         var output=$('#event_table_body');
-                             $('#event_table').DataTable().destroy();
+                        $('#event_table').DataTable().destroy().draw();
                         output.empty();
                         even=true;
                         data.forEach(function(event){
@@ -1152,7 +1153,7 @@ function getEvents(){
                             
                         }
                        });
-               $('#event_table').DataTable();
+                         $('#event_table').DataTable().draw();
                      
                           
                              
@@ -1186,13 +1187,13 @@ function deleteEvent(event){
                 /*
                     
                 */
+                getEvents();
                 
             })
             .fail(function(data){
                 $.snackbar({content:"Events deletion failed!", timeout: 2000,id:"mysnack"});
                 console.log(data);
             });
-    getEvents();
    // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
 }
 
@@ -1258,15 +1259,218 @@ function updateEvent(event){
                 updateObjectId=id;
                 $('#addEventForm').submit(function(e) {e.preventDefault();changeEventDetails();});
                 $.snackbar({content:"You can edit the event now!", timeout: 2000,id:"mysnack"});
+            
                 
             })
             .fail(function(data){
         
                 console.log(data);
             });
-    getVideos();
 }
 //------------------------------------------EVENTS ENDS-----------------------------------------------------------
+//------------------------------------------article STARTS -----------------------------------------------------------
+function addArticle(){
+    sendobject=JSON.stringify($('#addArticleForm').serializeObject());
+    console.log(sendobject);
+    console.log("sending via main.js");
+    $.ajax({
+         type:'POST',
+         url:globalroot+updateArticleEndPoint,
+         headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+         contentType: "application/json",
+         data:sendobject,
+         encode:true
+     }).done(function(data){
+         console.log(data);
+         $('#addArticleForm')[0].reset();
+         getArticle();
+        $.snackbar({content:"Article added successfully!", timeout: 2000,id:"mysnack"});
+     }).fail(function(data){
+         console.log(data);
+        $.snackbar({content:"Addition of article failed!", timeout: 2000,id:"mysnack"});
+     });
+     setArticleUpdateMode(false);
+  
+
+}
+var updateArticleMode=false;
+var updateArticleId=null;
+var updateArticleFileName="Filename";
+var updateArticlePath=null;
+var updateArticleEndPoint="addArticle";
+
+function setArticleUpdateMode(bool){
+    updateArticleMode=bool;
+    if(!bool){
+    $('#articleHeader').html('Add article of the day');
+    updateArticleEndPoint="addArticle";
+    $("#existingArticle").html('');
+    }
+}
+function getArticleUpdateInfo(){
+    js={};
+    js.updateArticleMode=updateArticleMode;
+    js.updateArticleId=updateArticleId;
+    return js;
+}
+
+
+function updateArticleParams(){
+    articleDropzone.options.url=globalroot+"updateArticle?id="+updateArticleId;
+    updateArticleEndPoint="updateArticle?id="+updateArticleId;
+}
+function updateArticle(article){
+    id=article.split("-")[1];
+   
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'getArticleDetails', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+               
+                setArticleUpdateMode(true);
+                $('#articleHeader').html("Editing article for "+getExactDate(data.created));
+                $('#article-title').val(data.title);
+                $('iframe').contents().find('.wysihtml5-editor').html(data.desc);
+               
+                updateArticleId=id;
+                updateArticlePath=data.imagePath;
+                updateArticleParams();
+                $.Mustache.load('templates/articles.htm')
+                .fail(function () { 
+                    console.log('Failed to load templates from <code>articles.htm</code>');
+                })
+                .done(function () {
+                    var output=$('#existingArticle');
+                    output.empty();
+                    if(data.imagePath=="")
+                    output.mustache('existing-article-template', {filename:"No file associated",url:globalroot+data.imagePath});
+                    else
+                    output.mustache('existing-article-img-template', {filename:data.imagePath,url:globalroot+data.imagePath});
+             
+               });
+
+                 $.snackbar({content:"You can edit the article details now!The article file is set to previous file", timeout: 2000,id:"mysnack"});
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+    
+   // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
+function getArticle(){
+     $.ajax({
+            type        : 'POST', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+            url         : globalroot+'articles', 
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $.Mustache.load('templates/articles.htm')
+					.fail(function () { 
+						console.log('Failed to load templates from <code>templates.htm</code>');
+					})
+					.done(function () {
+                        var output=$('#article-box');
+                       
+                        output.empty();
+                        data.forEach(function(article){
+                            console.log(article);
+                            var date = new Date(
+                                article.created
+                                .replace("T"," ")
+                                .replace(/-/g,"/")
+                            );
+                             var mdate=date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+                             
+                            
+                           if(article.imagePath!=""){
+                               output.mustache('article-img-template', {id:article._id,title:article.title,content:article.desc,date:mdate,url:globalroot+article.imagePath});
+                           }
+                           else{
+                               console.log("outputing without image")
+                                 output.mustache('article-template', {id:article._id,title:article.title,content:article.desc,date:mdate});
+                            }
+                            
+                          
+                             
+                         });
+                        var options={
+                        valueNames: [
+                        'date',
+                        'title',
+                        ],
+                        page: 3,
+                        pagination: true
+                        };
+                     articleList=new List('articleList',options);
+                     articleList.on('updated', function(list) {
+                        if (list.matchingItems.length == 0) {
+                            $(list.list).append(noItems);
+                        } else {
+                            noItems.detach();
+                        }
+                     });
+                    });
+               
+                // here we will handle errors and validation messages
+            })
+            .fail(function(data){
+        
+                console.log(data);
+            });
+}
+
+function deleteArticle(article){
+    id=article.split("-")[1];
+    
+    $.ajax({
+            type        : 'POST', 
+            url         : globalroot+'removeArticle', 
+            headers: {     'Authorization': 'Bearer ' + sessionStorage.token   },
+            data        :JSON.stringify({"id":id}),
+            processData: false,
+            contentType: 'application/json',
+            encode      : true
+        })
+            // using the done promise callback
+            .done(function(data) {
+
+                // log data to the console so we can see
+                console.log(data);
+                $.snackbar({content:"Article deleted succesfully!", timeout: 2000,id:"mysnack"});
+            
+                /*
+                    
+                */
+                
+                getArticle();
+            })
+            .fail(function(data){
+                $.snackbar({content:"Article deletion failed!", timeout: 2000,id:"mysnack"});
+                console.log(data);
+            });
+   // $.snackbar({content:"Video deleted successfully!", timeout: 2000,id:"mysnack"});
+}
+
+
+//------------------------------------------article ENDS-----------------------------------------------------------
+
+
 //------------------------------------------Centre LOCATOR STARTS-----------------------------------------------------------
 function addCentre(){
    console.log("add Centre called");
@@ -1332,7 +1536,7 @@ function getCentres(){
                             page: 3,
                             pagination: true
                         };
-                     messageList=new List('centreList',options);
+                     centreList=new List('centreList',options);
                        
                     })
 

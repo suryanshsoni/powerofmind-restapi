@@ -76,7 +76,7 @@ var storage	=	multer.diskStorage({
     var filename=file.originalname.split(".");
    var extension=filename[filename.length-1];
 	filename.pop();
-	var name=filename.join();
+	var name=filename.join().replace(" ","_");
 	console.log("storing with "+name);
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
@@ -89,7 +89,7 @@ var storageAudio	=	multer.diskStorage({
     var filename=file.originalname.split(".");
    var extension=filename[filename.length-1];
 	filename.pop();
-	var name=filename.join();
+	var name=filename.join().replace(" ","_");
 	console.log("storing with "+name);
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
@@ -102,7 +102,7 @@ var storageMessage	=	multer.diskStorage({
     var filename=file.originalname.split(".");
    var extension=filename[filename.length-1];
 	filename.pop();
-	var name=filename.join();
+	var name=filename.join().replace(" ","_");
 	console.log("storing with "+name);
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
@@ -115,7 +115,7 @@ var storageEvent	=	multer.diskStorage({
     var filename=file.originalname.split(".");
    var extension=filename[filename.length-1];
 	filename.pop();
-	var name=filename.join();
+	var name=filename.join().replace(" ","_");
 	console.log("storing with "+name);
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
@@ -128,7 +128,7 @@ var storageNews	=	multer.diskStorage({
     var filename=file.originalname.split(".");
    var extension=filename[filename.length-1];
 	filename.pop();
-	var name=filename.join();
+	var name=filename.join().replace(" ","_");
 	console.log("storing with "+name);
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
@@ -142,7 +142,7 @@ var storageArticle	=	multer.diskStorage({
     var filename=file.originalname.split(".");
    var extension=filename[filename.length-1];
 	filename.pop();
-	var name=filename.join();
+	var name=filename.join().replace(" ","_");
 	console.log("storing with "+name);
     callback(null, name + '-' + Date.now()+'.'+extension);
   }
